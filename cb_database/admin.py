@@ -8,8 +8,17 @@ class TimeInfoInline(admin.TabularInline):
 class YieldInfoInline(admin.TabularInline):
     model = YieldInfo
 
-class NoteInline(admin.TabularInline):
+class RecipeNoteInline(admin.TabularInline):
     model = RecipeNote
+    extra = 0
+
+class IngredientNoteInline(admin.TabularInline):
+    model = IngredientNote
+    extra = 0
+
+class InstructionNoteInline(admin.TabularInline):
+    model = InstructionNote
+    extra = 0
 
 class IngredientGroupInline(admin.TabularInline):
     model = IngredientGroup
@@ -19,13 +28,19 @@ class IngredientInline(admin.TabularInline):
     fk_name = "recipe"
     model = Ingredient
     extra = 0
+    inlines = [IngredientNoteInline]
 
 class InstructionInline(admin.TabularInline):
     model = Instruction
     extra = 0
+    inlines = [InstructionNoteInline]
+
+class TagInline(admin.TabularInline):
+    model = Tag
+    extra = 0
 
 class RecipeAdmin(admin.ModelAdmin):
     model = Recipe
-    inlines = [TimeInfoInline, YieldInfoInline, IngredientInline, InstructionInline, NoteInline]
+    inlines = [TimeInfoInline, YieldInfoInline, IngredientInline, InstructionInline, RecipeNoteInline, TagInline]
 
 admin.site.register(Recipe, RecipeAdmin)

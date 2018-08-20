@@ -19,7 +19,9 @@ class Recipe(models.Model):
     # ingredient_groups
     # ingredients
     # instructions 
+    # tags
     # notes
+
     def __str__(self):
         return self.name
 
@@ -33,8 +35,8 @@ class TimeInfo(models.Model):
 class YieldInfo(models.Model):
     recipe = models.OneToOneField(Recipe, on_delete= models.CASCADE, related_name= "yield_info")
     unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
-    total_yield = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
-    serving_size = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
+    total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
+    serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True)
 
 class IngredientGroup(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredient_groups")
@@ -51,6 +53,10 @@ class Ingredient(models.Model):
 class Instruction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, related_name="instructions")
     instruction = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
+
+class Tag(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, related_name="tags")
+    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
 
 class Note(models.Model):
     image = models.ImageField(null= True)
