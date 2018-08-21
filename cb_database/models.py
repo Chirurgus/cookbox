@@ -48,7 +48,6 @@ class Ingredient(models.Model):
     group = models.ForeignKey(IngredientGroup, on_delete=models.CASCADE)
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     usda_code = models.PositiveIntegerField(null= True)
-    other_recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, null=True)
 
 class Instruction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, related_name="instructions")

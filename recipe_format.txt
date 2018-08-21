@@ -7,12 +7,13 @@
 # x | y = matches x OR y
 # x, y = matches x AND y
 
-recipe => id, name, description, last_modified, time?, yield?, source?, ingredient_group*, ingredient*, instruction*, note*, tag*
+recipe => id, name, description, last_modified, time?, yield?, source?, ingredient_list, instruction*, note*, tag*
 time => unit, total_time, preparation_time?, cook_time?
 yield => unit, total_yield, serving_size?
-ingredient_group => group_id, group_name
-ingredient => quantity, unit, (recipe_ref | basic_ingredient), group_ref, note*
-basic_ingredient => description, ingredient_id? # ingredient_id would be a usda code
+ingredient_list => (ingredient_group | ingredient)*
+ingredient_group => group_name, ingredient, ingredient*
+ingredient => quantity, unit, basic_ingredient, note*
+basic_ingredient => description, code? # code could be the usda code for this ingredient
 instruction => text_instruction, note*
 note => (image | text)
 
@@ -20,3 +21,13 @@ id,recipe_ref,ingredient_id ARE id_type
 total_time,preparation_time,cook_time,total_yield,serving_size,quantity ARE numeric
 name,description,source,cuisine,tag,unit,group_name,instruction,text ARE character strings
 image IS an image
+
+# Notes:
+# In a relational database
+#   - the * fields are simulated with another table, with a foreign key column (many to one relationship).
+#   - the | or fields are simulated with two nullable columns and a check that only one is non null. ,
+#   - Recipe groups are created by having a nullable column for the group_id in ingredient, and a list of ingredient_groups in recipe
+
+# Some design decisions:
+# I decided to exclude the ability to refer to another recipe to keep every recipe atomic.
+# In stead for convineiance, clients should include the ability to add ingredients/instructions from another recipe,
