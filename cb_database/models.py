@@ -58,8 +58,8 @@ class Tag(models.Model):
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
 
 class Note(models.Model):
-    image = models.ImageField(null= True)
-    text = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
+    image = models.ImageField(null=True)
+    text = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", null=True)
 
     class Meta:
         abstract = True
