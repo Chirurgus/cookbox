@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'cb_database.apps.CbDatabaseConfig',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
