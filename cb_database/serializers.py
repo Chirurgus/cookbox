@@ -26,16 +26,18 @@ class YieldInfoSerializer(serializers.ModelSerializer):
         model = YieldInfo
         exclude = ('id', 'recipe',)
 
-class IngredientGroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = IngredientGroup
-        exclude = ('recipe',)
-
 class IngredientSerializer(serializers.ModelSerializer):
     notes = IngredientNoteSerializer(many= True)
 
     class Meta:
         model = Ingredient
+        exclude = ('id',)
+
+class IngredientGroupSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(many= True)
+
+    class Meta:
+        model = IngredientGroup
         exclude = ('recipe',)
 
 class InstructionSerializer(serializers.ModelSerializer):
@@ -55,7 +57,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     time_info = TimeInfoSerializer(many= False)
     yield_info = YieldInfoSerializer(many= False)
     ingredient_groups = IngredientGroupSerializer(many= True)
-    ingredients = IngredientSerializer(many= True)
     instructions = InstructionSerializer(many= True)
     tags = TagSerializer(many= True)
     notes = RecipeNoteSerializer(many= True)

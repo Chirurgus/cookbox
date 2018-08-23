@@ -17,7 +17,6 @@ class Recipe(models.Model):
     # time_info
     # yield_info
     # ingredient_groups
-    # ingredients
     # instructions 
     # tags
     # notes
@@ -40,12 +39,11 @@ class YieldInfo(models.Model):
 
 class IngredientGroup(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredient_groups")
-    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
+    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, null= True)
 
 class Ingredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
+    group = models.ForeignKey(IngredientGroup, on_delete=models.CASCADE, related_name= "ingredients")
     quantity = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
-    group = models.ForeignKey(IngredientGroup, on_delete=models.CASCADE)
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     usda_code = models.PositiveIntegerField(null= True)
 

@@ -7,11 +7,10 @@
 # x | y = matches x OR y
 # x, y = matches x AND y
 
-recipe => id, name, description, last_modified, time?, yield?, source?, ingredient_list, instruction*, note*, tag*
+recipe => id, name, description, last_modified, time?, yield?, source?, ingredient_group*, instruction*, note*, tag*
 time => unit, total_time, preparation_time?, cook_time?
 yield => unit, total_yield, serving_size?
-ingredient_list => (ingredient_group | ingredient)*
-ingredient_group => group_name, ingredient, ingredient*
+ingredient_group => group_name?, ingredient, ingredient*
 ingredient => quantity, unit, basic_ingredient, note*
 basic_ingredient => description, code? # code could be the usda code for this ingredient
 instruction => text_instruction, note*
@@ -31,3 +30,4 @@ image IS an image
 # Some design decisions:
 # I decided to exclude the ability to refer to another recipe to keep every recipe atomic.
 # In stead for convineiance, clients should include the ability to add ingredients/instructions from another recipe,
+# W
