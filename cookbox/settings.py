@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+# Path for static files
+STATIC_ROOT= "C:/Documents/Projects/cookbox.py/cookbox/cb_database/static"
+STATIC_URL = "/static/"
+
 # Path for Images in the datbase
 MEDIA_ROOT = "C:/Documents/Projects/cookbox.py/cookbox/cb_database/images"
 MEDIA_URL = "/images/"
@@ -36,6 +40,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'cb_database.apps.CbDatabaseConfig',
+    'nested_admin',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,45 +1,46 @@
 from django.contrib import admin
+import nested_admin
 
 from .models import *
 
-class TimeInfoInline(admin.TabularInline):
+class TimeInfoInline(nested_admin.NestedTabularInline):
     model = TimeInfo
 
-class YieldInfoInline(admin.TabularInline):
+class YieldInfoInline(nested_admin.NestedTabularInline):
     model = YieldInfo
 
-class RecipeNoteInline(admin.TabularInline):
+class RecipeNoteInline(nested_admin.NestedTabularInline):
     model = RecipeNote
     extra = 0
 
-class IngredientNoteInline(admin.TabularInline):
+class IngredientNoteInline(nested_admin.NestedTabularInline):
     model = IngredientNote
     extra = 0
 
-class InstructionNoteInline(admin.TabularInline):
+class InstructionNoteInline(nested_admin.NestedTabularInline):
     model = InstructionNote
     extra = 0
 
-class IngredientInline(admin.TabularInline):
+class IngredientInline(nested_admin.NestedTabularInline):
     model = Ingredient
     extra = 0
     inlines = [IngredientNoteInline]
 
-class IngredientGroupInline(admin.StackedInline):
+class IngredientGroupInline(nested_admin.NestedStackedInline):
     model = IngredientGroup
     extra = 0
     inlines = [IngredientInline]
 
-class InstructionInline(admin.TabularInline):
+class InstructionInline(nested_admin.NestedTabularInline):
     model = Instruction
     extra = 0
     inlines = [InstructionNoteInline]
 
-class TagInline(admin.TabularInline):
+class TagInline(nested_admin.NestedTabularInline):
     model = Tag
     extra = 0
 
-class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(nested_admin.NestedModelAdmin):
     model = Recipe
     inlines = [
         TimeInfoInline,
