@@ -25,7 +25,7 @@ class IngredientInline(admin.TabularInline):
     extra = 0
     inlines = [IngredientNoteInline]
 
-class IngredientGroupInline(admin.TabularInline):
+class IngredientGroupInline(admin.StackedInline):
     model = IngredientGroup
     extra = 0
     inlines = [IngredientInline]
