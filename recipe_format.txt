@@ -25,6 +25,7 @@ image IS an image
 #   - the * fields are simulated with another table, with a foreign key column (many to one relationship).
 #   - the | or fields are simulated with two nullable columns and a check that only one is non null. ,
 #   - Recipe groups are created by having a nullable column for the group_id in ingredient, and a list of ingredient_groups in recipe
+#   - Here there's implicit ordering of ingredients/instructions. In a database this is represented by position field.
 
 # Some design decisions:
 # I decided to exclude the ability to refer to another recipe to keep every recipe atomic.
