@@ -7,9 +7,10 @@
 2) pip install django
 3) pip install djangorestframework
 4) pip install django-nested-admin
-5) py manage.py makemigrations
-6) py manage.py migrate
-7) py manage.py createsuperuser
-8) Enter necesseary information
-9) py manage.py runserver
+5) pip install Pillow
+6) py manage.py makemigrations
+7) py manage.py migrate
+8) py manage.py createsuperuser
+9) Enter necesseary information
+10) py manage.py runserver
 
