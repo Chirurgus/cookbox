@@ -24,16 +24,19 @@ class InstructionNoteInline(nested_admin.NestedTabularInline):
 class IngredientInline(nested_admin.NestedTabularInline):
     model = Ingredient
     extra = 0
+    sortable_field_name = "position"
     inlines = [IngredientNoteInline]
 
 class IngredientGroupInline(nested_admin.NestedStackedInline):
     model = IngredientGroup
     extra = 0
+    sortable_field_name = "position"
     inlines = [IngredientInline]
 
 class InstructionInline(nested_admin.NestedTabularInline):
     model = Instruction
     extra = 0
+    sortable_field_name = "position"
     inlines = [InstructionNoteInline]
 
 class TagInline(nested_admin.NestedTabularInline):
