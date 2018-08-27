@@ -11,14 +11,13 @@ recipe => id, name, description, last_modified, time, yield, source?, ingredient
 time => unit, total_time, preparation_time?, cook_time?
 yield => unit, total_yield, serving_size?
 ingredient_group => group_name?, ingredient, ingredient*
-ingredient => quantity, unit, basic_ingredient, note*
-basic_ingredient => description, code? # code could be the usda code for this ingredient
+ingredient => unit, quantity, description, code?, note* # code could be the usda code for this ingredient
 instruction => text_instruction, note*
 note => (image | text)
 
-id,recipe_ref,ingredient_id ARE id_type
+id ARE id_type
 total_time,preparation_time,cook_time,total_yield,serving_size,quantity ARE numeric
-name,description,source,cuisine,tag,unit,group_name,instruction,text ARE character strings
+name,description,source,tag,unit,group_name,instruction,text ARE character strings
 image IS an image
 
 # Notes:

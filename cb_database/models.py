@@ -11,7 +11,7 @@ DECIMAL_FIELD_DPLACES = 2
 class Recipe(models.Model):
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
-    source = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
+    source = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", blank= True)
     last_modified = models.DateTimeField(auto_now=True)
     # Additional fiels from related tables
     # time_info
@@ -28,37 +28,37 @@ class TimeInfo(models.Model):
     recipe = models.OneToOneField(Recipe, on_delete= models.CASCADE, related_name= "time_info")
     unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
     total_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
-    preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True)
-    cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True)
+    preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
+    cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
 
 class YieldInfo(models.Model):
     recipe = models.OneToOneField(Recipe, on_delete= models.CASCADE, related_name= "yield_info")
     unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
     total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
-    serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True)
+    serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True, blank= True)
 
 class IngredientGroup(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredient_groups")
-    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, null= True)
+    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, null= True, blank= True)
 
 class Ingredient(models.Model):
     group = models.ForeignKey(IngredientGroup, on_delete=models.CASCADE, related_name= "ingredients")
     unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
     quantity = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
-    usda_code = models.PositiveIntegerField(null= True)
+    usda_code = models.PositiveIntegerField(null= True, blank= True)
 
 class Instruction(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, related_name="instructions")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="instructions")
     instruction = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
 
 class Tag(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, related_name="tags")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="tags")
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
 
 class Note(models.Model):
-    image = models.ImageField(null=True)
-    text = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", null=True)
+    image = models.ImageField(null=True, blank= True)
+    text = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", null=True, blank= True)
 
     class Meta:
         abstract = True
