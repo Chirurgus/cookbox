@@ -14,3 +14,11 @@
 9) Enter necesseary information
 10) py manage.py runserver
 
+
+# Road map
+
+1) REST Server
+2) Web UI for the REST Server (This will be the MVP)
+3) Native Android client
+4) Native Windows client
+5) More features ...
