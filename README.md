@@ -4,10 +4,10 @@
 # Setup
 
 1) Install python 3.7, add it to path.
-2) pip install django
-3) pip install djangorestframework
-4) pip install django-nested-admin
-5) pip install Pillow
+2) py -m pip install django
+3) py -m pip install djangorestframework
+4) py -m pip install django-nested-admin
+5) py -m pip install Pillow
 6) py manage.py makemigrations
 7) py manage.py migrate
 8) py manage.py createsuperuser
