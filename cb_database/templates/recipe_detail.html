@@ -1,0 +1,33 @@
+<html><body>
+
+<h1>Profile - {{ recipe.name }}</h1>
+
+<form action="{% url 'recipe-detail' pk=recipe.pk %}" method="POST">
+    <!-- {{ csrf_token }} -->
+
+    <table>
+        {{ recipe_form }}
+
+        {% for form in ing_grp %}
+            <hr>
+            {{ form.as_p }}
+        {% endfor %}
+
+        <!--
+        {% for form in form_sets %}
+            <div>
+            {{ form }}
+            </div>
+        {% endfor %}
+        -->
+    </table>
+
+    <!-- {{ forms.ingredients }}
+    {{ forms.instructions }}
+    {{ forms.notes }}
+    {{ forms.tags }} -->
+    
+    <input type="submit" value="Save">
+</form>
+
+</body></html>
