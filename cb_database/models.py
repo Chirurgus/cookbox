@@ -13,7 +13,7 @@ class Recipe(models.Model):
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     source = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", blank= True)
     last_modified = models.DateTimeField(auto_now=True)
-    # Additional fiels from related tables
+    # Additional fields from related tables
     # time_info
     # yield_info
     # ingredient_groups
