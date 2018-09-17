@@ -46,6 +46,24 @@
     </table>
     {% endfor %}
     <input type="submit" value="Save">
-</form>
 
+    <div id="form_set">
+
+    </div>
+    <div id="empty_form">
+            <table class='no_error'>
+                {{ inlines.ingredient_groups.empty_form }}
+            </table>
+    </div>
+    <input type="button" value="Add more" id="add_more">
+
+</form>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>
+    $('#add_more').click(function() {
+        var form_idx = $('#id_form-TOTAL_FORMS').val();
+        $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+        $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    });
+</script>
 </body></html>
