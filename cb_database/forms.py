@@ -19,17 +19,17 @@ class YieldInfoForm(ModelForm):
 class IngredientGroupForm(ModelForm):
     class Meta:
         model = IngredientGroup
-        exclude = ['id']
+        exclude = ['id','position']
 
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        exclude = ['id']
+        exclude = ['id','position']
 
 class InstructionForm(ModelForm):
     class Meta:
         model = Instruction
-        exclude = ['id']
+        exclude = ['id', 'position']
 
 class TagForm(ModelForm):
     class Meta:
