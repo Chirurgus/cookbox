@@ -6,6 +6,16 @@ class RecipeForm(ModelForm):
         model = Recipe
         exclude = ['id']
 
+class TimeInfoForm(ModelForm):
+    class Meta:
+        model = TimeInfo
+        exclude = ['id', 'recipe']
+
+class YieldInfoForm(ModelForm):
+    class Meta:
+        model = YieldInfo
+        exclude = ['id', 'recipe']
+
 class IngredientGroupForm(ModelForm):
     class Meta:
         model = IngredientGroup

@@ -29,24 +29,29 @@ class RecipeDetail(View):
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        recipe_form = RecipeForm(instance= recipe)
+        recipe_form = RecipeForm(instance= recipe, prefix="recipe")
+        time_info_form = TimeInfoForm(instance= recipe, prefix= "time_info")
+        yield_info_form = YieldInfoForm(instance= recipe, prefix= "yield_info")
+
         ingredient_groups_form = IngredientGroupFormset(instance= recipe,
                                                         prefix= "ingredient_groups")
-        #instructions_form = InstructionFormset(instance= recipe)
-        #instructions_form = InstructionFormset(instance = recipe,
-        #                                       prefix= "instructions")
-        #notes_form = RecipeNoteFormset(instance = recipe, prefix= 'notes')
-        #tag_form = TagFormset(instance= recipe, prefix= 'tags')
-        
-        #forms = { 'ingredient_groups' : ingredient_groups_form,
-        #          'instructions'      : instructions_form,
-        #          'notes'             : notes_form,
-        #          'tags'              : tag_form
-        #        }
+        instructions_form = InstructionFormset(instance = recipe,
+                                               prefix= "instructions")
+        notes_form = RecipeNoteFormset(instance = recipe, prefix= 'notes')
+        tag_form = TagFormset(instance= recipe, prefix= 'tags')
+
+        recipe_forms = { 'recipe'    : recipe_form,
+                         'time_info' : time_info_form,
+                         'yield_info': yield_info_form
+                       } 
+        inlines = { 'ingredient_groups' : ingredient_groups_form,
+                    'instructions'      : instructions_form,
+                    'notes'             : notes_form,
+                    'tags'              : tag_form
+                  }
         return render(request, self.template_name, {'recipe': recipe,
-                                                    'recipe_form': recipe_form,
-                                                    'ing_grp' : ingredient_groups_form})
-                                                    #'form_sets' : forms })
+                                                    'recipe_forms': recipe_forms,
+                                                    'inlines' : inlines})
 
 
     def post(self, request, pk):
