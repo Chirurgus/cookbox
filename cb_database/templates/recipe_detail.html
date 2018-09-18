@@ -12,7 +12,7 @@
     {% endfor %}
 
     {% for key,inline in inlines.items %}
-    <table>
+    <table id = "{{inline.prefix}}_form_set">
         <h1>{{ key }}</h1>
         {{ inline.management_form}}
 
@@ -43,27 +43,39 @@
                 {% endfor %}
             </tr>
         {% endfor %}
-    </table>
+        </table>
+        <table id="{{ inline.prefix }}_empty_form" style="display:none">
+            <tr>
+                {% for field in inline.empty_form.visible_fields %}
+                    <td>
+                        {# Hidden fields #}
+                        {% if forloop.first %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ field.errors.as_ul }}
+                        {{ field }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+        <input type="button" value="Add more" id="{{ inline.prefix }}_add_more">
     {% endfor %}
     <input type="submit" value="Save">
-
-    <div id="form_set">
-
-    </div>
-    <div id="empty_form">
-            <table class='no_error'>
-                {{ inlines.ingredient_groups.empty_form }}
-            </table>
-    </div>
-    <input type="button" value="Add more" id="add_more">
-
 </form>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>
-    $('#add_more').click(function() {
-        var form_idx = $('#id_form-TOTAL_FORMS').val();
-        $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
-        $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-    });
+    add_form = function(prefix) {
+        var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        $('#' + prefix + '_form_set').append($('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx));
+        $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    }
+    {% for key,formset in inlines.items %}
+        $('#' + '{{ formset.prefix }}' + '_add_more').click(function() {
+            add_form('{{ formset.prefix }}');
+        });
+    {% endfor %}
 </script>
 </body></html>
