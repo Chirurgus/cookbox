@@ -52,10 +52,10 @@ class RecipeNoteForm(ModelForm):
         exclude = ['id']
 
 
-IngredientGroupFormset =inlineformset_factory(Recipe, IngredientGroup, form= IngredientGroupForm)
-IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm)
-InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm)
-TagFormset = inlineformset_factory(Recipe, Tag, form= TagForm)
-RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm)
-IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm)
-InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm)
+IngredientGroupFormset =inlineformset_factory(Recipe, IngredientGroup, form= IngredientGroupForm, extra= 0)
+IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, extra=0)
+InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
+TagFormset = inlineformset_factory(Recipe, Tag, form= TagForm, extra= 0)
+RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm, extra= 0)
+IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm, extra= 0)
+InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm, extra= 0)
