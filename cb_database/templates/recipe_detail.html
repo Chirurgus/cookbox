@@ -2,7 +2,7 @@
 
 <h1>Recipe - {{ recipe.name }}</h1>
 
-<form action="{% url 'recipe-detail' pk=recipe.pk %}" method="POST">
+<form method="POST">
     {% csrf_token %}
 
     {% for key,form in recipe_forms.items %}
@@ -12,39 +12,39 @@
     {% endfor %}
 
     {% for key,inline in inlines.items %}
-    <table id = "{{inline.prefix}}_form_set">
-        <h1>{{ key }}</h1>
-        {{ inline.management_form}}
-
-        {% for form in inline.forms %}
-            {% if forloop.first %}
-                    <thead>
-                    <tr>
-                        {% for field in form.visible_fields %}
-                            <th>{{ field.label }}</th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-            {% endif %}
-
-            <tr>
-                {% for field in form.visible_fields %}
-                    <td>
-                        {# Hidden fields #}
-                        {% if forloop.first %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
+        <table id = "{{inline.prefix}}_form_set">
+            <h1>{{ key }}</h1>
+            {{ inline.management_form}}
+    
+            {% for form in inline.forms %}
+                {% if forloop.first %}
+                        <thead>
+                        <tr>
+                            {% for field in form.visible_fields %}
+                                <th>{{ field.label }}</th>
                             {% endfor %}
-                        {% endif %}
+                        </tr>
+                        </thead>
+                {% endif %}
 
-                        {{ field.errors.as_ul }}
-                        {{ field }}
-                    </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
+                <tr>
+                    {% for field in form.visible_fields %}
+                        <td>
+                            {# Hidden fields #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+
+                            {{ field.errors.as_ul }}
+                            {{ field }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
         </table>
-        <table id="{{ inline.prefix }}_empty_form" style="display:none">
+        <table id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>
             <tr>
                 {% for field in inline.empty_form.visible_fields %}
                     <td>

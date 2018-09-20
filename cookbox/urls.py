@@ -23,7 +23,7 @@ router.register(r'recipes', RecipeViewSet)
 
 urlpatterns = [
     path('recipe-list', RecipeList.as_view()),
-    path('recipe-detail/<int:pk>', RecipeDetail.as_view()),
+    path('recipe-detail/<int:pk>', RecipeDetail.as_view(),name= 'hello'),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
