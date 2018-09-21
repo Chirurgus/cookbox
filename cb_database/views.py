@@ -28,8 +28,6 @@ class RecipeDetail(View):
 
     def recipe_forms_post(self, post, recipe):
         recipe_form = RecipeForm(post, instance= recipe, prefix="recipe")
-        time_info_form = TimeInfoForm(post, instance= recipe, prefix= "time_info")
-        yield_info_form = YieldInfoForm(post, instance= recipe, prefix= "yield_info")
 
         ingredient_groups_form = IngredientGroupFormset(post,
                                                         instance= recipe, prefix= "ingredient_groups")
@@ -37,22 +35,16 @@ class RecipeDetail(View):
                                                instance= recipe, prefix= "instructions")
         notes_form = RecipeNoteFormset(post, instance= recipe, prefix= 'notes')
         tag_form = TagFormset(post, instance= recipe, prefix= 'tags')
-        recipe_forms = { 'recipe'    : recipe_form,
-                         'time_info' : time_info_form,
-                         'yield_info': yield_info_form
-                       } 
         inlines = { 'ingredient_groups' : ingredient_groups_form,
                     'instructions'      : instructions_form,
                     'notes'             : notes_form,
                     'tags'              : tag_form
                   }
-        return { 'forms' : recipe_forms, 'inlines' : inlines}
+        return { 'form' : recipe_form, 'inlines' : inlines}
 
 
     def get_recipe_forms(self, recipe):
         recipe_form = RecipeForm(instance= recipe, prefix="recipe")
-        time_info_form = TimeInfoForm(instance= recipe, prefix= "time_info")
-        yield_info_form = YieldInfoForm(instance= recipe, prefix= "yield_info")
 
         ingredient_groups_form = IngredientGroupFormset(instance= recipe,
                                                         prefix= "ingredient_groups")
@@ -60,16 +52,12 @@ class RecipeDetail(View):
                                                prefix= "instructions")
         notes_form = RecipeNoteFormset(instance = recipe, prefix= 'notes')
         tag_form = TagFormset(instance= recipe, prefix= 'tags')
-        recipe_forms = { 'recipe'    : recipe_form,
-                         'time_info' : time_info_form,
-                         'yield_info': yield_info_form
-                       } 
         inlines = { 'ingredient_groups' : ingredient_groups_form,
                     'instructions'      : instructions_form,
                     'notes'             : notes_form,
                     'tags'              : tag_form
                   }
-        return { 'forms' : recipe_forms, 'inlines' : inlines}
+        return { 'form' : recipe_form, 'inlines' : inlines}
 
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
@@ -79,21 +67,18 @@ class RecipeDetail(View):
         return render(request,
             self.template_name,
             {'recipe'       : recipe,
-             'recipe_forms' : recipe_forms['forms'],
+             'recipe_form' : recipe_forms['form'],
              'inlines'      : recipe_forms['inlines'] })
 
 
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
         forms = self.recipe_forms_post(request.POST,recipe)
-        valid = True
-        for key,form in forms['forms'].items():
-            valid = valid and form.is_valid()
+        valid = forms['form'].is_valid()
         for key,form in forms['inlines'].items():
             valid = valid and form.is_valid()
         if valid:
-            for key,form in forms['forms'].items():
-                form.save()
+            forms['form'].save()
             for key,form in forms['inlines'].items():
                 form.save()
             return HttpResponseRedirect('/recipe-list')
@@ -101,5 +86,5 @@ class RecipeDetail(View):
             return render(request,
                           self.template_name,
                           {'recipe'       : recipe,
-                          'recipe_forms' : forms['forms'],
+                          'recipe_form' : forms['form'],
                           'inlines'      : forms['inlines'] })

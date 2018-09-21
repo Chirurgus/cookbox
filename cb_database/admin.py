@@ -3,12 +3,6 @@ import nested_admin
 
 from .models import *
 
-class TimeInfoInline(nested_admin.NestedTabularInline):
-    model = TimeInfo
-
-class YieldInfoInline(nested_admin.NestedTabularInline):
-    model = YieldInfo
-
 class RecipeNoteInline(nested_admin.NestedTabularInline):
     model = RecipeNote
     extra = 0
@@ -46,8 +40,6 @@ class TagInline(nested_admin.NestedTabularInline):
 class RecipeAdmin(nested_admin.NestedModelAdmin):
     model = Recipe
     inlines = [
-        TimeInfoInline,
-        YieldInfoInline,
         IngredientGroupInline,
         InstructionInline,
         RecipeNoteInline,

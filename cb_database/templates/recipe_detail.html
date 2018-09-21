@@ -5,11 +5,9 @@
 <form method="POST">
     {% csrf_token %}
 
-    {% for key,form in recipe_forms.items %}
-        <div>
-            {{ form.as_p }}
-        </div>
-    {% endfor %}
+    <div>
+        {{ recipe_form.as_p }}
+    </div>
 
     {% for key,inline in inlines.items %}
         <table id = "{{inline.prefix}}_form_set">

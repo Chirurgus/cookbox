@@ -11,11 +11,17 @@ DECIMAL_FIELD_DPLACES = 2
 class Recipe(models.Model):
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
+    unit_time = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
+    total_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
+    preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
+    cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
+    unit_yield = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
+    total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
+    serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True, blank= True)
+
     source = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", blank= True)
     last_modified = models.DateTimeField(auto_now=True)
     # Additional fields from related tables
-    # time_info
-    # yield_info
     # ingredient_groups
     # instructions 
     # tags
@@ -23,19 +29,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
-
-class TimeInfo(models.Model):
-    recipe = models.OneToOneField(Recipe, on_delete= models.CASCADE, related_name= "time_info")
-    unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
-    total_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
-    preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
-    cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
-
-class YieldInfo(models.Model):
-    recipe = models.OneToOneField(Recipe, on_delete= models.CASCADE, related_name= "yield_info")
-    unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
-    total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
-    serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True, blank= True)
 
 class IngredientGroup(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredient_groups")
