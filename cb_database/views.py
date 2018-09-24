@@ -62,29 +62,23 @@ class RecipeDetail(View):
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        recipe_forms = self.get_recipe_forms(recipe)
+        recipe_form = RecipeCompleteForm(instance= recipe)
         
         return render(request,
             self.template_name,
-            {'recipe'       : recipe,
-             'recipe_form' : recipe_forms['form'],
-             'inlines'      : recipe_forms['inlines'] })
+            {'recipe'    : recipe,
+             'form'      : recipe_form})
 
 
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
-        forms = self.recipe_forms_post(request.POST,recipe)
-        valid = forms['form'].is_valid()
-        for key,form in forms['inlines'].items():
-            valid = valid and form.is_valid()
-        if valid:
-            forms['form'].save()
-            for key,form in forms['inlines'].items():
-                form.save()
+
+        form = RecipeCompleteForm(data= request.POST, instance= recipe)
+
+        if form.is_valid():
             return HttpResponseRedirect('/recipe-list')
         else:
             return render(request,
                           self.template_name,
-                          {'recipe'       : recipe,
-                          'recipe_form' : forms['form'],
-                          'inlines'      : forms['inlines'] })
+                          {'recipe'  : recipe,
+                           'form'    : form })
