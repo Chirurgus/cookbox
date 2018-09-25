@@ -26,39 +26,6 @@ class RecipeList(View):
 class RecipeDetail(View):
     template_name = 'recipe_detail.html'
 
-    def recipe_forms_post(self, post, recipe):
-        recipe_form = RecipeForm(post, instance= recipe, prefix="recipe")
-
-        ingredient_groups_form = IngredientGroupFormset(post,
-                                                        instance= recipe, prefix= "ingredient_groups")
-        instructions_form = InstructionFormset(post,
-                                               instance= recipe, prefix= "instructions")
-        notes_form = RecipeNoteFormset(post, instance= recipe, prefix= 'notes')
-        tag_form = TagFormset(post, instance= recipe, prefix= 'tags')
-        inlines = { 'ingredient_groups' : ingredient_groups_form,
-                    'instructions'      : instructions_form,
-                    'notes'             : notes_form,
-                    'tags'              : tag_form
-                  }
-        return { 'form' : recipe_form, 'inlines' : inlines}
-
-
-    def get_recipe_forms(self, recipe):
-        recipe_form = RecipeForm(instance= recipe, prefix="recipe")
-
-        ingredient_groups_form = IngredientGroupFormset(instance= recipe,
-                                                        prefix= "ingredient_groups")
-        instructions_form = InstructionFormset(instance = recipe,
-                                               prefix= "instructions")
-        notes_form = RecipeNoteFormset(instance = recipe, prefix= 'notes')
-        tag_form = TagFormset(instance= recipe, prefix= 'tags')
-        inlines = { 'ingredient_groups' : ingredient_groups_form,
-                    'instructions'      : instructions_form,
-                    'notes'             : notes_form,
-                    'tags'              : tag_form
-                  }
-        return { 'form' : recipe_form, 'inlines' : inlines}
-
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
