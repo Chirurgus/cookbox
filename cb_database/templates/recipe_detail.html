@@ -1,4 +1,12 @@
 <html><body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>
+    add_form = function(prefix) {
+        var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        $('#' + prefix + '_form_set').append($('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx));
+        $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+    }
+</script>
 
 <h1>Recipe - {{ recipe.name }}</h1>
 
@@ -7,28 +15,15 @@
 
    
     {% for key,inline in form.forms.items %}
+        <h1>{{ key }}</h1>
         {% if key == 'recipe_form' %}
             <div>
                 {{ inline.as_p }}
             </div>
         {% else %}
             {% include 'recipe_inline.html' %}
-            <input type="button" value="Add more" id="{{ inline.prefix }}_add_more">
         {% endif %}
     {% endfor %}
     <input type="submit" value="Save">
 </form>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>
-    add_form = function(prefix) {
-        var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
-        $('#' + prefix + '_form_set').append($('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx));
-        $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
-    }
-    {% for key,formset in inlines.items %}
-        $('#' + '{{ formset.prefix }}' + '_add_more').click(function() {
-            add_form('{{ formset.prefix }}');
-        });
-    {% endfor %}
-</script>
 </body></html>

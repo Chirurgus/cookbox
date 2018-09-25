@@ -1,85 +1,31 @@
+{# Renders renders a formset (an inline)                    #}
+{# Potentially renders nested forms                         #}
+{# Expects variables: inline = the formset to be rendered   #}
+
 <table id = "{{inline.prefix}}_form_set">
-    <h1>{{ key }}</h1>
     {{ inline.management_form}}
     
     {% for form in inline.forms %}
-        {% if forloop.first %}
-                <thead>
-                <tr>
-                    {% for field in form.visible_fields %}
-                        <th>{{ field.label }}</th>
-                    {% endfor %}
-                </tr>
-                </thead>
+        {% if forloop.first %} 
+            {% include 'inline_table_head.html' with form=form %}
         {% endif %}
 
-        <tr>
-            {% for field in form.visible_fields %}
-                <td>
-                    {# Hidden fields #}
-                    {% if forloop.first %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                    {% endif %}
+        {% include 'inline_table_row.html' with form=form %}
 
-                    {{ field.errors.as_ul }}
-                    {{ field }}
-                </td>
-            {% endfor %} 
-        </tr>
-
-        <div style="margin-left:500px">
         {# Nested forms #}
         {% if form.nested %}
-            {{ form.nested.management_form }}
-            {{ form.nested.non_form_errors }}
-    
-            {% for nested_form in form.nested.forms %}
-                {% if forloop.first %}
-                    <thead>
-                        <tr>
-                            {% for field in nested_form.visible_fields %}
-                                <th>{{ field.label }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                {% endif %}
-
-                <tr>
-                    {% for field in nested_form.visible_fields %}
-                        <td>
-                            {# Hidden fields #}
-                            {% if forloop.first %}
-                                {% for hidden in nested_form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                            {% endif %}
-
-                            {{ field.errors.as_ul }}
-                            {{ field }}
-                        </td>
-                    {% endfor %} 
-                </tr>
-            {% endfor %}
+            {% include 'recipe_inline.html' with inline=form.nested %}
         {% endif %}
-        </div>
     {% endfor %}
 </table>
 <table id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>
     <tr>
-        {% for field in inline.empty_form.visible_fields %}
-            <td>
-                {# Hidden fields #}
-                {% if forloop.first %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                {% endif %}
-
-                {{ field.errors.as_ul }}
-                {{ field }}
-            </td>
-        {% endfor %}
+        {% include 'inline_table_row.html' with form=inline.empty_form %}
     </tr>
 </table>
+<input type="button" value="Add more" id="{{ inline.prefix }}_add_more"><br/>
+<script>
+    $('#' + '{{ inline.prefix }}' + '_add_more').click(function() {
+        add_form('{{ inline.prefix }}');
+    });
+</script>

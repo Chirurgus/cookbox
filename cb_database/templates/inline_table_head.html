@@ -1,0 +1,10 @@
+{# Renders the head of a table of inline forms                  #}
+{# Expects variables: form = one of the forms to be rendered    #}
+
+<thead>
+    <tr>
+        {% for field in form.visible_fields %}
+            <th>{{ field.label }}</th>
+        {% endfor %}
+    </tr>
+</thead>

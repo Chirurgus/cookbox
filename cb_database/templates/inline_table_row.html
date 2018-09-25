@@ -1,0 +1,18 @@
+{# Renders a row in a table of inline forms                     #}
+{# Expects variables: form = form to be rendered in this line   #}
+
+<tr>
+    {% for field in form.visible_fields %}
+        <td>
+            {# Hidden fields #}
+            {% if forloop.first %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+            {% endif %}
+
+            {{ field.errors.as_ul }}
+            {{ field }}
+        </td>
+    {% endfor %} 
+</tr>
