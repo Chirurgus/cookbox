@@ -43,6 +43,7 @@ class RecipeDetail(View):
         form = RecipeCompleteForm(data= request.POST, instance= recipe)
 
         if form.is_valid():
+            form.save()
             return HttpResponseRedirect('/recipe-list')
         else:
             return render(request,
