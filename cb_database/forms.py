@@ -44,13 +44,12 @@ class RecipeNoteForm(ModelForm):
 
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
-IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, extra=0)
+IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, extra=1)
 TagFormset = inlineformset_factory(Recipe, Tag, form= TagForm, extra= 0)
 RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm, extra= 0)
 IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm, extra= 0)
 InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm, extra= 0)
 IngredientGroupFormset = nestedformset_factory(Recipe, IngredientGroup, IngredientFormset, extra= 0)
-#IngredientGroupFormset =inlineformset_factory(Recipe, IngredientGroup, extra= 0)
 
 class RecipeCompleteForm():
     RECIPE_FORM = 'recipe_form'

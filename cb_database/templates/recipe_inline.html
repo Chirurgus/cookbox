@@ -14,18 +14,26 @@
 
         {# Nested forms #}
         {% if form.nested %}
-            {% include 'recipe_inline.html' with inline=form.nested %}
+            <tr><td colspan="3">
+                {% include 'recipe_inline.html' with inline=form.nested %}
+            </td></tr>
         {% endif %}
     {% endfor %}
 </table>
-<table id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>
-    <tr>
-        {% include 'inline_table_row.html' with form=inline.empty_form %}
-    </tr>
+<table  id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>
+    {% if inline.empty_form.nested %}
+        {% include 'inline_table_head.html' with form=form %}
+    {% endif %}
+    {% include 'inline_table_row.html' with form=inline.empty_form %}
+    {% if inline.empty_form.nested %}
+        <tr><td colspan="3">
+            {% include 'recipe_inline.html' with inline=inline.empty_form.nested %}
+        </td></tr>
+    {% endif %}
 </table>
 <input type="button" value="Add more" id="{{ inline.prefix }}_add_more"><br/>
 <script>
-    $('#' + '{{ inline.prefix }}' + '_add_more').click(function() {
+    $('#{{ inline.prefix }}_add_more').click(function() {
         add_form('{{ inline.prefix }}');
     });
 </script>
