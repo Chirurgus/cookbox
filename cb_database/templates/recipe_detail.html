@@ -21,7 +21,7 @@
                 {{ inline.as_p }}
             </div>
         {% else %}
-            {% include 'recipe_inline.html' %}
+            {% include 'recipe_inline.html' with inline=inline %}
         {% endif %}
     {% endfor %}
     <input type="submit" value="Save">

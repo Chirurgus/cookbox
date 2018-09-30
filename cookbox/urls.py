@@ -15,17 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers
-from cb_database.views import RecipeViewSet, RecipeList, RecipeDetail
+#:from rest_framework import routers
+from cb_database.views import RecipeList, RecipeDetail
 
-router = routers.DefaultRouter()
-router.register(r'recipes', RecipeViewSet)
+#router = routers.DefaultRouter()
+#router.register(r'recipes', RecipeViewSet)
 
 urlpatterns = [
-    path('recipe-list', RecipeList.as_view()),
-    path('recipe-detail/<int:pk>', RecipeDetail.as_view(),name= 'hello'),
+    path('recipes', RecipeList.as_view(), name= 'recipe-list'),
+    path('recipes/<int:pk>', RecipeDetail.as_view(), name= 'recipe-edit'),
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #path('', include(router.urls)),
+    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('_nested_admin/', include('nested_admin.urls')),
 ]
