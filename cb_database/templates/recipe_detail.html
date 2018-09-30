@@ -8,8 +8,13 @@
     }
 </script>
 
-<h1>Recipe - {{ recipe.name }}</h1>
 
+{% if new %}
+    <h1>New Recipe</h1>
+{% else %}
+    <h1>Recipe - {{ recipe.name }}</h1>
+{% endif %}
+{# PUT method is not allowed for HTML forms, so POST is used even for new instances #}
 <form method="POST">
     {% csrf_token %}
 

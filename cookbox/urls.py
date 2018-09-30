@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 #:from rest_framework import routers
-from cb_database.views import RecipeList, RecipeDetail
+from cb_database.views import RecipeList, RecipeDetail, RecipeNew
 
 #router = routers.DefaultRouter()
 #router.register(r'recipes', RecipeViewSet)
@@ -24,6 +24,7 @@ from cb_database.views import RecipeList, RecipeDetail
 urlpatterns = [
     path('recipes', RecipeList.as_view(), name= 'recipe-list'),
     path('recipes/<int:pk>', RecipeDetail.as_view(), name= 'recipe-edit'),
+    path('recipes/new', RecipeNew.as_view(), name= 'recipe-new'),
     path('admin/', admin.site.urls),
     #path('', include(router.urls)),
     #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

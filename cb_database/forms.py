@@ -65,13 +65,24 @@ class RecipeCompleteForm():
                       self.NOTES : RecipeNoteFormset(data= data, instance= instance, prefix= 'notes'),
                       self.TAGS : TagFormset(data= data, instance= instance, prefix= 'tags') }
 
+    # Inserts a new recipe instance in the database
+    def create(self):
+        recipe = self.forms[self.RECIPE_FORM].save()
+        for key,form in self.forms.items():
+            form.instance = recipe
+            form.save()
 
+    # Updates an existing recipe instance
     def save(self):
         for key,form in self.forms.items():
             form.save()
 
+    # Checks validity of the data in the form
     def is_valid(self):
         valid = True
+        recipe = self.forms[self.RECIPE_FORM].save(commit= False)
         for key, form in self.forms.items():
+            if not form.instance:
+                form.instance = recipe
             valid = form.is_valid() and valid 
         return valid
