@@ -55,7 +55,7 @@ class RecipeDetail(View):
         recipe = get_object_or_404(Recipe, pk=pk)
 
         recipe_form = RecipeCompleteForm(instance= recipe)
-        
+
         return render(request,
             self.template_name,
             {'recipe'    : recipe,

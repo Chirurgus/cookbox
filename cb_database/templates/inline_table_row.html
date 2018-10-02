@@ -15,4 +15,14 @@
             {{ field }}
         </td>
     {% endfor %} 
-</tr>
+<tr>
+
+{# Nested forms #}
+{% if form.nested %}
+    <tr>
+        <td colspan="4">
+            {% include 'recipe_inline.html' with inline=form.nested %}
+        </td>
+    </tr>
+{% endif %}
+

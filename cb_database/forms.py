@@ -1,5 +1,5 @@
 from django.forms import *
-from cb_database.nested_form import nestedformset_factory
+from cb_database.nested_form import BaseNestedModelForm,nestedformset_factory
 from cb_database.models import *
 
 class RecipeForm(ModelForm):
@@ -7,7 +7,7 @@ class RecipeForm(ModelForm):
         model = Recipe
         exclude = ['id']
 
-class IngredientGroupForm(ModelForm):
+class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
         exclude = ['id','position']
@@ -44,12 +44,12 @@ class RecipeNoteForm(ModelForm):
 
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
-IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, extra=1)
+IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, extra=0)
 TagFormset = inlineformset_factory(Recipe, Tag, form= TagForm, extra= 0)
 RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm, extra= 0)
 IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm, extra= 0)
 InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm, extra= 0)
-IngredientGroupFormset = nestedformset_factory(Recipe, IngredientGroup, IngredientFormset, extra= 0)
+IngredientGroupFormset = nestedformset_factory(Recipe, IngredientGroup, IngredientFormset, form= IngredientGroupForm, extra= 0)
 
 class RecipeCompleteForm():
     RECIPE_FORM = 'recipe_form'
