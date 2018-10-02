@@ -45,12 +45,6 @@ class BaseNestedFormset(BaseInlineFormSet):
         return result
 
     @property
-    def empty_form(self):
-        form = super(BaseNestedFormset,self).empty_form
-        self.add_fields(form, None)
-        return form
-
-    @property
     def media(self):
         return self.empty_form.media + self.empty_form.nested.media
     
