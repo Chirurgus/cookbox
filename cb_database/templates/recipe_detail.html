@@ -3,7 +3,8 @@
 <script>
     add_form = function(prefix) {
         var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
-        $('#' + prefix + '_form_set').append($('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx));
+        var new_form = $('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx)
+        $('#' + prefix + '_form_set').append(new_form.replace(/__nested_prefix__/g, '__prefix__'));
         $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
     }
 </script>
@@ -14,10 +15,9 @@
 {% else %}
     <h1>Recipe - {{ recipe.name }}</h1>
 {% endif %}
-{# PUT method is not allowed for HTML forms, so POST is used even for new instances #}
+{# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
 <form method="POST">
     {% csrf_token %}
-
    
     {% for key,inline in form.forms.items %}
         <h1>{{ key }}</h1>

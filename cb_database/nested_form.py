@@ -4,6 +4,17 @@ from django.forms.models import (
     ModelForm,
 )
 
+class BaseNestedInnerFormSet(BaseInlineFormSet):
+
+    @property
+    def empty_form(self):
+        form = super(BaseNestedInnerFormSet, self).empty_form
+        if form.prefix.count('__prefix__') <= 1:
+            return form
+        # Replace the last occurrence of a string
+        li = form.prefix.rsplit('__prefix__', 1)
+        form.prefix = '__nested_prefix__'.join(li)
+        return form
 
 class BaseNestedFormset(BaseInlineFormSet):
 
