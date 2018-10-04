@@ -9,7 +9,7 @@
 
     <tbody id = "{{inline.prefix}}_form_set">
         {% for form in inline.forms %}
-                {% include 'inline_table_row.html' with form=form %}
+            {% include 'inline_table_row.html' with form=form %}
         {% endfor %}
     </tbody>
     <tbody id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>

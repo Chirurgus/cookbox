@@ -1,10 +1,13 @@
 {# Renders the head of a table of inline forms                  #}
 {# Expects variables: form = one of the forms to be rendered    #}
 
-<thead>
-    <tr>
-        {% for field in form.visible_fields %}
-            <th>{{ field.label }}</th>
-        {% endfor %}
-    </tr>
-</thead>
+{# Do nothing if there are no visible fields #}
+{% if form.visible_fields %}
+    <thead>
+        <tr>
+            {% for field in form.visible_fields %}
+                <th>{{ field.label }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+{% endif %}
