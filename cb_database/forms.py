@@ -10,17 +10,17 @@ class RecipeForm(ModelForm):
 class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
-        exclude = ['id','position']
+        exclude = ['id']
 
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        exclude = ['id','position']
+        exclude = ['id']
 
 class InstructionForm(ModelForm):
     class Meta:
         model = Instruction
-        exclude = ['id', 'position']
+        exclude = ['id']
 
 class TagForm(ModelForm):
     class Meta:
