@@ -18,7 +18,6 @@ class Recipe(models.Model):
     unit_yield = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
     total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True, blank= True)
-
     source = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", blank= True)
     last_modified = models.DateTimeField(auto_now=True)
     # Additional fields from related tables

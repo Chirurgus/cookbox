@@ -5,42 +5,47 @@ from cb_database.models import *
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-        exclude = ['id']
+        fields = ['name', 'description', 'unit_time', 'total_time', 'preparation_time', 'cook_time', 'unit_yield', 'total_yield', 'serving_size', 'source']
 
 class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
-        exclude = ['id']
+        fields = ['name', 'position']
 
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        exclude = ['id']
+        fields = ['position', 'unit', 'quantity', 'description', 'usda_code']
 
 class InstructionForm(ModelForm):
     class Meta:
         model = Instruction
-        exclude = ['id']
+        fields = ['position', 'instruction']
 
 class TagForm(ModelForm):
     class Meta:
         model = Tag
-        exclude = ['id']
+        fields = ['name']
 
-class InstructionNoteForm(ModelForm):
+class NoteForm(ModelForm):
     class Meta:
+        fields = ['text', 'image']
+        abstract = True
+
+class InstructionNoteForm(NoteForm):
+    class Meta(NoteForm.Meta):
         model = InstructionNote
-        exclude = ['id']
+        abstract = False
 
-class IngredientNoteForm(ModelForm):
-    class Meta:
+class IngredientNoteForm(NoteForm):
+    class Meta(NoteForm.Meta):
         model = IngredientNote
-        exclude = ['id']
+        abstract = False
 
-class RecipeNoteForm(ModelForm):
-    class Meta:
+class RecipeNoteForm(NoteForm):
+    class Meta(NoteForm.Meta):
         model = RecipeNote
-        exclude = ['id']
+        abstract = False
 
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
