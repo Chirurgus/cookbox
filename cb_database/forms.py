@@ -29,7 +29,7 @@ class TagForm(ModelForm):
 
 class NoteForm(ModelForm):
     class Meta:
-        fields = ['text', 'image']
+        fields = ['text']
         abstract = True
 
 class InstructionNoteForm(NoteForm):
