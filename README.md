@@ -8,7 +8,8 @@
 3) py -m pip install djangorestframework
 4) py -m pip install django-nested-admin
 5) py -m pip install Pillow
-6) py manage.py makemigrations
+6) py -m pip install mysqlclient
+7) py manage.py makemigrations
 7) py manage.py migrate
 8) py manage.py createsuperuser
 9) Enter necesseary information
