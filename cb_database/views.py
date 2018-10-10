@@ -1,7 +1,7 @@
 from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import View
+from django.views.generic import View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import RecipeCompleteForm
@@ -78,3 +78,8 @@ class RecipeDetail(BaseLoginRequiredMixin, View):
                           self.template_name,
                           {'recipe'  : recipe,
                            'form'    : form })
+
+class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
+    model = Recipe
+    success_url = reverse_lazy('recipe-list')
+    template_name = 'recipe_delete.html'

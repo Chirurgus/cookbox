@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, reverse_lazy
 #from rest_framework import routers
-from cb_database.views import RecipeList, RecipeDetail, RecipeNew
+from cb_database.views import RecipeList, RecipeDetail, RecipeNew, RecipeDelete
 from django.contrib.auth.views import LoginView, LogoutView
 
 #router = routers.DefaultRouter()
@@ -28,6 +28,7 @@ urlpatterns = [
     path('recipes/create/', RecipeNew.as_view(), name= 'recipe-create'),
     path('login/', LoginView.as_view(template_name= 'login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page= reverse_lazy('login')), name='logout'),
+    path('recipes/delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
     path('admin/', admin.site.urls),
     path('_nested_admin/', include('nested_admin.urls')),
     #path('', include(router.urls)),

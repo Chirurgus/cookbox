@@ -5,7 +5,11 @@
     <h1>Recipes</h1>
     <ul>
         {% for recipe in recipes %}
-            <li>{{ recipe.name }} <a href={% url 'recipe-edit' recipe.pk %}>edit</a></li>
+            <li>
+                {{ recipe.name }}
+                <a href={% url 'recipe-edit' recipe.pk %}>edit</a>
+                <a href={% url 'recipe-delete' recipe.pk %}>delete</a>
+            </li>
         {% endfor %}
     </ul>
     <button type="button"> <a href={% url 'recipe-create' %}>
