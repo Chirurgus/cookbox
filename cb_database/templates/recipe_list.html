@@ -8,7 +8,7 @@
             <li>{{ recipe.name }} <a href={% url 'recipe-edit' recipe.pk %}>edit</a></li>
         {% endfor %}
     </ul>
-    <button type="button"> <a href={% url 'recipe-new' %}>
+    <button type="button"> <a href={% url 'recipe-create' %}>
         Add new recipe
     </a></button>
     </body>
