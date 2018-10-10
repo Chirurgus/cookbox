@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+from django.urls import reverse_lazy
+
 import os
+
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 
 # Path for static files
 STATIC_ROOT= "C:/Documents/Projects/cookbox.py/cookbox/cb_database/static"

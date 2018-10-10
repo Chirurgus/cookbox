@@ -1,4 +1,7 @@
-<html><body>
+<html>
+    {% include 'title_bar.html' %}
+
+    <body>
     <h1>Recipes</h1>
     <ul>
         {% for recipe in recipes %}
@@ -8,4 +11,5 @@
     <button type="button"> <a href={% url 'recipe-new' %}>
         Add new recipe
     </a></button>
-</body></html>
+    </body>
+</html>

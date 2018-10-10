@@ -1,7 +1,8 @@
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import RecipeCompleteForm
 from .models import Recipe
@@ -14,7 +15,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     '''
 
-class RecipeList(View):
+class BaseLoginRequiredMixin(LoginRequiredMixin):
+    login_url = reverse_lazy('login')
+
+class RecipeList(BaseLoginRequiredMixin, View):
     template_name = 'recipe_list.html'
 
     def get(self, request):
@@ -24,7 +28,7 @@ class RecipeList(View):
                       self.template_name,
                       {'recipes' : queryset })
 
-class RecipeNew(View):
+class RecipeNew(BaseLoginRequiredMixin, View):
     template_name = 'recipe_detail.html'
 
     def get(self, request):
@@ -48,7 +52,7 @@ class RecipeNew(View):
                           { 'form' : recipe_form,
                             'new'  : True  })
 
-class RecipeDetail(View):
+class RecipeDetail(BaseLoginRequiredMixin, View):
     template_name = 'recipe_detail.html'
 
     def get(self, request, pk):
