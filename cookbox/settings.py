@@ -14,19 +14,20 @@ from django.urls import reverse_lazy
 
 import os
 
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 
 # Path for static files
-STATIC_ROOT= "static/"
+STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
 STATIC_URL = "/static/"
 
 # Path for Images in the datbase
-MEDIA_ROOT = "images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
 MEDIA_URL = "/images/"
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,7 +39,8 @@ SECRET_KEY = 'wv=m+e2a@gnvz))j#pc^pt$k(fhk@l*7!x%$7eq5_)3ye5919r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cookbox.duckdns.org']
+# SECURITY WARNING: remove localhost for production
+ALLOWED_HOSTS = ['cookbox.duckdns.org', 'localhost']
 
 
 # Application definition
@@ -91,9 +93,17 @@ WSGI_APPLICATION = 'cookbox.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'recipe',
+        'USER': 'root',
+        'PASSWORD': 'letmein',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 
