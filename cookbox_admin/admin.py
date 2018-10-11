@@ -1,7 +1,16 @@
 from django.contrib import admin
 import nested_admin
 
-from .models import *
+from cookbox_core.models import (
+    Recipe,
+    IngredientGroup,
+    Ingredient,
+    Instruction,
+    RecipeNote,
+    IngredientNote,
+    InstructionNote,
+    Tag
+)
 
 class RecipeNoteInline(nested_admin.NestedTabularInline):
     model = RecipeNote

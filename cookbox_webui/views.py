@@ -4,16 +4,10 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import RecipeCompleteForm
-from .models import Recipe
-from .serializers import RecipeSerializer
+from cookbox_core.models import Recipe
 
-'''
-# API endpoint that allows recipes to be viewed or edited.
-class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
-    '''
+from .forms import RecipeCompleteForm
+
 
 class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')

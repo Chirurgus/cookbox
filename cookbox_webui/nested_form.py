@@ -1,13 +1,23 @@
-from django.forms.models import (
-    BaseInlineFormSet,
-    inlineformset_factory,
-    ModelForm,
-)
+from django.forms.models import (BaseInlineFormSet, ModelForm,
+                                 inlineformset_factory)
+
 
 class BaseNestedInnerFormSet(BaseInlineFormSet):
+    '''
+    FormSet that can be a nested item in another formset,
+    while supporting client-side dynamic formset adding via 
+    copying empty_form and replacing __prefix__.
+    To add a new item to formset replace __prefix__ by the index of a new form,
+    and __nested_prefix__ by __prefix__,
+    this way when innerformset adds an item,
+    the position in outer formset is already fixed,
+    and the position in the inner formset will be set by prelacing __prefix__.
+    Only supports nesting 1 deep.
+    '''
 
     @property
     def empty_form(self):
+        ''' Replaces last ocurence of __prefix__ by __nested_prefix__ '''
         form = super(BaseNestedInnerFormSet, self).empty_form
         if form.prefix.count('__prefix__') <= 1:
             return form

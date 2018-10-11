@@ -1,6 +1,17 @@
-from django.forms import *
-from cb_database.nested_form import BaseNestedModelForm, BaseNestedInnerFormSet, nestedformset_factory
-from cb_database.models import *
+from django.forms import ModelForm, inlineformset_factory 
+
+from cookbox_core.models import (
+    Recipe,
+    IngredientGroup,
+    Ingredient,
+    Instruction,
+    RecipeNote,
+    IngredientNote,
+    InstructionNote,
+    Tag
+)
+
+from .nested_form import BaseNestedModelForm, BaseNestedInnerFormSet, nestedformset_factory
 
 class RecipeForm(ModelForm):
     class Meta:

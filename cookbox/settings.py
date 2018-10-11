@@ -22,12 +22,12 @@ LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 
 # Path for static files
-STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
-STATIC_URL = "/static/"
+#STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
+#STATIC_URL = "/static/"
 
 # Path for Images in the datbase
-MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
-MEDIA_URL = "/images/"
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
+#MEDIA_URL = "/images/"
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,9 +46,12 @@ ALLOWED_HOSTS = ['cookbox.duckdns.org', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'cb_database.apps.CbDatabaseConfig',
+    'cookbox_core.apps.CookboxCoreConfig',
+    'cookbox_webui.apps.CookboxWebuiConfig',
+    'cookbox_admin.apps.CookboxAdminConfig',
+    #'cookbox_rest.apps.CookboxRestConfig',
     'nested_admin',
-    'rest_framework',
+    #'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -15,22 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, reverse_lazy
-#from rest_framework import routers
-from cb_database.views import RecipeList, RecipeDetail, RecipeNew, RecipeDelete
 from django.contrib.auth.views import LoginView, LogoutView
 
-#router = routers.DefaultRouter()
-#router.register(r'recipes', RecipeViewSet)
+
+from cookbox_webui import urls as WebUI_urls
+from cookbox_admin import urls as Admin_urls
+
 
 urlpatterns = [
-    path('recipes/', RecipeList.as_view(), name= 'recipe-list'),
-    path('recipes/<int:pk>/', RecipeDetail.as_view(), name= 'recipe-edit'),
-    path('recipes/create/', RecipeNew.as_view(), name= 'recipe-create'),
-    path('login/', LoginView.as_view(template_name= 'login.html'), name='login'),
-    path('logout/', LogoutView.as_view(next_page= reverse_lazy('login')), name='logout'),
-    path('recipes/delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
-    path('admin/', admin.site.urls),
-    path('_nested_admin/', include('nested_admin.urls')),
-    #path('', include(router.urls)),
-    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include(WebUI_urls)),
+    path('admin', include(Admin_urls))
 ]
