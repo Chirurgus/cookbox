@@ -14,9 +14,30 @@ from django.urls import reverse_lazy
 
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRETS_FOLDER = os.path.join(BASE_DIR, 'secrets')
+
+def load_or_generate_secret_key():
+    secret_file = os.path.join(SECRETS_FOLDER, 'SECRET_KEY')
+    if not os.path.isfile(secret_file):
+        import random
+        secret_key = ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50))
+        with open(os.path.join(SECRETS_FOLDER, 'SECRET_KEY'), 'xt') as f:
+            f.write(secret_key)
+        return secret_key
+    else:
+        return read_secret('SECRET_KEY')
+
+def read_secret(secret):
+    secret_file = os.path.join(SECRETS_FOLDER, secret)
+    if (os.path.isfile(secret_file)):
+        with open(secret_file) as f:
+            return f.read()
+    else:
+        from django.core.exceptions import ImproperlyConfigured
+        raise ImproperlyConfigured("Secrets folder does not contain: " + secret)
 
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
@@ -29,12 +50,8 @@ LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
 #MEDIA_URL = "/images/"
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wv=m+e2a@gnvz))j#pc^pt$k(fhk@l*7!x%$7eq5_)3ye5919r'
+SECRET_KEY = load_or_generate_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -99,7 +116,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'recipe',
         'USER': 'root',
-        'PASSWORD': 'letmein',
+        'PASSWORD': read_secret('MYSQL_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '3306'
     }
