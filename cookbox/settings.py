@@ -39,16 +39,6 @@ def read_secret(secret):
         from django.core.exceptions import ImproperlyConfigured
         raise ImproperlyConfigured("Secrets folder does not contain: " + secret)
 
-LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
-
-# Path for static files
-#STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
-#STATIC_URL = "/static/"
-
-# Path for Images in the datbase
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
-#MEDIA_URL = "/images/"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = load_or_generate_secret_key()
@@ -59,6 +49,11 @@ DEBUG = True
 # SECURITY WARNING: remove localhost for production
 ALLOWED_HOSTS = ['cookbox.duckdns.org', 'localhost']
 
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -164,3 +159,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
+
+# Path for static files
+#STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
+#STATIC_URL = "/static/"
+
+# Path for Images in the datbase
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
+#MEDIA_URL = "/images/"
