@@ -9,6 +9,9 @@
 4) py -m pip install django-nested-admin
 5) py -m pip install Pillow
 6) py -m pip install mysqlclient
+1) Setup a database (Sqlite, or MySQL)
+3) Describe how to connect to the above databse in settings.py
+2) If necessairy add file with the databse password to file secrets/MYSQL_PASSWORD
 7) py manage.py makemigrations
 7) py manage.py migrate
 8) py manage.py createsuperuser
