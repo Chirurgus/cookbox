@@ -49,11 +49,11 @@ DEBUG = True
 # SECURITY WARNING: remove localhost for production
 ALLOWED_HOSTS = ['cookbox.duckdns.org', 'localhost']
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = not DEBUG 
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = not DEBUG
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = not DEBUG
 
 # Application definition
 
