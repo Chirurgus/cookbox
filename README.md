@@ -18,6 +18,9 @@
 9) Enter necesseary information
 10) py manage.py runserver
 
+# Switch between databases
+You can either use Sqlite or MySQL, the latter is prefered in production. To do edit the settings file comment out one of the items in the list called 'DATABASES'.
+
 # Road map
 
 1) REST Server
