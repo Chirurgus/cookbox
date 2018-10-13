@@ -21,7 +21,7 @@
 # Deployment 
 
 1) Install an Apache server: sudo apt-get install appache2
-2) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked.
+2) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
 
 
 # Switching databases
