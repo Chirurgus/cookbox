@@ -3,7 +3,7 @@
 
 # Setup
 
-1) Install python 3.7, add it to path.
+1) Install python 3.7, add it to path. (This may require builidng from source).
 2) py -m pip install django
 3) py -m pip install djangorestframework
 4) py -m pip install django-nested-admin
@@ -18,10 +18,12 @@
 9) Enter necesseary information
 10) py manage.py runserver
 
-# Deployment 
+# Deployment to Apache on Debian
 
-1) Install an Apache server: sudo apt-get install appache2
-2) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
+1) Install an Apache server: sudo apt-get install appache2; apt-get install appache2-dev;
+3) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
+9) Install Python3.7 (You'll probably need to build form source).
+39) Install pip.
 
 
 # Switching databases
