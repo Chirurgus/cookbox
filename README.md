@@ -18,6 +18,12 @@
 9) Enter necesseary information
 10) py manage.py runserver
 
+# Deployment 
+
+1) Install an Apache server: sudo apt-get install appache2
+2) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked.
+
+
 # Switching databases
 You can either use Sqlite or MySQL, the latter is prefered in production. To do edit the settings file comment out one of the items in the list called 'DATABASES'.
 
