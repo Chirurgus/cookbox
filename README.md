@@ -27,6 +27,12 @@
 3) Install all dependencies using pip as in *Setup*.
 3) Install the WSGI  module for Apache: sudo apt-get install libapache2-mod-wsgi-py3
 4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
+3) Setup MySQL: sudo apt-get install mysql-server;
+4) Then secure the mysql database by by adding : 
+[mysqld]
+bind-address = 127.0.0.1
+to /etc/mysql/my.cnf.
+4) Then do : sudo mysql_secure_installation; and setup a password (that you will add to MYSQL_PASSWROD file), and answer yes to all.
 
 
 
