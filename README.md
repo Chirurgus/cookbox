@@ -23,13 +23,23 @@
 ## Setup MySQL
 
 3) Install MySQL: sudo apt-get install mysql-server;
-4) Then secure the mysql database by by adding : 
-[mysqld]
-bind-address = 127.0.0.1
-to /etc/mysql/my.cnf.
-4) Then do : sudo mysql_secure_installation; and setup a password (that you will add to MYSQL_PASSWROD file), and answer yes to all.
-5) CREATE DATABASE myproject CHARACTER SET UTF8;
-
+3) Be unlucky and have nothing work out of the box.
+3) sudo systemctl stop mysql
+3) sudo mysqld_safe --skip-grant-tables --skip-networking &
+3) mysql -u root
+4) FLUSH PRIVILEGES;
+3) SELECT User,Host FROM mysql.user;
+3) Remove all the users you dont' need: DROP USER 'unwanted'@'localhost';
+3) Add all the users you need: CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'password';
+3 (To change passwords for existing users use: CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'password'; )
+3) Modify the permissions for the users with : GRANT ALL ON *.* TO 'newuser'@'localhost';
+3) Create table for your django app: CREATE DATABASE cookbox CHARACTER SET utf8mb4;
+3) Make sure that the user you provide in settngs.py file has all permissions on this databse: GRANT ALL ON cookbox.* TO 'newuser'@'localhost';
+4) Kill MySQL instance you started manually: sudo kill `sudo cat /var/run/mysqld/mysqld.pid`
+5) Start the server: sudo servicectl mysql start
+5) Check that the database works: mysql -u root -p
+3) Secure database by: sudo mysql_secure_installation; Answer yes to everything (except root pasword, it should be set already).
+1) (If you forgot to add charset to your databse use: ALTER DATABASE cookbox CHARACTER SET utf8mb4; )
 
 ## Setup Python
 
