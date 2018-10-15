@@ -44,10 +44,10 @@ def read_secret(secret):
 SECRET_KEY = load_or_generate_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
 
 # SECURITY WARNING: remove localhost for production
-ALLOWED_HOSTS = ['cookbox.duckdns.org', 'localhost']
+ALLOWED_HOSTS = ['cookbox.duckdns.org'] + (['localhost'] if DEBUG else [])
 
 SECURE_SSL_REDIRECT = not DEBUG 
 
@@ -108,6 +108,11 @@ WSGI_APPLICATION = 'cookbox.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+} if DEBUG else {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'recipe',
         'USER': 'root',
@@ -115,11 +120,8 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306'
     }
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
 }
+
 
 
 # Password validation
