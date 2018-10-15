@@ -20,19 +20,30 @@
 
 # Deployment to Apache on Debian
 
-1) Install an Apache server: sudo apt-get install appache2; apt-get install appache2-dev;
-3) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
-9) Install Python3, not this does not have to be the latest Python version, check compatitability with Django version you're using: sudo apt-get install python3
-9) Install pip: sudo apt-get install python3-pip;
-3) Install all dependencies using pip as in *Setup*.
-3) Install the WSGI  module for Apache: sudo apt-get install libapache2-mod-wsgi-py3
-4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
-3) Setup MySQL: sudo apt-get install mysql-server;
+## Setup MySQL
+
+3) Install MySQL: sudo apt-get install mysql-server;
 4) Then secure the mysql database by by adding : 
 [mysqld]
 bind-address = 127.0.0.1
 to /etc/mysql/my.cnf.
 4) Then do : sudo mysql_secure_installation; and setup a password (that you will add to MYSQL_PASSWROD file), and answer yes to all.
+5) CREATE DATABASE myproject CHARACTER SET UTF8;
+
+
+## Setup Python
+
+9) Install Python3, not this does not have to be the latest Python version, check compatitability with Django version you're using: sudo apt-get install python3
+9) Install pip: sudo apt-get install python3-pip;
+3) Install all dependencies using pip as in *Setup*.
+
+## Setup Apache
+
+1) Install an Apache server: sudo apt-get install appache2; apt-get install appache2-dev;
+3) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
+3) Install the WSGI  module for Apache: sudo apt-get install libapache2-mod-wsgi-py3
+4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
+
 
 
 
