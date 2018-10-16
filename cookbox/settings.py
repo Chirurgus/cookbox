@@ -114,11 +114,9 @@ DATABASES = {
 } if DEBUG else {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'recipe',
-        'USER': 'root',
-        'PASSWORD': read_secret('MYSQL_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'OPTIONS': {
+            'read_default_file': os.path.join(SECRETS_FOLDER, 'my.cnf'),
+        }
     }
 }
 
