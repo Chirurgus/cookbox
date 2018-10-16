@@ -54,11 +54,20 @@
 3) Install the WSGI  module for Apache: sudo apt-get install libapache2-mod-wsgi-py3
 4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
 
-
-
+## Setup
+1) Start server (in debug mode) via: python3 manage.py runserver;
+1) Check if it works like so.
+2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION; 
+2) Add MySQL credentials in the file secrets/my.cnf, this file is formated as such:
+[client]
+database = recipe
+user = root
+password = password
+port = 3306
+default-character-set = utf8mb4
+2) You now should have 3 files in the secrets folder: SECRET_KEY, PRODUCTION, my.cnf
 
 ## Documentation references
-[mod_wsgi installation](https://pypi.org/project/mod_wsgi/)
 
 # Switching databases
 You can either use Sqlite or MySQL, the latter is prefered in production. To do edit the settings file comment out one of the items in the list called 'DATABASES'.
