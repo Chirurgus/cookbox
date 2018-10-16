@@ -63,12 +63,14 @@
 1) Check if it works.
 2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION; 
 2) Add MySQL credentials in the file secrets/my.cnf, this file is formated as such:
+```
 [client]
 database = recipe
 user = root
 password = password
 port = 3306
 default-character-set = utf8mb4
+```
 2) You now should have 3 files in the secrets folder: SECRET_KEY, PRODUCTION, my.cnf
 
 ## Documentation references
