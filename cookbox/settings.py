@@ -53,11 +53,11 @@ DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
 # SECURITY WARNING: remove localhost for production
 ALLOWED_HOSTS = ['cookbox.duckdns.org'] + (['localhost'] if DEBUG else [])
 
-SECURE_SSL_REDIRECT = not DEBUG 
+#SECURE_SSL_REDIRECT = not DEBUG 
 
-SESSION_COOKIE_SECURE = not DEBUG
+#SESSION_COOKIE_SECURE = not DEBUG
 
-CSRF_COOKIE_SECURE = not DEBUG
+#CSRF_COOKIE_SECURE = not DEBUG
 
 # Application definition
 
