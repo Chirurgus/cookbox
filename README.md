@@ -22,7 +22,7 @@
 
 ## Setup MySQL
 
-3) Install MySQL: sudo apt-get install mysql-server;
+1) Install MySQL: sudo apt-get install mysql-server;
 3) Be unlucky and have nothing work out of the box.
 3) sudo systemctl stop mysql
 3) sudo mysqld_safe --skip-grant-tables --skip-networking &
@@ -43,9 +43,9 @@
 
 ## Setup Python
 
-9) Install Python3, not this does not have to be the latest Python version, check compatitability with Django version you're using: sudo apt-get install python3
-9) Install pip: sudo apt-get install python3-pip;
-3) Install all dependencies using pip as in *Setup*.
+1) Install Python3, not this does not have to be the latest Python version, check compatitability with Django version you're using: sudo apt-get install python3;
+1) Install pip: sudo apt-get install python3-pip;
+1) Install venv: sudo apt-get install python3-venv;
 
 ## Setup Apache
 
@@ -55,8 +55,12 @@
 4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
 
 ## Setup
+1) Clone the production branch of the repository, or download one of the releases. Go to that directory.
+1) Create a virutal envirement: python3 -m venv cookbox.venv; (Without this step mod_wsgi can't find django).
+1) Enter the new enviroment: source cookbox.venv/bin/activate;
+3) Install all dependencies from requirements.txt using pip: pip3 install -r requirements.txt;
 1) Start server (in debug mode) via: python3 manage.py runserver;
-1) Check if it works like so.
+1) Check if it works.
 2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION; 
 2) Add MySQL credentials in the file secrets/my.cnf, this file is formated as such:
 [client]
