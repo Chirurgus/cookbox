@@ -19,6 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRETS_FOLDER = os.path.join(BASE_DIR, 'secrets')
 
+# Create the secrets folder it it does not exist
+if not os.path.isdir(SECRETS_FOLDER):
+    os.mkdir(SECRETS_FOLDER)
+
 def load_or_generate_secret_key():
     secret_file = os.path.join(SECRETS_FOLDER, 'SECRET_KEY')
     if not os.path.isfile(secret_file):
