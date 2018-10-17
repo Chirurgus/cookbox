@@ -59,6 +59,12 @@ ALLOWED_HOSTS = ['cookbox.duckdns.org'] + (['localhost'] if DEBUG else [])
 
 #CSRF_COOKIE_SECURE = not DEBUG
 
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_BROWSER_XSS_FILTER = True
+
+X_FRAME_OPTIONS = 'DENY'
+
 # Application definition
 
 INSTALLED_APPS = [
