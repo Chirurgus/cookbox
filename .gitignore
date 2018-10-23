@@ -1,6 +1,10 @@
 # Django secrets
 secrets
 
+# Django static files
+static_files
+images
+
 # VS Code
 .vscode
 

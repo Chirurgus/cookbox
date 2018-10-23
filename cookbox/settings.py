@@ -168,15 +168,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
-
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 
 # Path for static files
-#STATIC_ROOT= os.path.join(BASE_DIR, 'cb_database/static'),
-#STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_files'),
+STATIC_URL = "/static_files/"
 
 # Path for Images in the datbase
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'cb_database/images'),
-#MEDIA_URL = "/images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images'),
+MEDIA_URL = "/images/"
