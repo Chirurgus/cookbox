@@ -1,17 +1,10 @@
 # cookbox
 
 
-# Setup
+# Setup for developpment
 
 1) Install python 3.7, add it to path. (This may require builidng from source).
-2) py -m pip install django
-3) py -m pip install djangorestframework
-4) py -m pip install django-nested-admin
-5) py -m pip install Pillow
-6) py -m pip install mysqlclient
-1) Setup a database (Sqlite, or MySQL)
-3) Describe how to connect to the above databse in settings.py
-2) If necessairy add file with the databse password to file secrets/MYSQL_PASSWORD
+2) python3 pip3 install -r requirements.txt
 7) py manage.py makemigrations
 7) py manage.py migrate
 8) py manage.py createsuperuser
@@ -52,16 +45,13 @@
 1) Install an Apache server: sudo apt-get install appache2; apt-get install appache2-dev;
 3) Check that the installation was sucessful by connecting to localhost (or server ip), it should already serve a page saying that the installation worked. (To do so remotely you can do: ssh -L 9999:localhost:80 your_server; and then connect to localhost:9999.
 3) Install the WSGI  module for Apache: sudo apt-get install libapache2-mod-wsgi-py3
-4) Check that mod_wsgi installation worked by staring a server: mod_wsgi-express start-server; This should start a server on localhost:8000.
 
-## Setup
+
+## Setup server
 1) Clone the production branch of the repository, or download one of the releases. Go to that directory.
 1) Create a virutal envirement: python3 -m venv cookbox.venv; (Without this step mod_wsgi can't find django).
 1) Enter the new enviroment: source cookbox.venv/bin/activate;
 3) Install all dependencies from requirements.txt using pip: pip3 install -r requirements.txt;
-1) Start server (in debug mode) via: python3 manage.py runserver;
-1) Check if it works.
-2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION; 
 2) Add MySQL credentials in the file secrets/my.cnf, this file is formated as such:
 ```
 [client]
@@ -71,9 +61,51 @@ password = password
 port = 3306
 default-character-set = utf8mb4
 ```
+1) Populate the databse: python3 manage.py makemigrations; python3 manage.py migrate;
+1) Start server (in debug mode) via: python3 manage.py runserver;
+1) Check if it works.
+2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION;
 2) You now should have 3 files in the secrets folder: SECRET_KEY, PRODUCTION, my.cnf
 
+## Configure
+1) Open apache2 config file: sudo vim /etc/apache2/apache2.conf
+2) Remove existing Directory tags, and replace it with the following, adapting it to your needs.
+```
+<VirtualHost *:80>
+
+    ServerName www.example.com
+    ServerAlias example.com
+    ServerAdmin webmaster@example.com
+
+    DocumentRoot /usr/local/www/documents
+
+    Alias /robots.txt /usr/local/www/documents/robots.txt
+    Alias /favicon.ico /usr/local/www/documents/favicon.ico
+
+    Alias /media/ /usr/local/www/documents/media/
+
+    <Directory /usr/local/www/documents>
+        Require all granted
+    </Directory>
+
+    WSGIDaemonProcess example.com python-home=/path/to/cookbox.venv python-path=/path/to/cookbox
+    WSGIProcessGroup example.com
+
+    WSGIScriptAlias / /usr/local/www/cookbox/cookbox/wsgi.py
+
+    <Directory /usr/local/www/cookbox.cookbox>
+        Require all granted
+    </Directory>
+
+</VirtualHost>
+```
+1) (Re)start server: sudo service apache2 restart;
+1) Enjoy cookbox
+1) Remember this is just a guideline, this is probably not the best or most secure setup possible.
+
 ## Documentation references
+[Django setup](https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/modwsgi/)
+[mod_wsgi](https://modwsgi.readthedocs.io/en/develop/user-guides/quick-configuration-guide.html)
 
 # Switching databases
 You can either use Sqlite or MySQL, the latter is prefered in production. To do edit the settings file comment out one of the items in the list called 'DATABASES'.
