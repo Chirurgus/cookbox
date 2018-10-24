@@ -72,11 +72,11 @@ LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 
 # Path for static files
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_files'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 STATIC_URL = "/static_files/"
 
 # Path for Images in the datbase
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images'),
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = "/images/"
 
 
