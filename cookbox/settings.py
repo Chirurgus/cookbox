@@ -51,7 +51,9 @@ SECRET_KEY = load_or_generate_secret_key()
 DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
 
 # SECURITY WARNING: remove localhost for production
-ALLOWED_HOSTS = ['cookbox.duckdns.org'] + (['localhost'] if DEBUG else [])
+ALLOWED_HOSTS = ['localhost'] if DEBUG else [ read_secret('HOST') ]
+
+ADMINS = [('admin', read_secret('ADMIN_EMAIL'))] if not DEBUG else []
 
 #SECURE_SSL_REDIRECT = not DEBUG 
 
