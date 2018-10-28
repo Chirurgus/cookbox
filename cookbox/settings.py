@@ -53,7 +53,7 @@ DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
 # SECURITY WARNING: remove localhost for production
 ALLOWED_HOSTS = ['localhost'] if DEBUG else [ read_secret('HOST') ]
 
-ADMINS = [('admin', read_secret('ADMIN_EMAIL'))] if not DEBUG else []
+ADMINS =  [] if DEBUG else [('admin', read_secret('ADMIN_EMAIL'))]
 
 #SECURE_SSL_REDIRECT = not DEBUG 
 
