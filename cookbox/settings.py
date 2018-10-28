@@ -181,4 +181,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Logging settings
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'WARNING',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'django.log'),
+                'maxBytes': 1024*1024*15, # 15 MB
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        },
+    }
+
 
