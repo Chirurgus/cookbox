@@ -189,7 +189,6 @@ if not DEBUG:
                 'level': 'WARNING',
                 'class': 'logging.FileHandler',
                 'filename': os.path.join(BASE_DIR, 'django.log'),
-                'maxBytes': 1024*1024*15, # 15 MB
             },
         },
         'loggers': {
