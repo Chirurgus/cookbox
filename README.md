@@ -51,7 +51,7 @@
 1) Clone the production branch of the repository, or download one of the releases. Go to that directory.
 1) Create a virutal envirement: python3 -m venv cookbox.venv; (Without this step mod_wsgi can't find django).
 1) Enter the new enviroment: source cookbox.venv/bin/activate;
-3) Install all dependencies from requirements.txt using pip: pip3 install -r requirements.txt;
+3) Install all dependencies from requirements.txt using pip: `pip3 install -r requirements.txt`
 2) Add MySQL credentials in the file secrets/my.cnf, this file is formated as such:
 ```
 [client]
@@ -61,8 +61,9 @@ password = password
 port = 3306
 default-character-set = utf8mb4
 ```
-1) Populate the databse: python3 manage.py makemigrations; python3 manage.py migrate;
-1) Start server (in debug mode) via: python3 manage.py runserver;
+1) Populate the databse: `python3 manage.py makemigrations; python3 manage.py migrate;`
+1) Get all the static files: `python3 manage.py collectstatic;`
+1) Start server (in debug mode) via: `python3 manage.py runserver;`
 1) Check if it works.
 2) Turn off debug mode by adding a 'PRODUCTION' file in secrets folder: touch secrets/PRODUCTION;
 2) You now should have 3 files in the secrets folder: SECRET_KEY, PRODUCTION, my.cnf
