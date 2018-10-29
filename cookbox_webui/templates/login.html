@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Welcome to Cookbox</h1>
 <h2>Please login to continue</h2>
 
@@ -6,3 +10,5 @@
     {{ form.as_p }}
     <button type="submit">Login</button>
 </form>
+
+{% endblock %}

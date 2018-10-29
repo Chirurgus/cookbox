@@ -1,19 +1,17 @@
-<html>
-    {% include 'title_bar.html' %}
+{% extends "base.html" %}
 
-    <body>
-    <h1>Recipes</h1>
-    <ul>
-        {% for recipe in recipes %}
-            <li>
-                {{ recipe.name }}
-                <a href={% url 'recipe-edit' recipe.pk %}>edit</a>
-                <a href={% url 'recipe-delete' recipe.pk %}>delete</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <button type="button"> <a href={% url 'recipe-create' %}>
-        Add new recipe
-    </a></button>
-    </body>
-</html>
+{% block content %}
+<h1>Recipes</h1>
+<ul>
+    {% for recipe in recipes %}
+        <li>
+            {{ recipe.name }}
+            <a href="{% url 'recipe-edit' recipe.pk %}">edit</a>
+            <a href="{% url 'recipe-delete' recipe.pk %}">delete</a>
+        </li>
+    {% endfor %}
+</ul>
+<button type="button"> <a href="{% url 'recipe-create' %}">
+    Add new recipe
+</a></button>
+{% endblock %}

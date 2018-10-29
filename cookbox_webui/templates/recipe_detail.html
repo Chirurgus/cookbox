@@ -1,8 +1,6 @@
-<html>
+{% extends "base.html" %}
 
-{% include 'title_bar.html' %}
-
-<body>
+{% block scripts %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>
     add_form = function(prefix) {
@@ -12,8 +10,10 @@
         $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
     }
 </script>
+{% endblock %}
 
 
+{% block content %}
 {% if new %}
     <h1>New Recipe</h1>
 {% else %}
@@ -30,9 +30,9 @@
                 {{ inline.as_p }}
             </div>
         {% else %}
-            {% include 'recipe_inline.html' with inline=inline %}
+            {% include 'detail/recipe_inline.html' with inline=inline %}
         {% endif %}
     {% endfor %}
     <input type="submit" value="Save">
 </form>
-</body></html>
+{% endblock %}

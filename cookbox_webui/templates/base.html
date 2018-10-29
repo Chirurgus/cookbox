@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Cookbox{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static "cookbox_webui/style.css" %}" />
+    {% block scripts %}{% endblock %}
+</head>
+
+
+{% include "detail/title_bar.html" %}
+
+<body>
+{% block content %}{% endblock %}
+</body>
+
+</html>

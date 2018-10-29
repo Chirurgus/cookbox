@@ -5,15 +5,15 @@
 <table>
     {{ inline.management_form}}
 
-    {% include 'inline_table_head.html' with form=inline.empty_form %}
+    {% include 'detail/inline_table_head.html' with form=inline.empty_form %}
 
     <tbody id = "{{inline.prefix}}_form_set">
         {% for form in inline.forms %}
-            {% include 'inline_table_row.html' with form=form %}
+            {% include 'detail/inline_table_row.html' with form=form %}
         {% endfor %}
     </tbody>
     <tbody id="{{ inline.prefix }}_empty_form" style="display:none" class= no_error>
-        {% include 'inline_table_row.html' with form=inline.empty_form %}
+        {% include 'detail/inline_table_row.html' with form=inline.empty_form %}
     </tbody>
 </table>
 <input type="button" value="Add more" id="{{ inline.prefix }}_add_more"><br/>
