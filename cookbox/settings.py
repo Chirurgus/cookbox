@@ -38,7 +38,7 @@ def read_secret(secret):
     secret_file = os.path.join(SECRETS_FOLDER, secret)
     if (os.path.isfile(secret_file)):
         with open(secret_file) as f:
-            return f.read()
+            return f.read().strip('\n')
     else:
         from django.core.exceptions import ImproperlyConfigured
         raise ImproperlyConfigured("Secrets folder does not contain: " + secret)
