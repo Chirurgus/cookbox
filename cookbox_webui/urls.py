@@ -1,7 +1,13 @@
 from django.urls import path, reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import RecipeList, RecipeDetail, RecipeNew, RecipeDelete
+from .views import (
+    RecipeList,
+    RecipeDetail,
+    RecipeNew,
+    RecipeDelete,
+    recipe_random
+)
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name= 'login.html'), name='login'),
@@ -10,4 +16,5 @@ urlpatterns = [
     path('<int:pk>/', RecipeDetail.as_view(), name= 'recipe-edit'),
     path('create/', RecipeNew.as_view(), name= 'recipe-create'),
     path('delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
+    path('random/', recipe_random, name= 'recipe-random'),
 ]

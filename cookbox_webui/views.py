@@ -1,3 +1,5 @@
+import random
+
 from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -77,3 +79,9 @@ class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
     template_name = 'recipe_delete.html'
+
+def recipe_random(request):
+    ids = Recipe.objects.values_list('id', flat= True)
+    rand_id = random.choice(ids)
+    return HttpResponseRedirect(reverse('recipe-edit',kwargs= {'pk': rand_id}))
+
