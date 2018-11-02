@@ -1,5 +1,5 @@
 :root {
-    --background-color: Green;
+    --main-color: #14a350;
     --highlight-color: #1f6d3f;
     --main-font-size: 20px;
     --main-padding: 15px; 
@@ -24,7 +24,7 @@ nav {
     margin-right: 0em;
     margin-left: 0em;
 
-    background-color: #14a350;
+    background-color: var(--main-color);
 
     overflow: hidden;
 }
@@ -40,9 +40,8 @@ nav a {
 
     text-decoration: none;
 }
-
 nav a:hover {
-    background-color: #144629;
+    background-color: var(--highlight-color);
 }
 
 #logo {
@@ -57,11 +56,28 @@ nav a:hover {
     margin-top: -1em;
 }
 button {
-    background-color: #4CAF50; /* Green */
+    background-color: var(--main-color); /* Green */
     border: none;
-    color: white;
-    padding: 0.5em 2em;
+    padding: 1em 2em;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    margin: 2em 2em 1em 1em
+}
+ul {
+    list-style: none;
+}
+ul li {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+ul li:nth-child(odd) {
+    background: lightgrey;
+}
+ul li a {
+    float: right;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+input {
+    border: 0.001em solid;
 }
