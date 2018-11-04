@@ -78,6 +78,33 @@ ul li a {
     margin-left: 1em;
     margin-right: 1em;
 }
+label {
+    display: block;
+    padding-bottom: 0.5em;
+}
 input {
-    border: 0.001em solid;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 20em; 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 6px 8px;
+    min-height: 2em;
+    border: 0.1em solid #ccc;
+    border-radius: 4px;
+    text-rendering: auto;
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+}
+input[type=number] {
+    max-width: 5em;
+}
+input[type=text] {
+    max-width: 256em;
 }
