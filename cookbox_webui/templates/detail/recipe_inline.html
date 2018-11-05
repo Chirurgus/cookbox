@@ -16,7 +16,7 @@
         {% include 'detail/inline_table_row.html' with form=inline.empty_form %}
     </tbody>
 </table>
-<input type="button" value="Add more" id="{{ inline.prefix }}_add_more">
+<button type="button" id="{{ inline.prefix }}_add_more">Add more</button>
 <script>
     $('#{{ inline.prefix }}_add_more').click(function() {
         add_form('{{ inline.prefix }}');

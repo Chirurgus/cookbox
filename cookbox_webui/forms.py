@@ -21,7 +21,7 @@ class RecipeForm(ModelForm):
 class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
-        fields = ['name', 'position']
+        fields = ['position', 'name']
 
 class IngredientForm(ModelForm):
     class Meta:
