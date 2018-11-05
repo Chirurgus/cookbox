@@ -12,10 +12,20 @@
     }
     });
     add_form = function(prefix) {
+        // Get the id of the new form
         var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
-        var new_form = $('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx)
-        $('#' + prefix + '_form_set').append(new_form.replace(/__nested_prefix__/g, '__prefix__'));
+        // Generate the html for the new form from empty_form
+        var new_form_html = $('#' + prefix + '_empty_form').html().replace(/__prefix__/g, form_idx);
+        new_form_html = new_form_html.replace(/__nested_prefix__/g, '__prefix__');
+        // Generate the new form
+        var new_form = jQuery(new_form_html);
+        // Append new form to the form set
+        new_form.appendTo('#' + prefix + '_form_set');
+        // Increment TOTAL_FORMS counter
         $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+        // Add default value for the position
+        new_form.find("input[id$='position']").val(form_idx)
     }
 </script>
 {% endblock %}
@@ -33,11 +43,13 @@
    
     {% for key,inline in form.forms.items %}
         <h1>{{ key }}</h1>
+        <div>
         {% if key == 'recipe_form' %}
             {{ inline.as_p }}
         {% else %}
             {% include 'detail/recipe_inline.html' with inline=inline %}
         {% endif %}
+        </div>
     {% endfor %}
     <input type="submit" value="Save">
 </form>
