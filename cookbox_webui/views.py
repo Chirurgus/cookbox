@@ -25,7 +25,7 @@ class RecipeList(BaseLoginRequiredMixin, View):
                       {'recipes' : queryset })
 
 class RecipeNew(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_detail.html'
+    template_name = 'recipe_edit.html'
 
     def get(self, request):
         recipe_form = RecipeCompleteForm()
@@ -49,7 +49,7 @@ class RecipeNew(BaseLoginRequiredMixin, View):
                             'new'  : True  })
 
 class RecipeDetail(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_detail.html'
+    template_name = 'recipe_edit.html'
 
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
