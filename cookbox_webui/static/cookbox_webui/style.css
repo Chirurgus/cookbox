@@ -43,7 +43,9 @@ nav a {
 nav a:hover {
     background-color: var(--highlight-color);
 }
-
+h1 {
+    font-size: 2em;
+}
 #logo {
     /*font*/
     font-family: 'Hind', sans-serif;
@@ -82,29 +84,32 @@ label {
     display: block;
     padding-bottom: 0.5em;
 }
-input {
-    flex: 1 1 auto;
-    width: 100%;
+input, textarea {
+    width: 50em;
     max-width: 20em; 
+    height: 2.20em;
     box-sizing: border-box;
     margin: 0;
     padding: 6px 8px;
-    min-height: 2em;
+    min-height: 2.2em;
     border: 0.1em solid #ccc;
     border-radius: 4px;
-    text-rendering: auto;
-    color: initial;
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-transform: none;
     text-indent: 0px;
-    text-shadow: none;
     display: inline-block;
-    text-align: start;
 }
 input[type=number] {
     max-width: 5em;
 }
-input[type=text] {
-    max-width: 256em;
+table {
+    width: 100%;
+    background: lightgrey;
+}
+table table {
+    background: grey;
+}
+.errorlist li {
+    width: 100%;
+    font-size: 50%;
+    color: red;
+    margin: 0 0 0 0;
 }
