@@ -1,4 +1,5 @@
-from django.forms import ModelForm, inlineformset_factory 
+from django.forms import ModelForm, inlineformset_factory, Textarea
+
 
 from cookbox_core.models import (
     Recipe,
@@ -17,21 +18,48 @@ class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
         fields = ['name', 'description', 'unit_time', 'total_time', 'preparation_time', 'cook_time', 'unit_yield', 'total_yield', 'serving_size', 'source']
+        labels = {
+            'name': 'Recipe name',
+            'unit_time': 'Time measurement unit',
+            'unit_yield': 'Yield measurement unit',
+        }
+        widgets = {
+            'description': Textarea(attrs={}),
+        }
+    
 
 class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
         fields = ['position', 'name']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['position'].widget.attrs.update(tabindex=-1)
+
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
         fields = ['position', 'unit', 'quantity', 'description', 'usda_code']
+        widgets = {
+            'description': Textarea(attrs={}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['position'].widget.attrs.update(tabindex=-1)
 
 class InstructionForm(ModelForm):
     class Meta:
         model = Instruction
         fields = ['position', 'instruction']
+        widgets = {
+            'instruction': Textarea(attrs={}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['position'].widget.attrs.update(tabindex=-1)
 
 class TagForm(ModelForm):
     class Meta:
