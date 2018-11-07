@@ -5,8 +5,12 @@
 {% if form.visible_fields %}
     <tr>
         {% for field in form.visible_fields %}
+            {% if field.name == 'DELETE' %}
             <td>
-                {# Hidden fields #}
+            {% else %}
+            <td>
+            {% endif %}
+            {# Hidden fields #}
                 {% if forloop.first %}
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
