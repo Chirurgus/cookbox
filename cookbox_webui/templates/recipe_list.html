@@ -8,7 +8,7 @@
             {{ recipe.name }}
             <a href="{% url 'recipe-delete' recipe.pk %}">delete</a>
             <a href="{% url 'recipe-edit' recipe.pk %}">edit</a>
-            <a href="{% url 'recipe-edit' recipe.pk %}">view</a>
+            <a href="{% url 'recipe-detail' recipe.pk %}">view</a>
         </li>
     {% endfor %}
 </ul>

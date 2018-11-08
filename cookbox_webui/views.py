@@ -24,6 +24,16 @@ class RecipeList(BaseLoginRequiredMixin, View):
                       self.template_name,
                       {'recipes' : queryset })
 
+class RecipeDetail(BaseLoginRequiredMixin, View):
+    template_name = 'recipe_detail.html'
+
+    def get(self, request, pk):
+        recipe = get_object_or_404(Recipe, pk=pk)
+
+        return render(request,
+                      self.template_name,
+                      { 'recipe' : recipe })
+
 class RecipeNew(BaseLoginRequiredMixin, View):
     template_name = 'recipe_edit.html'
 
@@ -48,7 +58,7 @@ class RecipeNew(BaseLoginRequiredMixin, View):
                           { 'form' : recipe_form,
                             'new'  : True  })
 
-class RecipeDetail(BaseLoginRequiredMixin, View):
+class RecipeEdit(BaseLoginRequiredMixin, View):
     template_name = 'recipe_edit.html'
 
     def get(self, request, pk):
