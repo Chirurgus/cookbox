@@ -28,6 +28,7 @@ class RecipeForm(ModelForm):
         widgets = {
             'name': Textarea(attrs={}),
             'description': Textarea(attrs={}),
+            'source': Textarea(attrs={}),
         }
     
 
@@ -72,6 +73,9 @@ class TagForm(ModelForm):
 class NoteForm(ModelForm):
     class Meta:
         fields = ['text']
+        widgets = {
+            'text': Textarea(attrs={}),
+        }
         abstract = True
 
 class InstructionNoteForm(NoteForm):
