@@ -53,7 +53,7 @@
     {% csrf_token %}
    
     {% for key,inline in form.forms.items %}
-        <h1>{{ key }}</h1>
+        <h1>{{ inline.custom_label }}</h1>
         <div>
         {% if key == 'recipe_form' %}
             {{ inline.as_p }}

@@ -109,6 +109,11 @@ class RecipeCompleteForm():
                       self.INSTRUCTIONS : InstructionFormset(data= data, instance= instance, prefix= 'instructions'),
                       self.NOTES : RecipeNoteFormset(data= data, instance= instance, prefix= 'notes'),
                       self.TAGS : TagFormset(data= data, instance= instance, prefix= 'tags') }
+        self.forms[self.RECIPE_FORM].custom_label = ""
+        self.forms[self.INGREDIENT_GROUPS].custom_label = "Ingredients"
+        self.forms[self.INSTRUCTIONS].custom_label = "Instructions"
+        self.forms[self.NOTES].custom_label = "Notes"
+        self.forms[self.TAGS].custom_label = "Tags"
 
     # Inserts a new recipe instance in the database
     def create(self):
