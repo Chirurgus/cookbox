@@ -24,6 +24,7 @@ class RecipeForm(ModelForm):
             'unit_yield': 'Yield measurement unit',
         }
         widgets = {
+            'name': Textarea(attrs={}),
             'description': Textarea(attrs={}),
         }
     
