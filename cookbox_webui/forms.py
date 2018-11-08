@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.forms import ModelForm, inlineformset_factory, Textarea
 
 
@@ -104,11 +106,14 @@ class RecipeCompleteForm():
     TAGS = 'tag_forms'
 
     def __init__(self, data=None, instance=None, *args, **kwargs):
-        self.forms = {self.RECIPE_FORM : RecipeForm(data= data, instance= instance),
-                      self.INGREDIENT_GROUPS : IngredientGroupFormset(data= data, instance= instance, prefix= 'ingredient_groups'),
-                      self.INSTRUCTIONS : InstructionFormset(data= data, instance= instance, prefix= 'instructions'),
-                      self.NOTES : RecipeNoteFormset(data= data, instance= instance, prefix= 'notes'),
-                      self.TAGS : TagFormset(data= data, instance= instance, prefix= 'tags') }
+        self.forms = OrderedDict()
+        self.forms[self.RECIPE_FORM] = RecipeForm(data= data, instance= instance)
+        self.forms[self.INGREDIENT_GROUPS] = IngredientGroupFormset(data= data, instance= instance, prefix= 'ingredient_groups')
+        self.forms[self.INSTRUCTIONS] = InstructionFormset(data= data, instance= instance, prefix= 'instructions')
+        self.forms[self.NOTES] = RecipeNoteFormset(data= data, instance= instance, prefix= 'notes')
+        self.forms[self.TAGS] = TagFormset(data= data, instance= instance, prefix= 'tags')
+
+        # Create a human readable label
         self.forms[self.RECIPE_FORM].custom_label = ""
         self.forms[self.INGREDIENT_GROUPS].custom_label = "Ingredients"
         self.forms[self.INSTRUCTIONS].custom_label = "Instructions"
