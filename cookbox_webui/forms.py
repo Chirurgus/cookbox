@@ -36,7 +36,9 @@ class IngredientGroupForm(BaseNestedModelForm):
     class Meta:
         model = IngredientGroup
         fields = ['position', 'name']
-
+        widgets = {
+            'name': Textarea(attrs={}),
+        }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)

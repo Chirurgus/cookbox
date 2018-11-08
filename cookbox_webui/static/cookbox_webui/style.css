@@ -108,12 +108,11 @@ table {
     width: 100%;
     background: lightgrey;
     border-radius: 0.5em;
-    margin: 0em 1em 0em 1em;
+    padding: 0em 1em 0em 1em;
 }
 table table {
     background: grey;
     border-radius: 0.5em;
-    margin: 0em 0.5em 0em 0.5em;
 }
 .errorlist li {
     width: 100%;
