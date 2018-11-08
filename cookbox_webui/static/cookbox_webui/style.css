@@ -107,9 +107,20 @@ input[type=text] {
 table {
     width: 100%;
     background: lightgrey;
+    border-radius: 0.5em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    margin-left: 1em;
+    margin-right: 1em;
 }
 table table {
     background: grey;
+    border-radius: 0.5em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+
 }
 .errorlist li {
     width: 100%;
