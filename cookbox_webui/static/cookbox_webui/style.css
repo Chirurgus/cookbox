@@ -80,6 +80,9 @@ ul li a {
     margin-left: 1em;
     margin-right: 1em;
 }
+ul ul li:nth-child(odd) {
+    background: none;
+}
 label {
     display: block;
     padding-bottom: 0.5em;

@@ -10,11 +10,7 @@
         return true;
     };
 
-    // If user presses submit, don't ask for confirmation before unloading the page.
-    $('#submit_edits').click(function(e) {
-        // Remove navigation prompt.
-        window.onbeforeunload = null;
-    });
+    
 
     // Prevent ENTER key from submitting the form.
     $(document).on("keypress", 'form', function (e) {
@@ -64,6 +60,6 @@
         {% endif %}
         </div>
     {% endfor %}
-    <button id="submit_edits" type="submit">Save</button>
+    <button type="submit">Save</button>
 </form>
 {% endblock %}

@@ -93,5 +93,4 @@ class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
 def recipe_random(request):
     ids = Recipe.objects.values_list('id', flat= True)
     rand_id = random.choice(ids)
-    return HttpResponseRedirect(reverse('recipe-edit',kwargs= {'pk': rand_id}))
-
+    return HttpResponseRedirect(reverse('recipe-detail',kwargs= {'pk': rand_id}))

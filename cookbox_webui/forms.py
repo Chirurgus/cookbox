@@ -46,7 +46,7 @@ class IngredientGroupForm(BaseNestedModelForm):
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        fields = ['position', 'unit', 'quantity', 'description', 'usda_code']
+        fields = ['position', 'quantity', 'unit', 'description', 'usda_code']
         widgets = {
             'description': Textarea(attrs={}),
         }
@@ -121,7 +121,7 @@ class RecipeCompleteForm():
 
         # Create a human readable label
         self.forms[self.RECIPE_FORM].custom_label = ""
-        self.forms[self.INGREDIENT_GROUPS].custom_label = "Ingredients"
+        self.forms[self.INGREDIENT_GROUPS].custom_label = "Ingredient groups"
         self.forms[self.INSTRUCTIONS].custom_label = "Instructions"
         self.forms[self.NOTES].custom_label = "Notes"
         self.forms[self.TAGS].custom_label = "Tags"
