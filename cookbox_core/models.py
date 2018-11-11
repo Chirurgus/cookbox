@@ -39,7 +39,7 @@ class IngredientGroup(models.Model):
 
 class Ingredient(models.Model):
     group = models.ForeignKey(IngredientGroup, on_delete=models.CASCADE, related_name= "ingredients")
-    unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN)
+    unit = models.CharField(max_length=CHAR_FIELD_MAX_LEN, blank=True)
     quantity = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
     usda_code = models.PositiveIntegerField(null= True, blank= True)
