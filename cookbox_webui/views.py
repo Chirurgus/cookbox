@@ -6,7 +6,11 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from recipe_scrapers import WebsiteNotImplementedError
+
 from cookbox_core.models import Recipe
+
+from .scrape import scrape
 
 from .forms import RecipeCompleteForm
 
@@ -57,6 +61,35 @@ class RecipeNew(BaseLoginRequiredMixin, View):
                           self.template_name,
                           { 'form' : recipe_form,
                             'new'  : True  })
+
+class RecipeImport(BaseLoginRequiredMixin, View):
+    template_name = 'recipe_import.html'
+
+    submit_button_name = 'import-url'
+
+    def get(self, request):
+        return render(request,
+                      self.template_name,
+                      {'submit_button_name' : self.submit_button_name})
+
+    def post(self, request):
+        import_url = request.POST.get(self.submit_button_name, None)
+        try:
+            recipe = scrape(import_url)
+            return HttpResponseRedirect(
+                reverse('recipe-edit',
+                        kwargs= { 'pk': recipe.id }))
+
+        except WebsiteNotImplementedError:
+            return render(request,
+                      self.template_name,
+                      {'submit_button_name' : self.submit_button_name,
+                       'error'              : 'This domain is not supported' })
+
+            
+
+
+
 
 class RecipeEdit(BaseLoginRequiredMixin, View):
     template_name = 'recipe_edit.html'

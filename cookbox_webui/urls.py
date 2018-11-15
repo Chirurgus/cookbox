@@ -7,6 +7,7 @@ from .views import (
     RecipeEdit,
     RecipeNew,
     RecipeDelete,
+    RecipeImport,
     recipe_random
 )
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page= reverse_lazy('login')), name='logout'),
     path('', RecipeList.as_view(), name= 'recipe-list'),
     path('<int:pk>/', RecipeDetail.as_view(), name= 'recipe-detail'),
+    path('import/', RecipeImport.as_view(), name= 'recipe-import'),
     path('edit/<int:pk>/', RecipeEdit.as_view(), name= 'recipe-edit'),
     path('create/', RecipeNew.as_view(), name= 'recipe-create'),
     path('delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
