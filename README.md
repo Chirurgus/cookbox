@@ -114,7 +114,4 @@ You can either use Sqlite or MySQL, the latter is prefered in production. To do 
 # Road map
 
 1) REST Server
-2) Web UI for the REST Server (This will be the MVP)
 3) Native Android client
-4) Native Windows client
-5) More features ...
