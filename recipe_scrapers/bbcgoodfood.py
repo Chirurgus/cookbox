@@ -1,5 +1,5 @@
 from ._abstract import AbstractScraper
-from ._utils import get_minutes, normalize_string, parse_ingredients
+from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
 
 class BBCGoodFood(AbstractScraper):
@@ -63,9 +63,10 @@ class BBCGoodFood(AbstractScraper):
             {'id': 'recipe-method'}
         ).findAll('li')
 
-        instructions_string = [
+        return normalize_instructions(
+            [
             normalize_string(instruction.get_text())
             for instruction in instructions
-        ]
+            ]
+        )
 
-        return instructions_string

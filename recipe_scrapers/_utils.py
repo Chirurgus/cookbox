@@ -50,6 +50,15 @@ def parse_ingredients(ing_str):
             ingredients.append( (q, ' '.join([qty, desc])) )
     return ingredients
 
+def normalize_instructions(instructions):
+    ret = []
+
+    for string in instructions:
+        ret += string.split('.')
+
+    return [instruction for instruction in ret if instruction != '']
+    
+
 
 def on_exception_return(to_return):
     """

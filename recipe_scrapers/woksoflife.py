@@ -1,5 +1,5 @@
 from ._abstract import AbstractScraper
-from ._utils import get_minutes, normalize_string, parse_ingredients
+from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
 
 class WoksOfLife(AbstractScraper):
@@ -88,10 +88,10 @@ class WoksOfLife(AbstractScraper):
             {'itemprop': 'recipeInstructions'}
         )
 
-        instructions_string = [
-            normalize_string(instruction.get_text()).split('.')
+        return normalize_instructions(
+            [
+            normalize_string(instruction.get_text())
             for instruction in instructions
-        ]
-
-        return [item for sublist in instructions_string for item in sublist if item != '']
+            ]
+        )
 

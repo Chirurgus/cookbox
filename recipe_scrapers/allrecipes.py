@@ -1,5 +1,5 @@
 from ._abstract import AbstractScraper
-from ._utils import get_minutes, normalize_string, parse_ingredients
+from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
 class AllRecipes(AbstractScraper):
 
@@ -54,7 +54,9 @@ class AllRecipes(AbstractScraper):
             {'class': 'recipe-directions__list--item'}
         )
 
-        return [
+        return normalize_instructions(
+            [
             normalize_string(instruction.get_text())
             for instruction in instructions
-        ]
+            ]
+        )
