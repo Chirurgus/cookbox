@@ -1,46 +1,64 @@
-from .models import *
 from rest_framework import serializers
 
-class RecipeNoteSerializer(serializers.ModelSerializer):
+from cookbox_core.models import (
+    Recipe,
+    IngredientGroup,
+    Ingredient,
+    Instruction,
+    Note,
+    RecipeNote,
+    IngredientNote,
+    InstructionNote,
+    Tag,
+)
+
+'''
+Ordering in the serializers is implicit, 
+relying on the ordering of JSON arrays.
+'''
+
+class NoteSerializer(serializers.ModelSerializer):
     class Meta:
+        abstract = True
+        fields = ('image', 'text',)
+
+class RecipeNoteSerializer(NoteSerializer):
+    class Meta(NoteSerializer.Meta):
         model = RecipeNote
-        exclude = ('id','recipe',)
 
-class IngredientNoteSerializer(serializers.ModelSerializer):
-    class Meta:
+class IngredientNoteSerializer(NoteSerializer):
+    class Meta(NoteSerializer.Meta):
         model = IngredientNote
-        exclude = ('id','ingredient',)
 
-class InstructionNoteSerializer(serializers.ModelSerializer):
-    class Meta:
+class InstructionNoteSerializer(NoteSerializer):
+    class Meta(NoteSerializer.Meta):
         model = InstructionNote
-        exclude = ('id','instruction',)
 
 class IngredientSerializer(serializers.ModelSerializer):
     notes = IngredientNoteSerializer(many= True)
 
     class Meta:
         model = Ingredient
-        exclude = ('id',)
+        fields = ('quantity', 'unit', 'description', 'usda_code', 'notes',)
 
 class IngredientGroupSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many= True)
 
     class Meta:
         model = IngredientGroup
-        exclude = ('recipe',)
+        fields = ('name', 'ingredients',)
 
 class InstructionSerializer(serializers.ModelSerializer):
     notes = InstructionNoteSerializer(many= True)
 
     class Meta:
         model = Instruction
-        exclude = ('id', 'recipe',)
+        fields = ('instruction', 'notes',)
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        exclude = ('id', 'recipe',)
+        fields = ('name',)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -51,4 +69,4 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = '__all__'
+        fields = ('id', 'name', 'description', 'unit_time', 'total_time', 'preparation_time', 'cook_time', 'unit_yield', 'serving_size', 'source', 'last_modified','ingredient_groups', 'instructions', 'notes', 'tags',)

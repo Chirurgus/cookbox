@@ -2,7 +2,6 @@ from collections import OrderedDict
 
 from django.forms import ModelForm, inlineformset_factory, Textarea
 
-
 from cookbox_core.models import (
     Recipe,
     IngredientGroup,

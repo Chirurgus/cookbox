@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from rest_framework import viewsets
+
 from cookbox_core.models import Recipe
 
 from .serializers import RecipeSerializer
