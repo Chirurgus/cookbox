@@ -51,7 +51,7 @@ SECRET_KEY = load_or_generate_secret_key()
 DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
 
 # SECURITY WARNING: remove localhost for production
-ALLOWED_HOSTS = ['localhost'] if DEBUG else [ read_secret('HOST') ]
+ALLOWED_HOSTS = ['localhost', '10.0.2.2'] if DEBUG else [ read_secret('HOST') ]
 
 #SECURE_SSL_REDIRECT = not DEBUG 
 
