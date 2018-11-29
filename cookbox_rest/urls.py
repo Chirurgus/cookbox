@@ -1,13 +1,12 @@
 from django.urls import include, path
 
-from rest_framework import routers
+from cookbox_rest.views import (
+    RecipeListAPIView,
+    RecipeDetailAPIView
+)
 
-from .views import RecipeViewSet
-
-router = routers.DefaultRouter()
-router.register('recipes', RecipeViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('recipes/', RecipeListAPIView.as_view()),
+    path('recipes/<int:pk>/', RecipeDetailAPIView.as_view()),
 ]
