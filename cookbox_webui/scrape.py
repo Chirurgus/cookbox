@@ -1,6 +1,6 @@
 from recipe_scrapers import scrape_me
 
-from cookbox_core.models import *
+from cookbox_core.models import Recipe
 
 
 def scrape(url):
