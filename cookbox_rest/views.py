@@ -21,6 +21,8 @@ def api_root(request, format=None):
 class RecipeListAPIView(APIView):
     '''
     API endpoint that shows a list of recipes, and handles createion of new recipes
+    Handles a field argument that allows to return only a subset of fields of a recipe
+    For example /id/?fields=id,name will return only the the id and the name.
     '''
     serializer_class = RecipeSerializer
 
@@ -42,6 +44,8 @@ class RecipeListAPIView(APIView):
 class RecipeDetailAPIView(APIView):
     ''' 
     API endpoint that allows for CURD operations on individual recipes
+    Handles a field argument that allows to return only a subset of fields of a recipe
+    For example /id/?fields=id,name will return only the the id and the name.
     '''
     serializer_class = RecipeSerializer
 
