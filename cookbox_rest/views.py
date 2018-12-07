@@ -48,8 +48,11 @@ class RecipeDetailAPIView(APIView):
         except Recipe.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, fields=None, format=None):
+    def get(self, request, pk, format=None):
         recipe = self.get_object(pk)
+        fields = request.GET.get('fields', None)
+        if fields is not None:
+            fields = fields.split(',')
         serializer = self.serializer_class(recipe, fields=fields)
         return Response(serializer.data)
 
