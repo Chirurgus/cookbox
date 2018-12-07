@@ -26,7 +26,10 @@ class RecipeListAPIView(APIView):
 
     def get(self, request, format=None):
         recipes = Recipe.objects.all()
-        serializer = self.serializer_class(recipes, many=True)
+        fields = request.GET.get('fields', None)
+        if fields is not None:
+            fields = fields.split(',')
+        serializer = self.serializer_class(recipes, fields= fields, many=True)
         return Response(serializer.data)
     
     def post(self, request, format=None):
