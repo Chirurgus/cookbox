@@ -4,6 +4,7 @@ from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
 from .bbcgoodfood import BBCGoodFood
 from .woksoflife import WoksOfLife
+from .marmiton import Marmiton
 
 
 SCRAPERS = {
@@ -11,6 +12,7 @@ SCRAPERS = {
     BBCFood.host(): BBCFood,
     BBCGoodFood.host(): BBCGoodFood,
     WoksOfLife.host(): WoksOfLife,
+    Marmiton.host(): Marmiton,
 }
 
 
