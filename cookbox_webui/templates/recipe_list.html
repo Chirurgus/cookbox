@@ -1,21 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Recipes</h1>
-<ul>
-    {% for recipe in recipes %}
-        <li>
-            {{ recipe.name }}
-            <a href="{% url 'recipe-delete' recipe.pk %}">delete</a>
-            <a href="{% url 'recipe-edit' recipe.pk %}">edit</a>
-            <a href="{% url 'recipe-detail' recipe.pk %}">view</a>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'recipe-create' %}">
-    Add new recipe
-</a>
-<a href="{% url 'recipe-import' %}">
-    Import a recipe
-</a>
+
+    <div class="sidebar">
+        {# Filter form #}
+        <form action="" method="get">
+            {{ filter.form.as_p }}
+            <input type="submit"/>
+        </form>
+    </div>
+
+    <div class="recipe-list">
+        <h1>Recipes</h1>
+
+        {# Add/Import recipe buttons #}
+        <a href="{% url 'recipe-create' %}">
+            Add new recipe
+        </a>
+        <a href="{% url 'recipe-import' %}">
+            Import a recipe
+        </a>
+        
+        {# Recipe list #}
+        <ul>
+            {% for recipe in filter.qs %}
+                <li>
+                    {{ recipe.name }}
+                    <a href="{% url 'recipe-delete' recipe.pk %}">delete</a>
+                    <a href="{% url 'recipe-edit' recipe.pk %}">edit</a>
+                    <a href="{% url 'recipe-detail' recipe.pk %}">view</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

@@ -14,6 +14,8 @@ from .scrape import scrape
 
 from .forms import RecipeCompleteForm
 
+from .filters import RecipeFilter
+
 
 class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
@@ -22,11 +24,10 @@ class RecipeList(BaseLoginRequiredMixin, View):
     template_name = 'recipe_list.html'
 
     def get(self, request):
-        queryset = Recipe.objects.all()
-
+        filter = RecipeFilter(request.GET, queryset=Recipe.objects.all())
         return render(request,
                       self.template_name,
-                      {'recipes' : queryset })
+                      {'filter' : filter })
 
 class RecipeDetail(BaseLoginRequiredMixin, View):
     template_name = 'recipe_detail.html'

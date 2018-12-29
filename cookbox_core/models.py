@@ -60,6 +60,9 @@ class Tag(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="tags")
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "")
 
+    def __str__(self):
+        return self.name
+
 class Note(models.Model):
     image = models.ImageField(null=True, blank= True)
     text = models.CharField(max_length=CHAR_FIELD_MAX_LEN, default= "", null=True, blank= True)
