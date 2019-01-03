@@ -1,36 +1,30 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block aside-left %}
+{# Filter form #}
+<form action="" method="get">
+    {{ filter.form.as_p }}
+    <input type="submit"/>
+</form>
+{% endblock %}
 
-    <div class="sidebar">
-        {# Filter form #}
-        <form action="" method="get">
-            {{ filter.form.as_p }}
-            <input type="submit"/>
-        </form>
-    </div>
+{% block  content %}
+<div style="width: 100%">
+    <h1>Recipes</h1>
 
-    <div class="recipe-list">
-        <h1>Recipes</h1>
+    {# Add/Import recipe buttons #}
+    <a href="{% url 'recipe-create' %}">
+        Add new recipe
+    </a>
+    <a href="{% url 'recipe-import' %}">
+        Import a recipe
+    </a>
+</div>
 
-        {# Add/Import recipe buttons #}
-        <a href="{% url 'recipe-create' %}">
-            Add new recipe
-        </a>
-        <a href="{% url 'recipe-import' %}">
-            Import a recipe
-        </a>
-        
-        {# Recipe list #}
-        <ul>
-            {% for recipe in filter.qs %}
-                <li>
-                    {{ recipe.name }}
-                    <a href="{% url 'recipe-delete' recipe.pk %}">delete</a>
-                    <a href="{% url 'recipe-edit' recipe.pk %}">edit</a>
-                    <a href="{% url 'recipe-detail' recipe.pk %}">view</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+{# Recipe list #}
+{% for recipe in filter.qs %}
+<a class="recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
+    {{ recipe.name }}
+</a>
+{% endfor %}
 {% endblock %}
