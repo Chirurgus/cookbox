@@ -60,7 +60,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ('quantity', 'unit', 'description', 'usda_code', 'notes',)
+        fields = ('quantity', 'unit', 'description', 'notes',)
 
 class IngredientGroupSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many= True)

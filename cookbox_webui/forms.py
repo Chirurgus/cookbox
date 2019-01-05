@@ -45,7 +45,7 @@ class IngredientGroupForm(BaseNestedModelForm):
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        fields = ['position', 'quantity', 'unit', 'description', 'usda_code']
+        fields = ['position', 'quantity', 'unit', 'description']
         widgets = {
             'description': Textarea(attrs={}),
         }

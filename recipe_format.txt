@@ -11,7 +11,7 @@ recipe => id, name, description, last_modified, time, yield, source?, ingredient
 time => unit, total_time, preparation_time?, cook_time?
 yield => unit, total_yield, serving_size?
 ingredient_group => group_name?, ingredient, ingredient*
-ingredient => unit, quantity, description, code?, note* # code could be the usda code for this ingredient
+ingredient => unit, quantity, description, note*
 instruction => text_instruction, note*
 note => (image | text)
 
