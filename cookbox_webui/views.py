@@ -112,7 +112,9 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('recipe-list'))
+            return HttpResponseRedirect(
+                reverse('recipe-detail',
+                        kwargs= {'pk': pk}))
         else:
             return render(request,
                           self.template_name,
