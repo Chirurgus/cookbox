@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block  content %}
-<div style="width: 100%">
+<div class="fill-width">
     <h1>Recipes</h1>
 
     {# Add/Import recipe buttons #}
@@ -23,7 +23,7 @@
 
 {# Recipe list #}
 {% for recipe in filter.qs %}
-<a class="recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
+<a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
     {{ recipe.name }}
 </a>
 {% endfor %}

@@ -10,8 +10,6 @@
         return true;
     };
 
-    
-
     // Prevent ENTER key from submitting the form.
     $(document).on("keypress", 'form', function (e) {
     var code = e.keyCode || e.which;
@@ -20,6 +18,7 @@
         return false;
     }
     });
+
     add_form = function(prefix) {
         // Get the id of the new form
         var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
@@ -45,6 +44,7 @@
     <h1>New Recipe</h1>
 {% else %}
     <h1>{{ recipe.name }}</h1>
+    <a href="{% url 'recipe-delete' recipe.id %}">Delete</a>
 {% endif %}
 {# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
 <form method="POST">

@@ -1,6 +1,8 @@
-<a id="logo" href="{% url 'recipe-list' %}">Cookbox</a>
-{% if user.is_authenticated %}
-<a href="{% url 'recipe-list' %}">Recipes</a>
-<a href="{% url 'recipe-random' %}">Random</a>
-<a href="{% url 'logout' %}" style="float: right">Logged in as: {{ user }} Logout</a>
-{% endif %}
+<nav>
+    <a id="logo" href="{% url 'recipe-list' %}">Cookbox</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'recipe-list' %}">Recipes</a>
+    <a href="{% url 'recipe-random' %}">Random</a>
+    <a href="{% url 'logout' %}" style="float: right">Logged in as: {{ user }} Logout</a>
+    {% endif %}
+</nav>

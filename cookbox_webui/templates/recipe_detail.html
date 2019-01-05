@@ -2,49 +2,62 @@
 
 
 {% block content %}
+<div class="fill-width">
+    <h1>{{ recipe.name }}</h1>
+    <a href="{% url 'recipe-edit' recipe.id %}">Edit</a>
+    <p>{{ recipe.description }}</p>
+</div>
 
-<h1>{{ recipe.name }}</h1>
-<p>{{ recipe.description }}</p>
-<p>Total time: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
-<p>Preparation time: {{ recipe.prep_time }} {{ recipe.unit_time }}</p>
-<p>Cook time: {{ recipe.cook_time }} {{ recipe.unit_type }}</p>
-<p>Yield: {{ recipe.total_yield }} {{ recipe.yield_unit }}</p>
-<p>Serving size: {{ recipe.serving_size }} {{ recipe.yield_unit }}</p>
-<p>Source: {{ recipe.source }}</p>
+<div class="fill-width">
+    <p>      Total time: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
+    <p>Preparation time: {{ recipe.prep_time }} {{ recipe.unit_time }}</p>
+    <p>       Cook time: {{ recipe.cook_time }} {{ recipe.unit_type }}</p>
+    <p>           Yield: {{ recipe.total_yield }} {{ recipe.yield_unit }}</p>
+    <p>    Serving size: {{ recipe.serving_size }} {{ recipe.yield_unit }}</p>
+    <p>          Source: {{ recipe.source }}</p>
+</div>
 
-<h1>Ingredient</h1>
-<ul>
-    {% for ingredient_group in recipe.ingredient_groups.all %}
-    <li>
-        {{ ingredient_group.name }}
-        <ul>
-            {% for ingredient in ingredient_group.ingredients.all %}
-                <li>{{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.description }}</li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
+<div>
+    <h1>Ingredients</h1>
+    <ul>
+        {% for ingredient_group in recipe.ingredient_groups.all %}
+        <li>
+            {{ ingredient_group.name }}
+            <ul>
+                {% for ingredient in ingredient_group.ingredients.all %}
+                    <li>{{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.description }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
-<h1>Instructions</h1>
-<ol>
-    {% for instruction in recipe.instructions.all %}
+<div>
+    <h1>Instructions</h1>
+    <ol>
+        {% for instruction in recipe.instructions.all %}
         <li>{{ instruction.instruction }}</li>
-    {% endfor %}
-</ol>
+        {% endfor %}
+    </ol>
+</div>
 
-<h1>Notes</h1>
-<ul>
-    {% for note in recipe.notes.all %}
+<div>
+    <h1>Notes</h1>
+    <ul>
+        {% for note in recipe.notes.all %}
         <li>{{ note.text }}</li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
+</div>
 
-<h1>Tag</h1>
-<ul>
-    {% for tag in recipe.tags.all %}
+<div>
+    <h1>Tags</h1>
+    <ul>
+        {% for tag in recipe.tags.all %}
         <li>{{ tag.name }}</li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
