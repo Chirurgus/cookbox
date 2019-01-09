@@ -20,6 +20,7 @@ class Recipe(models.Model):
     total_yield = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     serving_size = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null = True, blank= True)
     source = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, default= "", blank= True)
+    image = models.ImageField(null=True, blank= True)
     last_modified = models.DateTimeField(auto_now=True)
     # Additional fields from related tables
     # ingredient_groups

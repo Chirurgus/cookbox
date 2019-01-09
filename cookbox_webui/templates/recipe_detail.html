@@ -2,6 +2,12 @@
 
 
 {% block content %}
+{% if recipe.image %}
+<div>
+    <img src="{{ recipe.image.url }}">
+</div>
+{% endif %}
+
 <div class="fill-width">
     <h1>{{ recipe.name }}</h1>
     <a href="{% url 'recipe-edit' recipe.id %}">Edit</a>
@@ -17,7 +23,7 @@
     <p>          Source: {{ recipe.source }}</p>
 </div>
 
-<div>
+<div class="fill-width">
     <h1>Ingredients</h1>
     <ul>
         {% for ingredient_group in recipe.ingredient_groups.all %}
@@ -29,33 +35,41 @@
                 {% endfor %}
             </ul>
         </li>
+        {% empty %}
+        No ingredients, yet.
         {% endfor %}
     </ul>
 </div>
 
-<div>
+<div class="fill-width">
     <h1>Instructions</h1>
     <ol>
         {% for instruction in recipe.instructions.all %}
         <li>{{ instruction.instruction }}</li>
+        {% empty %}
+        No instructions, yet.
         {% endfor %}
     </ol>
 </div>
 
-<div>
+<div class="fill-width">
     <h1>Notes</h1>
     <ul>
         {% for note in recipe.notes.all %}
         <li>{{ note.text }}</li>
+        {% empty %}
+        No notes, yet.
         {% endfor %}
     </ul>
 </div>
 
-<div>
+<div class="fill-width">
     <h1>Tags</h1>
     <ul>
         {% for tag in recipe.tags.all %}
         <li>{{ tag.name }}</li>
+        {% empty %}
+        No tags, yet.
         {% endfor %}
     </ul>
 </div>

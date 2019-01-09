@@ -18,7 +18,7 @@ from .nested_form import BaseNestedModelForm, BaseNestedInnerFormSet, nestedform
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-        fields = ['name', 'description', 'unit_time', 'total_time', 'preparation_time', 'cook_time', 'unit_yield', 'total_yield', 'serving_size', 'source']
+        fields = ['name', 'description', 'unit_time', 'total_time', 'preparation_time', 'cook_time', 'unit_yield', 'total_yield', 'serving_size', 'source', 'image']
         labels = {
             'name': 'Recipe name',
             'unit_time': 'Time measurement unit',
@@ -110,13 +110,13 @@ class RecipeCompleteForm():
     NOTES = 'note_forms'
     TAGS = 'tag_forms'
 
-    def __init__(self, data=None, instance=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.forms = OrderedDict()
-        self.forms[self.RECIPE_FORM] = RecipeForm(data= data, instance= instance)
-        self.forms[self.INGREDIENT_GROUPS] = IngredientGroupFormset(data= data, instance= instance, prefix= 'ingredient_groups')
-        self.forms[self.INSTRUCTIONS] = InstructionFormset(data= data, instance= instance, prefix= 'instructions')
-        self.forms[self.NOTES] = RecipeNoteFormset(data= data, instance= instance, prefix= 'notes')
-        self.forms[self.TAGS] = TagFormset(data= data, instance= instance, prefix= 'tags')
+        self.forms[self.RECIPE_FORM] = RecipeForm(*args, **kwargs)
+        self.forms[self.INGREDIENT_GROUPS] = IngredientGroupFormset(prefix= 'ingredient_groups', *args, **kwargs)
+        self.forms[self.INSTRUCTIONS] = InstructionFormset(prefix= 'instructions', *args, **kwargs)
+        self.forms[self.NOTES] = RecipeNoteFormset(prefix= 'notes', *args, **kwargs)
+        self.forms[self.TAGS] = TagFormset(prefix= 'tags', *args, **kwargs)
 
         # Create a human readable label
         self.forms[self.RECIPE_FORM].custom_label = ""

@@ -87,11 +87,6 @@ class RecipeImport(BaseLoginRequiredMixin, View):
                       {'submit_button_name' : self.submit_button_name,
                        'error'              : 'This domain is not supported' })
 
-            
-
-
-
-
 class RecipeEdit(BaseLoginRequiredMixin, View):
     template_name = 'recipe_edit.html'
 
@@ -108,7 +103,7 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        form = RecipeCompleteForm(data= request.POST, instance= recipe)
+        form = RecipeCompleteForm(data= request.POST, files= request.FILES, instance= recipe)
 
         if form.is_valid():
             form.save()

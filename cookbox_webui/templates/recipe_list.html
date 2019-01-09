@@ -24,7 +24,12 @@
 {# Recipe list #}
 {% for recipe in filter.qs %}
 <a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
-    {{ recipe.name }}
+    {% if recipe.image %}
+    <img src="{{ recipe.image.url }}">
+    {% endif %}
+    <div>
+        <p>{{ recipe.name }}</p>
+    </div>
 </a>
 {% endfor %}
 {% endblock %}
