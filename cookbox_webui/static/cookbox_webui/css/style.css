@@ -77,8 +77,8 @@ main {
     flex-grow: 10;
     flex-shrink: 1;
 
-    padding: 0.5em 0.5em;
-    margin: 0.5em 0.5em;
+    padding: 1em 1em;
+    margin: 1em 1em;
 }
 
 footer {
@@ -106,6 +106,13 @@ nav {
     flex-shrink: 1;
 
     padding: 0em;
+}
+
+/* On small screens, we are no longer using row direction but column */
+@media all and (max-width: 500px) {
+    nav {
+        flex-direction: column;
+    }
 }
 
 p {
