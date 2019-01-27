@@ -24,7 +24,8 @@ class RecipeList(BaseLoginRequiredMixin, View):
     template_name = 'recipe_list.html'
 
     def get(self, request):
-        filter = RecipeFilter(request.GET, queryset=Recipe.objects.all())
+        queryset = Recipe.objects.all().order_by("-last_modified")
+        filter = RecipeFilter(request.GET, queryset=queryset)
         return render(request,
                       self.template_name,
                       {'filter' : filter })
