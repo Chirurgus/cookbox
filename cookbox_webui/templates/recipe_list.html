@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load imagekit %}
+
 {% block aside-left %}
 {# Filter form #}
 <form action="" method="get">
@@ -25,7 +27,8 @@
 {% for recipe in filter.qs %}
 <a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
     {% if recipe.image %}
-    <img src="{{ recipe.image.url }}">
+    {% generateimage 'cookbox_webui:thumbnail_small' source=recipe.image as th %}
+    <img class="fill-width" src="{{ th.url }}">
     {% endif %}
     <div>
         <p>{{ recipe.name }}</p>

@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
+{% load imagekit %}
 
 {% block content %}
 {% if recipe.image %}
-<div>
-    <img src="{{ recipe.image.url }}">
+<div class="fill-width">
+    {% generateimage 'cookbox_webui:thumbnail_large' source=recipe.image as th %}
+    <img src="{{ th.url }}">
 </div>
 {% endif %}
 

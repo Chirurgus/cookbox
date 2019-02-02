@@ -79,4 +79,3 @@ class IngredientNote(Note):
 
 class InstructionNote(Note):
     instruction = models.ForeignKey(Instruction, on_delete=models.CASCADE, related_name="notes")
-

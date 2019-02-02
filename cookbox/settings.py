@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'django_filters',
     'nested_admin',
     'rest_framework',
+    'imagekit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
