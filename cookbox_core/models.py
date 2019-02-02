@@ -64,6 +64,10 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        super(Tag, self).save(*args, **kwargs)
+
 class Note(models.Model):
     image = models.ImageField(null=True, blank= True)
     text = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, default= "", null=True, blank= True)
