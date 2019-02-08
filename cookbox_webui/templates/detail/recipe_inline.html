@@ -18,7 +18,10 @@
 </table>
 <button type="button" id="{{ inline.prefix }}_add_more">Add more</button>
 <script>
+    // Hook up add_form function to the button
     $('#{{ inline.prefix }}_add_more').click(function() {
         add_form('{{ inline.prefix }}');
     });
+    // Enable sorting functionality
+    var sortables = sortable('#{{ inline.prefix }}_form_set')
 </script>
