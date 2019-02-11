@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% load imagekit %}
+
+{% block scripts %}
+<script src={% static 'cookbox_webui/jquery-3.3.1.slim.min.js' %}></script>
+{% endblock %}
 
 {% block content %}
 {% if recipe.image %}
@@ -23,7 +28,34 @@
     <p>           Yield: {{ recipe.total_yield }} {{ recipe.yield_unit }}</p>
     <p>    Serving size: {{ recipe.serving_size }} {{ recipe.yield_unit }}</p>
     <p>          Source: {{ recipe.source }}</p>
+    <p>
+        <label for="id_target_qty">Target quantity:</label>
+        <input type="number" name="target_qty" step="0.01" id="id_target_qty">
+    </p>
 </div>
+<script>
+    // Remember the at what scale ingredients are scaled
+    // This is 1 before any re-scaling
+    var current_scale = 1;
+    $('#id_target_qty').change(function() {
+        const new_scale = $('#id_target_qty').val()/{{ recipe.total_yield }};
+
+        if (new_scale <= 0) {
+            return;
+        }
+
+        $('.ing-qty').each(function(i) {
+            // First un-scale the quantities
+            const original_qty = $(this).text()/current_scale
+            // And re-scale them using the new scale
+            // .toFixed(2) rounds to 2 decimal places
+            $(this).text( (new_scale*original_qty).toFixed(2) );
+        });
+        // Update the scaling
+        current_scale = new_scale;
+    });
+</script>
+
 
 <div class="fill-width">
     <h1>Ingredients</h1>
@@ -33,7 +65,9 @@
             {{ ingredient_group.name }}
             <ul>
                 {% for ingredient in ingredient_group.ingredients.all %}
-                    <li>{{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.description }}</li>
+                    <li>
+                        <span class="ing-qty">{{ ingredient.quantity }}</span> {{ ingredient.unit }} {{ ingredient.description }}
+                    </li>
                 {% endfor %}
             </ul>
         </li>
