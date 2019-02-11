@@ -23,11 +23,19 @@
 
 <div class="fill-width">
     <p>      Total time: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
-    <p>Preparation time: {{ recipe.prep_time }} {{ recipe.unit_time }}</p>
+    {% if recipe.preparation_time %}
+    <p>Preparation time: {{ recipe.preparation_time }} {{ recipe.unit_time }}</p>
+    {% endif %}
+    {% if recipe.cook_time %}
     <p>       Cook time: {{ recipe.cook_time }} {{ recipe.unit_type }}</p>
-    <p>           Yield: {{ recipe.total_yield }} {{ recipe.yield_unit }}</p>
-    <p>    Serving size: {{ recipe.serving_size }} {{ recipe.yield_unit }}</p>
+    {% endif %}
+    <p>           Yield: {{ recipe.total_yield }} {{ recipe.unit_yield }}</p>
+    {% if recipe.serving_size %}
+    <p>    Serving size: {{ recipe.serving_size }} {{ recipe.unit_yield }}</p>
+    {% endif %}
+    {% if recipe.source %}
     <p>          Source: {{ recipe.source }}</p>
+    {% endif %}
     <p>
         <label for="id_target_qty">Target quantity:</label>
         <input type="number" name="target_qty" step="0.01" id="id_target_qty">
