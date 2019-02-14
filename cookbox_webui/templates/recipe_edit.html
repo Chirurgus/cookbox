@@ -38,7 +38,9 @@
     }
 
     make_sortable = function(selector) {
-        var sortables = sortable(selector);
+        var sortables = sortable(selector, {
+            handle: 'h2'
+        });
         // When an item is drag'n'dropped, update the position field automatically
         sortables[0].addEventListener('sortupdate', function(e) {
             $(e.detail.destination.container)
