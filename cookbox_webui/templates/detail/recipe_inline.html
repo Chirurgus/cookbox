@@ -23,5 +23,13 @@
         add_form('{{ inline.prefix }}');
     });
     // Enable sorting functionality
-    var sortables = sortable('#{{ inline.prefix }}_form_set')
+    var sortables = sortable('#{{ inline.prefix }}_form_set');
+    // When an item is drag'n'dropped, update the position field automatically
+    sortables[0].addEventListener('sortupdate', function(e) {
+        $(e.detail.destination.container)
+            .find('[id$=position]')
+            .each(function(index) { 
+                $(this).val(index);
+        });
+    });
 </script>
