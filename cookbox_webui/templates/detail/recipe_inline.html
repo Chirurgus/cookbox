@@ -18,18 +18,13 @@
 </table>
 <button type="button" id="{{ inline.prefix }}_add_more">Add more</button>
 <script>
-    // Hook up add_form function to the button
     $('#{{ inline.prefix }}_add_more').click(function() {
+        // Hook up add_form function to the button
         add_form('{{ inline.prefix }}');
+        // Enable drag'n'drop sort on new fields
+        make_sortable('#{{ inline.prefix }}_form_set');
     });
-    // Enable sorting functionality
-    var sortables = sortable('#{{ inline.prefix }}_form_set');
-    // When an item is drag'n'dropped, update the position field automatically
-    sortables[0].addEventListener('sortupdate', function(e) {
-        $(e.detail.destination.container)
-            .find('[id$=position]')
-            .each(function(index) { 
-                $(this).val(index);
-        });
-    });
+
+    // Enable drag'n'drop sort on existing fields
+    make_sortable('#{{ inline.prefix }}_form_set');
 </script>

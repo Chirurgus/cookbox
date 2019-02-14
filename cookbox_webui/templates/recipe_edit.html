@@ -36,6 +36,18 @@
         // Add default value for the position
         new_form.find("input[id$='position']").val(form_idx)
     }
+
+    make_sortable = function(selector) {
+        var sortables = sortable(selector);
+        // When an item is drag'n'dropped, update the position field automatically
+        sortables[0].addEventListener('sortupdate', function(e) {
+            $(e.detail.destination.container)
+                .find('[id$=position]')
+                .each(function(index) { 
+                    $(this).val(index);
+            });
+        });
+    }
 </script>
 {% endblock %}
 

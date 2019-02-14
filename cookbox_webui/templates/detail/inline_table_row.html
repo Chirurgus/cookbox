@@ -5,8 +5,11 @@
 {% if form.visible_fields %}
     <tr>
         {% for field in form.visible_fields %}
-            {% if field.name == 'DELETE' %}
+            {% if field.name == 'position' %}
             <td>
+                ||
+            </td>
+            <td class="hidden">
             {% else %}
             <td>
             {% endif %}
