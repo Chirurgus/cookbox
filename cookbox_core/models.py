@@ -57,9 +57,17 @@ class Instruction(models.Model):
     class Meta:
         ordering = ['position']
 
+class TagCategory(models.Model):
+    name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, unique= True, blank= False)
+
+    def __str__(self):
+        return self.name
+
 class Tag(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="tags")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="tags", null=True)
+    recipes = models.ManyToManyField(Recipe)
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, default= "")
+    category = models.ForeignKey(TagCategory, on_delete=models.CASCADE, related_name="tags", null=True)
 
     def __str__(self):
         return self.name
