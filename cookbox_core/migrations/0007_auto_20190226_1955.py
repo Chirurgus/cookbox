@@ -10,6 +10,8 @@ def make_tags_unique(apps, schema_editor):
     for tag_name in unique_tag_names:
         # Create one (unique) tag with this name
         new_tag = Tag(name=tag_name)
+        # Save it to get an id
+        new_tag.save()
 
         # Go though all the tags with same name
         for tag in Tag.objects.filter(name=tag_name):
@@ -17,6 +19,7 @@ def make_tags_unique(apps, schema_editor):
             new_tag.recipes.add(tag.recipe)
             # Remove the old tag
             tag.delete()
+
 
 class Migration(migrations.Migration):
 
