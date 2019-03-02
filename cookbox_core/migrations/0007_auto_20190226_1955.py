@@ -2,7 +2,13 @@
 
 from django.db import migrations
 
+from django.core.exceptions import ObjectDoesNotExist
+
 def make_tags_unique(apps, schema_editor):
+    """
+    For every unique tag name creates a new tag,
+    that references all the recipes with that tag name.
+    """
     Tag = apps.get_model("cookbox_core", "Tag")
 
     unique_tag_names = { tag.name for tag in Tag.objects.all() }
@@ -15,8 +21,22 @@ def make_tags_unique(apps, schema_editor):
 
         # Go though all the tags with same name
         for tag in Tag.objects.filter(name=tag_name):
-            # Add the recipes to the new tag
-            new_tag.recipes.add(tag.recipe)
+            # Do not do anything to the new tag
+            if tag.id == new_tag.id:
+                continue
+            
+            # Some tags reference recipes that no longer exist
+            try:
+                # Tags can have null recipe since migration 0006
+                if not tag.recipe is None:
+                    # Add the recipes to the new tag
+                    new_tag.recipes.add(tag.recipe)
+            except ObjectDoesNotExist:
+                # In case of ObjectDoesNotExist warn and do nothing
+                print("Warning: The following tag did not have a recipe associated with it:")
+                print(tag.name)
+                print("This tag is now integrated into a new one.")
+
             # Remove the old tag
             tag.delete()
 

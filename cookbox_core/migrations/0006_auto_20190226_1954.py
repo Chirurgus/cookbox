@@ -28,4 +28,9 @@ class Migration(migrations.Migration):
             name='category',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tags', to='cookbox_core.TagCategory'),
         ),
+        migrations.AlterField(
+            model_name='tag',
+            name='recipe',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tags', to='cookbox_core.Recipe'),
+        ),
     ]
