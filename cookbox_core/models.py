@@ -64,9 +64,8 @@ class TagCategory(models.Model):
         return self.name
 
 class Tag(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="tags", null=True)
-    recipes = models.ManyToManyField(Recipe)
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, default= "")
+    recipes = models.ManyToManyField(Recipe)
     category = models.ForeignKey(TagCategory, on_delete=models.CASCADE, related_name="tags", null=True)
 
     def __str__(self):
