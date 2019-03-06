@@ -1,6 +1,14 @@
 from collections import OrderedDict
 
-from django.forms import ModelForm, inlineformset_factory, Textarea
+from django.forms import (
+    Form,
+    ModelForm,
+    inlineformset_factory,
+    formset_factory,
+    Textarea,
+    CharField,
+    BooleanField
+)
 
 from cookbox_core.models import (
     Recipe,
@@ -10,10 +18,15 @@ from cookbox_core.models import (
     RecipeNote,
     IngredientNote,
     InstructionNote,
-    Tag
+    Tag,
+    CHAR_FIELD_MAX_LEN_SHORT
 )
 
-from .nested_form import BaseNestedModelForm, BaseNestedInnerFormSet, nestedformset_factory
+from .nested_form import (
+    BaseNestedModelForm,
+    BaseNestedInnerFormSet,
+    nestedformset_factory,
+)
 
 class RecipeForm(ModelForm):
     class Meta:
@@ -66,10 +79,37 @@ class InstructionForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
-class TagForm(ModelForm):
-    class Meta:
-        model = Tag
-        fields = ['name']
+class RecipeTagForm(Form):
+    '''
+    Represents a single item in a recipe tag formset.
+    If it is already a tag, it just adds the recipe to it.
+    If not it creates a new tag with this name.
+    '''
+    name = CharField(max_length= CHAR_FIELD_MAX_LEN_SHORT, min_length= 1)
+    delete = BooleanField(required= False, initial= False)
+
+    # Instance of the recipe
+    instance = None
+
+    def __init__(self, *args, instance, **kwargs):
+        super(RecipeTagForm, self).__init__(*args, **kwargs)
+        self.instance = instance
+
+    def save(self, commit= True):
+        if self.cleaned_data['delete']:
+            pass
+        tag_name = self.cleaned_data['name']
+        tags = Tag.objects.filter(name=tag_name)
+        tag = None
+        if len(tags) == 0:
+            tag = Tag(name=tag_name)
+            tag.save()
+        else:
+            tag = tags[0]
+        tag.recipes.add(self.instance)
+    
+    def create(self):
+        self.save()
 
 class NoteForm(ModelForm):
     class Meta:
@@ -97,7 +137,7 @@ class RecipeNoteForm(NoteForm):
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
 IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, formset= BaseNestedInnerFormSet, extra=0)
-TagFormset = inlineformset_factory(Recipe, Tag, form= TagForm, extra= 0)
+RecipeTagFormset = formset_factory(RecipeTagForm, extra= 0)
 RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm, extra= 0)
 IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm, extra= 0)
 InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm, extra= 0)
@@ -116,7 +156,9 @@ class RecipeCompleteForm():
         self.forms[self.INGREDIENT_GROUPS] = IngredientGroupFormset(prefix= 'ingredient_groups', *args, **kwargs)
         self.forms[self.INSTRUCTIONS] = InstructionFormset(prefix= 'instructions', *args, **kwargs)
         self.forms[self.NOTES] = RecipeNoteFormset(prefix= 'notes', *args, **kwargs)
-        self.forms[self.TAGS] = TagFormset(prefix= 'tags', *args, **kwargs)
+        # Pass instance via kwargs for it to be passed to individual forms
+        recipe = kwargs.pop('instance', None)
+        self.forms[self.TAGS] = RecipeTagFormset(prefix= 'tags', form_kwargs= {'instance': recipe}, *args, **kwargs)
 
         # Create a human readable label
         self.forms[self.RECIPE_FORM].custom_label = ""
@@ -128,20 +170,20 @@ class RecipeCompleteForm():
     # Inserts a new recipe instance in the database
     def create(self):
         recipe = self.forms[self.RECIPE_FORM].save()
-        for key,form in self.forms.items():
+        for form in self.forms:
             form.instance = recipe
             form.save()
 
     # Updates an existing recipe instance
     def save(self):
-        for key,form in self.forms.items():
+        for form in self.forms:
             form.save()
 
     # Checks validity of the data in the form
     def is_valid(self):
         valid = True
         recipe = self.forms[self.RECIPE_FORM].save(commit= False)
-        for key, form in self.forms.items():
+        for form in self.forms:
             if not form.instance:
                 form.instance = recipe
             valid = form.is_valid() and valid 

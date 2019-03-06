@@ -42,17 +42,17 @@ class InstructionInline(nested_admin.NestedTabularInline):
     sortable_field_name = "position"
     inlines = [InstructionNoteInline]
 
-class TagInline(nested_admin.NestedTabularInline):
-    model = Tag
-    extra = 0
-
 class RecipeAdmin(nested_admin.NestedModelAdmin):
     model = Recipe
     inlines = [
         IngredientGroupInline,
         InstructionInline,
         RecipeNoteInline,
-        TagInline
-        ]
+    ]
+
+class TagAdmin(nested_admin.NestedModelAdmin):
+    model = Tag
+
 
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(Tag, TagAdmin)
