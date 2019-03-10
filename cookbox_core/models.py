@@ -65,7 +65,7 @@ class TagCategory(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, default= "")
-    recipes = models.ManyToManyField(Recipe)
+    recipes = models.ManyToManyField(Recipe, related_name="tags")
     category = models.ForeignKey(TagCategory, on_delete=models.CASCADE, related_name="tags", null=True)
 
     def __str__(self):
