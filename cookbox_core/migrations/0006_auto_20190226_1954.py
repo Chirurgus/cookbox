@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tag',
             name='recipes',
-            field=models.ManyToManyField(to='cookbox_core.Recipe'),
+            field=models.ManyToManyField(related_name='tags', to='cookbox_core.Recipe'),
         ),
         migrations.AddField(
             model_name='tag',
