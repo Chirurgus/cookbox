@@ -192,11 +192,6 @@ input[type=number] {
 }
 
 
-select {
-    height: 50em;
-    width: 12em;
-}
-
 /* Generic classes */
 
 .hidden {

@@ -91,6 +91,8 @@ INSTALLED_APPS = [
     'nested_admin',
     #'rest_framework',
     'imagekit',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

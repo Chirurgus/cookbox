@@ -6,9 +6,11 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from dal.autocomplete import Select2QuerySetView
+
 from recipe_scrapers import WebsiteNotImplementedError
 
-from cookbox_core.models import Recipe
+from cookbox_core.models import Recipe, Tag
 
 from .scrape import scrape
 
@@ -121,6 +123,19 @@ class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
     template_name = 'recipe_delete.html'
+
+class RecipeTagAutocomplete(Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Tag.objects.none()
+
+        qs = Tag.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+
+        return qs
+
 
 def recipe_random(request):
     ids = Recipe.objects.values_list('id', flat= True)

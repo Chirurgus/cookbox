@@ -9,6 +9,8 @@ from django.forms import (
     ModelMultipleChoiceField,
 )
 
+from dal.autocomplete import ModelSelect2Multiple
+
 from cookbox_core.models import (
     Recipe,
     IngredientGroup,
@@ -18,6 +20,7 @@ from cookbox_core.models import (
     IngredientNote,
     InstructionNote,
     Tag,
+    TagCategory,
 )
 
 from .nested_form import (
@@ -27,12 +30,14 @@ from .nested_form import (
 )
 
 class RecipeForm(ModelForm):
-    tags = ModelMultipleChoiceField(queryset=Tag.objects.all())
+    tags = ModelMultipleChoiceField(queryset= Tag.objects.all(),
+                                    widget= ModelSelect2Multiple(url= 'recipe-tag-autocomplete'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         recipe = kwargs['instance']
         self.fields['tags'].initial = recipe.tags.all()
+
     
     def save(self, commit=True):
         '''
@@ -70,7 +75,7 @@ class RecipeForm(ModelForm):
             'serving_size',
             'source',
             'image',
-            'tags'
+            'tags',
         ]
         labels = {
             'name': 'Recipe name',
