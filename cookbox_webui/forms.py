@@ -147,6 +147,10 @@ class RecipeNoteForm(NoteForm):
         model = RecipeNote
         abstract = False
 
+class TagForm(ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name']
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
 IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, formset= BaseNestedInnerFormSet, extra=0)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block  content %}
+<div class="fill-width">
+    <h1>Tags</h1>
+
+    {# Add/Import recipe buttons #}
+    <a href="{% url 'tag-create' %}">
+        Add new tag
+    </a>
+</div>
+
+{# tag list #}
+{% for tag in tags %}
+<a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
+    <div>
+        <p>{{ tag.name }}</p>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}

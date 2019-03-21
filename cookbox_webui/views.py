@@ -14,7 +14,10 @@ from cookbox_core.models import Recipe, Tag
 
 from .scrape import scrape
 
-from .forms import RecipeCompleteForm
+from .forms import (
+    RecipeCompleteForm,
+    TagForm,
+)
 
 from .filters import RecipeFilter
 
@@ -123,6 +126,75 @@ class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
     template_name = 'recipe_delete.html'
+
+class TagList(BaseLoginRequiredMixin, View):
+    template_name = 'tag_list.html'
+
+    def get(self, request):
+        queryset = Tag.objects.all()
+        return render(request,
+                      self.template_name,
+                      {'tags' : queryset })
+
+class TagCreate(BaseLoginRequiredMixin, View):
+    template_name = 'tag_edit.html'
+
+    def get(self, request):
+        form = TagForm()
+
+        return render(request,
+                      self.template_name,
+                      { 'form' : form })
+
+    # PUT method is not allowed for HTML forms, so POST is used even for new instances
+    def post(self, request):
+        form = TagForm(data= request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('tag-list'))
+        else:
+            return render(request,
+                          self.template_name,
+                          { 'form' : recipe_form })
+
+
+class TagEdit(BaseLoginRequiredMixin, View):
+    template_name = 'tag_edit.html'
+
+    def get(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+
+        tag_form = TagForm(instance= tag)
+
+        return render(request,
+            self.template_name,
+            {'tag'    : tag,
+             'form'      : tag_form})
+
+    def post(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+
+        form = TagForm(data= request.POST, files= request.FILES, instance= tag)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(
+                        reverse('tag-list')
+                        )
+        else:
+            return render(request,
+                          self.template_name,
+                          {'tag'  : tag,
+                           'form'    : form })
+
+
+
+
+class TagDelete(BaseLoginRequiredMixin, DeleteView):
+    model = Tag
+    sucess_url = reverse_lazy('tag-list')
+    template_name = 'tag_delete.html'
 
 class RecipeTagAutocomplete(Select2QuerySetView):
     def get_queryset(self):

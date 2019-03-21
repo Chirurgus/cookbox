@@ -9,6 +9,9 @@ from .views import (
     RecipeDelete,
     RecipeImport,
     RecipeTagAutocomplete,
+    TagList,
+    TagEdit,
+    TagCreate,
     recipe_random,
 )
 
@@ -23,4 +26,7 @@ urlpatterns = [
     path('delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
     path('random/', recipe_random, name= 'recipe-random'),
     path('recipe-tag-autocomplete', RecipeTagAutocomplete.as_view(), name="recipe-tag-autocomplete"),
+    path('tags/', TagList.as_view(), name="tag-list"),
+    path('tags/edit/<int:pk>', TagEdit.as_view(), name="tag-edit"),
+    path('tags/create', TagCreate.as_view(), name="tag-create"),
 ]
