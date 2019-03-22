@@ -189,7 +189,7 @@ class TagEdit(BaseLoginRequiredMixin, View):
 
 class TagDelete(BaseLoginRequiredMixin, DeleteView):
     model = Tag
-    sucess_url = reverse_lazy('tag-list')
+    success_url = reverse_lazy('tag-list')
     template_name = 'tag/delete.html'
 
 class RecipeTagAutocomplete(Select2QuerySetView):
