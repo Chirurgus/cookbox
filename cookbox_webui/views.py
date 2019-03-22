@@ -26,7 +26,7 @@ class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
 
 class RecipeList(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_list.html'
+    template_name = 'recipe/list.html'
 
     def get(self, request):
         queryset = Recipe.objects.all().order_by("-last_modified")
@@ -36,7 +36,7 @@ class RecipeList(BaseLoginRequiredMixin, View):
                       {'filter' : filter })
 
 class RecipeDetail(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_detail.html'
+    template_name = 'recipe/detail.html'
 
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
@@ -46,7 +46,7 @@ class RecipeDetail(BaseLoginRequiredMixin, View):
                       { 'recipe' : recipe })
 
 class RecipeNew(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_edit.html'
+    template_name = 'recipe/edit.html'
 
     def get(self, request):
         recipe_form = RecipeCompleteForm()
@@ -70,7 +70,7 @@ class RecipeNew(BaseLoginRequiredMixin, View):
                             'new'  : True  })
 
 class RecipeImport(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_import.html'
+    template_name = 'recipe/import.html'
 
     submit_button_name = 'import-url'
 
@@ -94,7 +94,7 @@ class RecipeImport(BaseLoginRequiredMixin, View):
                        'error'              : 'This domain is not supported' })
 
 class RecipeEdit(BaseLoginRequiredMixin, View):
-    template_name = 'recipe_edit.html'
+    template_name = 'recipe/edit.html'
 
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
@@ -125,10 +125,10 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
 class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
-    template_name = 'recipe_delete.html'
+    template_name = 'recipe/delete.html'
 
 class TagList(BaseLoginRequiredMixin, View):
-    template_name = 'tag_list.html'
+    template_name = 'tag/list.html'
 
     def get(self, request):
         queryset = Tag.objects.all()
@@ -137,7 +137,7 @@ class TagList(BaseLoginRequiredMixin, View):
                       {'tags' : queryset })
 
 class TagCreate(BaseLoginRequiredMixin, View):
-    template_name = 'tag_edit.html'
+    template_name = 'tag/edit.html'
 
     def get(self, request):
         form = TagForm()
@@ -156,11 +156,10 @@ class TagCreate(BaseLoginRequiredMixin, View):
         else:
             return render(request,
                           self.template_name,
-                          { 'form' : recipe_form })
-
+                          { 'form' : form })
 
 class TagEdit(BaseLoginRequiredMixin, View):
-    template_name = 'tag_edit.html'
+    template_name = 'tag/edit.html'
 
     def get(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
@@ -188,13 +187,10 @@ class TagEdit(BaseLoginRequiredMixin, View):
                           {'tag'  : tag,
                            'form'    : form })
 
-
-
-
 class TagDelete(BaseLoginRequiredMixin, DeleteView):
     model = Tag
     sucess_url = reverse_lazy('tag-list')
-    template_name = 'tag_delete.html'
+    template_name = 'tag/delete.html'
 
 class RecipeTagAutocomplete(Select2QuerySetView):
     def get_queryset(self):

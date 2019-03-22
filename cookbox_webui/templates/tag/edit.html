@@ -5,6 +5,7 @@
 {% block content %}
 <div class="fill-width">
     <h1>Edit Tag</h1>
+    <a href="{% url 'tag-delete' tag.id %}">Delete</a>
 </div>
 
 {# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
