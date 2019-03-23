@@ -4,18 +4,41 @@
 <div class="fill-width">
     <h1>Tags</h1>
 
-    {# Add/Import recipe buttons #}
     <a href="{% url 'tag-create' %}">
         Add new tag
     </a>
+    <a href="{% url 'tag-category-create' %}">
+        Add new tag category
+    </a>
 </div>
 
-{# tag list #}
-{% for tag in tags %}
+{# tag list listed by category #}
+{% for category in categories %}
+<div class="fill-width">
+    <h2>
+        {{ category.name }}
+    </h2>
+</div>
+{% for tag in category.tags.all %}
 <a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
     <div>
         <p>{{ tag.name }}</p>
     </div>
 </a>
 {% endfor %}
+{% endfor %}
+
+<div class="fill-width">
+    <h2>
+        Uncategorized tags
+    </h2>
+</div>
+{% for tag in uncategorized_tags %}
+<a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
+    <div>
+        <p>{{ tag.name }}</p>
+    </div>
+</a>
+{% endfor %}
+
 {% endblock %}

@@ -10,13 +10,18 @@ from dal.autocomplete import Select2QuerySetView
 
 from recipe_scrapers import WebsiteNotImplementedError
 
-from cookbox_core.models import Recipe, Tag
+from cookbox_core.models import (
+    Recipe,
+    Tag,
+    TagCategory,
+)
 
 from .scrape import scrape
 
 from .forms import (
     RecipeCompleteForm,
     TagForm,
+    TagCategoryForm,
 )
 
 from .filters import RecipeFilter
@@ -131,10 +136,12 @@ class TagList(BaseLoginRequiredMixin, View):
     template_name = 'tag/list.html'
 
     def get(self, request):
-        queryset = Tag.objects.all()
+        uncategorized_tags = Tag.objects.filter(category=None)
+        categories = TagCategory.objects.all()
         return render(request,
                       self.template_name,
-                      {'tags' : queryset })
+                      {'uncategorized_tags' :uncategorized_tags,
+                       'categories': categories })
 
 class TagCreate(BaseLoginRequiredMixin, View):
     template_name = 'tag/edit.html'
@@ -144,7 +151,8 @@ class TagCreate(BaseLoginRequiredMixin, View):
 
         return render(request,
                       self.template_name,
-                      { 'form' : form })
+                      { 'form' : form,
+                        'new'  : True })
 
     # PUT method is not allowed for HTML forms, so POST is used even for new instances
     def post(self, request):
@@ -156,7 +164,8 @@ class TagCreate(BaseLoginRequiredMixin, View):
         else:
             return render(request,
                           self.template_name,
-                          { 'form' : form })
+                          { 'form' : form,
+                            'new'   : True })
 
 class TagEdit(BaseLoginRequiredMixin, View):
     template_name = 'tag/edit.html'
@@ -189,6 +198,64 @@ class TagEdit(BaseLoginRequiredMixin, View):
 
 class TagDelete(BaseLoginRequiredMixin, DeleteView):
     model = Tag
+    success_url = reverse_lazy('tag-list')
+    template_name = 'tag/delete.html'
+
+class TagCategoryCreate(BaseLoginRequiredMixin, View):
+    template_name = 'tag/edit.html'
+
+    def get(self, request):
+        form = TagCategoryForm()
+
+        return render(request,
+                      self.template_name,
+                      { 'form' : form ,
+                        'new'  : True })
+
+    # PUT method is not allowed for HTML forms, so POST is used even for new instances
+    def post(self, request):
+        form = TagCategoryForm(data= request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('tag-list'))
+        else:
+            return render(request,
+                          self.template_name,
+                          { 'form' : form,
+                            'new'  : True })
+
+class TagCategoryEdit(BaseLoginRequiredMixin, View):
+    template_name = 'tag/edit.html'
+
+    def get(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+
+        tag_form = TagForm(instance= tag)
+
+        return render(request,
+            self.template_name,
+            {'tag'  : tag,
+             'form' : tag_form })
+
+    def post(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+
+        form = TagForm(data= request.POST, files= request.FILES, instance= tag)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(
+                        reverse('tag-list')
+                        )
+        else:
+            return render(request,
+                          self.template_name,
+                          {'tag'  : tag,
+                           'form' : form })
+
+class TagCategoryDelete(BaseLoginRequiredMixin, DeleteView):
+    model = TagCategory
     success_url = reverse_lazy('tag-list')
     template_name = 'tag/delete.html'
 

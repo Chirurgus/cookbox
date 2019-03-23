@@ -6,6 +6,7 @@ from django.forms import (
     inlineformset_factory,
     formset_factory,
     Textarea,
+    ModelChoiceField,
     ModelMultipleChoiceField,
 )
 
@@ -148,8 +149,16 @@ class RecipeNoteForm(NoteForm):
         abstract = False
 
 class TagForm(ModelForm):
+    category = ModelChoiceField(queryset= TagCategory.objects.all(),
+                                required= False)
+
     class Meta:
         model = Tag
+        fields = ['name', 'category']
+
+class TagCategoryForm(ModelForm):
+    class Meta:
+        model = TagCategory
         fields = ['name']
 
 InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)

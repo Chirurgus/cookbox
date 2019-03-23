@@ -5,9 +5,9 @@
 {% block content %}
 {% if tag %}
 <div class="fill-width">
-    {% if new %}
-    <h1>Edit Tag</h1>
-    <a href="{% url 'tag-delete' pk=tag.id %}">Delete</a>
+    {% if %}
+    <h1>Edit Category</h1>
+    <a href="{% url 'category-delete' pk=tag.id %}">Delete</a>
     {% else %}
     <h1>New Tag</h1>
     <a href="{% url 'tag-delete' pk=tag.id %}">Delete</a>

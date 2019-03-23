@@ -13,6 +13,9 @@ from .views import (
     TagEdit,
     TagDelete,
     TagCreate,
+    TagCategoryCreate,
+    TagCategoryEdit,
+    TagCategoryDelete,
     recipe_random,
 )
 
@@ -26,9 +29,12 @@ urlpatterns = [
     path('create/', RecipeNew.as_view(), name= 'recipe-create'),
     path('delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
     path('random/', recipe_random, name= 'recipe-random'),
-    path('recipe-tag-autocomplete', RecipeTagAutocomplete.as_view(), name="recipe-tag-autocomplete"),
+    path('recipe-tag-autocomplete/', RecipeTagAutocomplete.as_view(), name="recipe-tag-autocomplete"),
     path('tags/', TagList.as_view(), name="tag-list"),
-    path('tags/edit/<int:pk>', TagEdit.as_view(), name="tag-edit"),
-    path('tags/delete/<int:pk>', TagDelete.as_view(), name="tag-delete"),
-    path('tags/create', TagCreate.as_view(), name="tag-create"),
+    path('tags/create/', TagCreate.as_view(), name="tag-create"),
+    path('tags/edit/<int:pk>/', TagEdit.as_view(), name="tag-edit"),
+    path('tags/delete/<int:pk>/', TagDelete.as_view(), name="tag-delete"),
+    path('tags/create_category/', TagCategoryCreate.as_view(), name="tag-category-create"),
+    path('tags/edit_category/<int:pk>/', TagCategoryEdit.as_view(), name="tag-category-edit"),
+    path('tags/delete_category/<int:pk>/', TagCategoryDelete.as_view(), name="tag-category-delete"),
 ]
