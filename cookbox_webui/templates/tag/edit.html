@@ -3,17 +3,14 @@
 {% load static %}
 
 {% block content %}
-{% if tag %}
 <div class="fill-width">
     {% if new %}
-    <h1>Edit Tag</h1>
-    <a href="{% url 'tag-delete' pk=tag.id %}">Delete</a>
-    {% else %}
     <h1>New Tag</h1>
+    {% else %}
+    <h1>Edit Tag</h1>
     <a href="{% url 'tag-delete' pk=tag.id %}">Delete</a>
     {% endif %}
 </div>
-{% endif %}
 
 {# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
 <form method="POST" enctype="multipart/form-data" class="list-form">

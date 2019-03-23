@@ -3,8 +3,13 @@ import random
 from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (
+    View,
+    DeleteView,
+    UpdateView,
+    CreateView,
+)
 
 from dal.autocomplete import Select2QuerySetView
 
@@ -130,7 +135,7 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
 class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
-    template_name = 'recipe/delete.html'
+    template_name = 'delete.html'
 
 class TagList(BaseLoginRequiredMixin, View):
     template_name = 'tag/list.html'
@@ -199,17 +204,17 @@ class TagEdit(BaseLoginRequiredMixin, View):
 class TagDelete(BaseLoginRequiredMixin, DeleteView):
     model = Tag
     success_url = reverse_lazy('tag-list')
-    template_name = 'tag/delete.html'
+    template_name = 'delete.html'
 
 class TagCategoryCreate(BaseLoginRequiredMixin, View):
-    template_name = 'tag/edit.html'
+    template_name = 'tag_category/edit.html'
 
     def get(self, request):
         form = TagCategoryForm()
 
         return render(request,
                       self.template_name,
-                      { 'form' : form ,
+                      { 'form' : form,
                         'new'  : True })
 
     # PUT method is not allowed for HTML forms, so POST is used even for new instances
@@ -223,41 +228,39 @@ class TagCategoryCreate(BaseLoginRequiredMixin, View):
             return render(request,
                           self.template_name,
                           { 'form' : form,
-                            'new'  : True })
+                            'new'   : True })
 
-class TagCategoryEdit(BaseLoginRequiredMixin, View):
-    template_name = 'tag/edit.html'
+class TagCategoryEdit(BaseLoginRequiredMixin, UpdateView):
+    template_name = 'tag_category/edit.html'
 
     def get(self, request, pk):
-        tag = get_object_or_404(Tag, pk=pk)
-
-        tag_form = TagForm(instance= tag)
+        category = get_object_or_404(TagCategory, pk=pk)
+        form = TagCategoryForm(instance= category)
 
         return render(request,
-            self.template_name,
-            {'tag'  : tag,
-             'form' : tag_form })
+                        self.template_name,
+                        {'category' : category,
+                         'form'     : form })
 
     def post(self, request, pk):
-        tag = get_object_or_404(Tag, pk=pk)
-
-        form = TagForm(data= request.POST, files= request.FILES, instance= tag)
+        category = get_object_or_404(TagCategory, pk=pk)
+        form = TagCategoryForm(data= request.POST,
+                               files= request.FILES,
+                               instance= category)
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(
-                        reverse('tag-list')
-                        )
+            return HttpResponseRedirect(reverse('tag-list'))
         else:
             return render(request,
                           self.template_name,
-                          {'tag'  : tag,
-                           'form' : form })
+                          {'category' : category,
+                           'form'     : form })
 
 class TagCategoryDelete(BaseLoginRequiredMixin, DeleteView):
     model = TagCategory
     success_url = reverse_lazy('tag-list')
-    template_name = 'tag/delete.html'
+    template_name = 'delete.html'
 
 class RecipeTagAutocomplete(Select2QuerySetView):
     def get_queryset(self):

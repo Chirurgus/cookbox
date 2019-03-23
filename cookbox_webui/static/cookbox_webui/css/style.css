@@ -96,6 +96,10 @@ h1 {
     word-wrap: break-word;
 }
 
+h2 {
+    display: inline;
+}
+
 nav {
     display: flex;
     flex-flow: row wrap;

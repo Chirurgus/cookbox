@@ -15,9 +15,10 @@
 {# tag list listed by category #}
 {% for category in categories %}
 <div class="fill-width">
-    <h2>
-        {{ category.name }}
-    </h2>
+    <h2>{{ category.name }}</h2>
+
+    <a href="{% url 'tag-category-edit' pk=category.pk %}">edit</a>
+
 </div>
 {% for tag in category.tags.all %}
 <a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
