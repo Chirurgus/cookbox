@@ -195,6 +195,11 @@ input[type=number] {
     max-width: 5em;
 }
 
+input[type=checkbox] {
+    max-width: 1em;
+    max-height: 1em;
+}
+
 
 /* Generic classes */
 
@@ -274,6 +279,33 @@ input[type=number] {
 .list-form table table {
     background: grey;
     border-radius: 0.5em;
+}
+
+.filter-form ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    flex-basis: 8em;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    margin: 1em;
+}
+
+.filter-form li {
+    border-radius: .5em;
+}
+
+.filter-form li:hover {
+    background-color:lightgrey;
+}
+
+.filter-form li label {
+    min-height: 2em;
+    min-width: 7em;
+
+    padding-bottom: 0;
 }
 
 .errorlist li {

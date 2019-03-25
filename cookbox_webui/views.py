@@ -36,7 +36,7 @@ class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
 
 class RecipeList(BaseLoginRequiredMixin, View):
-    template_name = 'recipe/list.html'
+    template_name = 'list.html'
 
     def get(self, request):
         queryset = Recipe.objects.all().order_by("-last_modified")

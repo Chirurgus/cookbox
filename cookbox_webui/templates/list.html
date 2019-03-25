@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load imagekit %}
+
+
+
+{% block aside-left %}
+{# Filter form #}
+<form action="" method="get" class="filter-form">
+    {{ filter.form.as_p }}
+    <input type="submit"/>
+</form>
+{% endblock %}
+
+
+
+{% block  content %}
+<div class="fill-width">
+    <h1>Recipes</h1>
+
+    {# Add/Import recipe buttons #}
+    <a href="{% url 'recipe-create' %}">
+        Add new recipe
+    </a>
+    <a href="{% url 'recipe-import' %}">
+        Import a recipe
+    </a>
+</div>
+
+{# Recipe list #}
+{% for recipe in filter.qs %}
+<a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
+    {% if recipe.image %}
+    {% generateimage 'cookbox_webui:thumbnail_small' source=recipe.image as th %}
+    <img class="fill-width" src="{{ th.url }}">
+    {% endif %}
+    <div>
+        <p>{{ recipe.name }}</p>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}
+
+
+
+{% block scripts %}
+<script src={% static 'cookbox_webui/jquery-3.3.1.min.js' %}></script>
+{{ filter.form.media }}
+{% endblock %}
