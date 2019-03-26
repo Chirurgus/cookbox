@@ -11,7 +11,6 @@ class RecipeFilter(FilterSet):
         field_name= 'tags__name',
         to_field_name= 'name',
         queryset= Tag.objects.all(),
-        #widget= widgets.SelectMultiple()
         widget= widgets.CheckboxSelectMultiple()
     )
 
