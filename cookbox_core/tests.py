@@ -10,8 +10,15 @@ from cookbox_core.models import (
     Instruction,
 )
 
-class IngredientGroupModelTest(TestCase):
+class RecipeBaseTest(TestCase):
+    '''
+    Base class for all cookbox TestCases.
+    In setUp creates an instance of a recipe.
+    '''
     def setUp(self):
+        '''
+        Create an instance of a recipe and add to the (temporary) database
+        '''
         recipe = Recipe(name="Test recipe",
                description= "A test recipe",
                unit_time= "minutes",
@@ -31,18 +38,21 @@ class IngredientGroupModelTest(TestCase):
             position= 0
         )
 
-        for i in seq(10):
+        for i in range(10):
             Ingredient(
-                group= ing_roup,
+                group= ing_group,
                 unit= "a unit",
                 quantity= i,
                 description= "a test ingredient",
                 position= i
             )
         
-        for i in seq(10):
-            Instructions(
+        for i in range(10):
+            Instruction(
                 recipe= recipe,
                 instruction= "step" + str(i),
                 position= i
             )
+
+class IngredientGroupModelTest(RecipeBaseTest):
+    pass
