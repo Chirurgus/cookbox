@@ -36,8 +36,12 @@ class RecipeForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        recipe = kwargs['instance']
-        self.fields['tags'].initial = recipe.tags.all()
+        recipe = kwargs.get('instance')
+        if recipe:
+            self.fields['tags'].initial = recipe.tags.all()
+        else:
+            self.fields['tags'].inital = []
+
 
     
     def save(self, commit=True):
