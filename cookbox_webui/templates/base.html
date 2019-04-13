@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static "cookbox_webui/css/style.css" %}" />
 </head>
 
+{% block scripts %}{% endblock %}
+
 <body>
     <header>
     {% include "detail/title_bar.html" %}
@@ -31,6 +33,5 @@
     </footer>
 </body>
 
-{% block scripts %}{% endblock %}
 
 </html>
