@@ -37,115 +37,115 @@ class WebuiBaseTest(RecipeBaseTest):
                           password=self.user_pswrd)
 
 class ListViewTest(WebuiBaseTest):
-    def list_view_get_200(self):
+    def test_list_view_get_200(self):
         response = self.client.get(reverse('recipe-list'))
 
         self.assertEqual(response.status_code, 200)
 
 class DetailViewTest(WebuiBaseTest):
-    def detail_view_get_200(self):
+    def test_detail_view_get_200(self):
         recipe = Recipe.objects.all().first()
         # if there are no recipes
         if recipe is None:
             self.fail(msg="There are no recipes in the set-up database")
         
         response = self.client.get(
-            reverse('recipe-detail', {'id' : recipe.id })
+            reverse('recipe-detail', kwargs= {'pk' : recipe.id })
             )
 
         self.assertEqual(response.status_code, 200)
 
 class RecipeImport(WebuiBaseTest):
-    def import_view_get_200(self):
+    def test_import_view_get_200(self):
         response = self.client.get(reverse('recipe-import'))
 
         self.assertEqual(response.status_code, 200)
 
 class CreateViewTest(WebuiBaseTest):
-    def create_view_get_200(self):
+    def test_create_view_get_200(self):
         response = self.client.get(reverse('recipe-create'))
 
         self.assertEqual(response.status_code, 200)
  
 class RecipeEditViewTest(WebuiBaseTest):
-    def edit_view_get_200(self):
+    def test_edit_view_get_200(self):
         recipe = Recipe.objects.all().first()
         # if there are no recipes
         if recipe is None:
             self.fail(msg="There are no recipes in the set-up database")
         
         response = self.client.get(
-            reverse('recipe-edit', {'id' : recipe.id })
+            reverse('recipe-edit', kwargs= {'pk' : recipe.id })
             )
 
         self.assertEqual(response.status_code, 200)
 
 class RecipeDeleteViewTest(WebuiBaseTest):
-    def delete_view_get_200(self):
+    def test_delete_view_get_200(self):
         recipe = Recipe.objects.all().first()
         # if there are no recipes
         if recipe is None:
             self.fail(msg="There are no recipes in the set-up database")
         
         response = self.client.get(
-            reverse('recipe-delete', {'id' : recipe.id })
+            reverse('recipe-delete', kwargs= {'pk' : recipe.id })
             )
 
         self.assertEqual(response.status_code, 200)
 
 class TagListViewTest(WebuiBaseTest):
-    def tag_list_view_200(self):
+    def test_tag_list_view_200(self):
         response = self.client.get(reverse('tag-list'))
 
         self.assertEqual(response.status_code, 200)
        
 class TagCreateViewTest(WebuiBaseTest):
-    def tag_create_view_200(self):
+    def test_tag_create_view_200(self):
         response = self.client.get(reverse('tag-create'))
 
         self.assertEqual(response.status_code, 200)
 
 class TagEditViewTest(WebuiBaseTest):
-    def tag_edit_view_200(self):
+    def test_tag_edit_view_200(self):
         tag = Tag.objects.all().first()
         # if there are no recipes
         if tag is None:
             self.fail(msg="There are no tags in the set-up database")
         
         response = self.client.get(
-            reverse('tag-edit', {'id' : tag.id })
+            reverse('tag-edit', kwargs= {'pk' : tag.id })
             )
 
         self.assertEqual(response.status_code, 200)
 
 class TagCategoryCreateViewTest(WebuiBaseTest):
-    def tag_category_create_view_200(self):
+    def test_tag_category_create_view_200(self):
         response = self.client.get(reverse('tag-category-create'))
 
         self.assertEqual(response.status_code, 200)
 
 class TagCategoryEditViewTest(WebuiBaseTest):
-    def tag_category_edit_view_200(self):
+    def test_tag_category_edit_view_200(self):
         tag_category = TagCategory.objects.all().first()
         # if there are no recipes
         if tag_category is None:
             self.fail(msg="There are no tag categories in the set-up database")
         
         response = self.client.get(
-            reverse('tag-category-edit', {'id' : tag_category.id })
+            reverse('tag-category-edit', kwargs= {'pk' : tag_category.id })
             )
 
         self.assertEqual(response.status_code, 200)
 
 class TagCategoryDeleteViewTest(WebuiBaseTest):
-    def tag_category_delete_view_200(self):
+    def test_tag_category_delete_view_200(self):
         tag_category = TagCategory.objects.all().first()
         # if there are no recipes
         if tag_category is None:
             self.fail(msg="There are no tag categories in the set-up database")
         
         response = self.client.get(
-            reverse('tag-category-delete', {'id' : tag_category.id })
+            reverse('tag-category-delete', kwargs= {'pk' : tag_category.id })
             )
 
         self.assertEqual(response.status_code, 200)

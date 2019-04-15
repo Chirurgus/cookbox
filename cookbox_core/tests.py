@@ -59,9 +59,7 @@ class RecipeBaseTest(TestCase):
         tag_category = TagCategory(name="Test tag category")
         tag_category.save()
 
-        tag = TagCategory(name= "a test tag",
-                          category= tag_category 
-                          )
+        tag = Tag(name= "a test tag", category= tag_category)
         tag.save()
 
 class IngredientGroupModelTest(RecipeBaseTest):
