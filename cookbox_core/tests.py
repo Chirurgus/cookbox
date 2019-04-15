@@ -8,6 +8,8 @@ from cookbox_core.models import (
     IngredientGroup,
     Ingredient,
     Instruction,
+    TagCategory,
+    Tag,
 )
 
 class RecipeBaseTest(TestCase):
@@ -53,6 +55,14 @@ class RecipeBaseTest(TestCase):
                 instruction= "step" + str(i),
                 position= i
             )
+        
+        tag_category = TagCategory(name="Test tag category")
+        tag_category.save()
+
+        tag = TagCategory(name= "a test tag",
+                          category= tag_category 
+                          )
+        tag.save()
 
 class IngredientGroupModelTest(RecipeBaseTest):
     pass

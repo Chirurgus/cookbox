@@ -66,7 +66,8 @@ class RecipeNew(BaseLoginRequiredMixin, View):
                       { 'form' : recipe_form,
                         'new'  : True })
 
-    # PUT method is not allowed for HTML forms, so POST is used even for new instances
+    # PUT method is not allowed for HTML forms,
+    # so POST is used even for new instances
     def post(self, request):
         recipe_form = RecipeCompleteForm(data= request.POST)
 
@@ -119,7 +120,9 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        form = RecipeCompleteForm(data= request.POST, files= request.FILES, instance= recipe)
+        form = RecipeCompleteForm(data= request.POST,
+                                  files= request.FILES,
+                                  instance= recipe)
 
         if form.is_valid():
             form.save()
@@ -159,7 +162,8 @@ class TagCreate(BaseLoginRequiredMixin, View):
                       { 'form' : form,
                         'new'  : True })
 
-    # PUT method is not allowed for HTML forms, so POST is used even for new instances
+    # PUT method is not allowed for HTML forms,
+    # so POST is used even for new instances
     def post(self, request):
         form = TagForm(data= request.POST)
 
@@ -217,7 +221,8 @@ class TagCategoryCreate(BaseLoginRequiredMixin, View):
                       { 'form' : form,
                         'new'  : True })
 
-    # PUT method is not allowed for HTML forms, so POST is used even for new instances
+    # PUT method is not allowed for HTML forms
+    # so POST is used even for new instances
     def post(self, request):
         form = TagCategoryForm(data= request.POST)
 
@@ -274,8 +279,8 @@ class RecipeTagAutocomplete(Select2QuerySetView):
 
         return qs
 
-
 def recipe_random(request):
     ids = Recipe.objects.values_list('id', flat= True)
     rand_id = random.choice(ids)
-    return HttpResponseRedirect(reverse('recipe-detail',kwargs= {'pk': rand_id}))
+    return HttpResponseRedirect(reverse('recipe-detail',
+                                kwargs= {'pk': rand_id}))

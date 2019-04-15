@@ -42,14 +42,11 @@ class RecipeForm(ModelForm):
         else:
             self.fields['tags'].inital = []
 
-
-    
     def save(self, commit=True):
         '''
-        Functions same as ModelForm.save(), but also saves tags if commit=True
+        Same as ModelForm.save(), but also saves tags if commit=True
         '''
-        super().save(commit)
-        # if commit = false
+        super(ModelForm, self).save(commit)
         if commit:
             self.save_tags()
     
