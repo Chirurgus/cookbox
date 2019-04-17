@@ -46,9 +46,10 @@ class RecipeForm(ModelForm):
         '''
         Same as ModelForm.save(), but also saves tags if commit=True
         '''
-        super(ModelForm, self).save(commit)
+        ret = super(ModelForm, self).save(commit)
         if commit:
             self.save_tags()
+        return ret
     
     def save_tags(self):
         '''
