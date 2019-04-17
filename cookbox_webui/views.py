@@ -55,7 +55,7 @@ class RecipeDetail(BaseLoginRequiredMixin, View):
                       self.template_name,
                       { 'recipe' : recipe })
 
-class RecipeNew(BaseLoginRequiredMixin, View):
+class RecipeCreate(BaseLoginRequiredMixin, View):
     template_name = 'recipe/edit.html'
 
     def get(self, request):
