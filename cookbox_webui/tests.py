@@ -61,7 +61,7 @@ class RecipeImport(WebuiBaseTest):
 
         self.assertEqual(response.status_code, 200)
 
-class CreateViewTest(WebuiBaseTest):
+class RecipeCreateViewTest(WebuiBaseTest):
     def test_create_view_get_200(self):
         response = self.client.get(reverse('recipe-create'))
 
