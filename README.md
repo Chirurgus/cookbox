@@ -2,12 +2,12 @@
 
 # Updating production server
 
-1) Pull the desired release, from the production branch for example: `git pull origin production'
-1) Enter the python virtual envirement: `source cookbox.venv/bin/activate'
-1) Update/install required python libraries: `pip3 install -r requirements.txt'
-1) Migrate the database: `python3 manage.py migrate'
+1) Pull the desired release, from the production branch for example: `git pull origin production`
+1) Enter the python virtual envirement: `source cookbox.venv/bin/activate`
+1) Update/install required python libraries: `pip3 install -r requirements.txt`
+1) Migrate the database: `python3 manage.py migrate`
 1) Collect static files: `python3 manage.py collectstatic;`
-1) Restart Apache2: `sudo service apache2 restart'
+1) Restart Apache2: `sudo service apache2 restart`
 
 # Setup for developpment
 
