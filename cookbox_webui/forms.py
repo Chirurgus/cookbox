@@ -32,7 +32,8 @@ from .nested_form import (
 
 class RecipeForm(ModelForm):
     tags = ModelMultipleChoiceField(queryset= Tag.objects.all(),
-                                    widget= ModelSelect2Multiple(url= 'recipe-tag-autocomplete'))
+                                    widget= ModelSelect2Multiple(url= 'recipe-tag-autocomplete'),
+                                    required= False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
