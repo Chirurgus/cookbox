@@ -1,5 +1,13 @@
 # cookbox
 
+# Updating production server
+
+1) Pull the desired release, from the production branch for example: `git pull origin production'
+1) Enter the python virtual envirement: `source cookbox.venv/bin/activate'
+1) Update/install required python libraries: `pip3 install -r requirements.txt'
+1) Migrate the database: `python3 manage.py migrate'
+1) Collect static files: `python3 manage.py collectstatic;`
+1) Restart Apache2: `sudo service apache2 restart'
 
 # Setup for developpment
 
@@ -61,7 +69,7 @@ password = password
 port = 3306
 default-character-set = utf8mb4
 ```
-1) Populate the databse: `python3 manage.py makemigrations; python3 manage.py migrate;`
+1) Populate the databse: `python3 manage.py migrate;`
 1) Get all the static files: `python3 manage.py collectstatic;`
 1) Start server (in debug mode) via: `python3 manage.py runserver;`
 1) Check if it works.
@@ -110,8 +118,3 @@ default-character-set = utf8mb4
 
 # Switching databases
 You can either use Sqlite or MySQL, the latter is prefered in production. To do edit the settings file comment out one of the items in the list called 'DATABASES'.
-
-# Road map
-
-1) REST Server
-3) Native Android client
