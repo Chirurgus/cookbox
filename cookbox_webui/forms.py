@@ -57,13 +57,7 @@ class RecipeForm(ModelForm):
         Saves tags many2many field.
         Gets called automatically from save(commit=True) method.
         '''
-        old_tags = self.instance.tags.all()
-        new_tags = self.cleaned_data['tags'] 
-        for tag in new_tags.difference(old_tags):
-            self.instance.tags.add(tag)
-        for tag in old_tags.difference(new_tags):
-            self.instance.tags.remove(tag)
- 
+        self.instance.tags.set(self.cleaned_data['tags'])
         
     class Meta:
         model = Recipe
