@@ -175,6 +175,9 @@ class RecipeCompleteForm():
     NOTES = 'note_forms'
 
     def __init__(self, *args, **kwargs):
+        '''
+        All (k)arguments will be passed on to constituent forms/formsets.
+        '''
         self.forms = OrderedDict()
         self.forms[self.RECIPE_FORM] = RecipeForm(*args, **kwargs)
         self.forms[self.INGREDIENT_GROUPS] = IngredientGroupFormset(prefix= 'ingredient_groups', *args, **kwargs)
@@ -189,19 +192,28 @@ class RecipeCompleteForm():
 
     # Inserts a new recipe instance in the database
     def create(self):
+        '''
+        Creates a new recipes (saves it to the database)
+        from the form data.
+        Returns the new recipe instance.
+        '''
         recipe = self.forms[self.RECIPE_FORM].save()
         for key, form in self.forms.items():
             form.instance = recipe
             form.save()
+        return recipe
 
     # Updates an existing recipe instance
     def save(self):
         '''
         Update an existing recipe instance.
+        Returns recipe instance.
         Note that RecipeForm.save(commit=True) method saves the tags
         '''
+        recipe = self.forms[self.RECIPE_FORM].save(commit= True)
         for key, form in self.forms.items():
             form.save(commit=True)
+        return recipe
 
     # Checks validity of the data in the form
     def is_valid(self):
