@@ -1,7 +1,7 @@
 """ Created by Oleksandr Sorochynskyi """
 """ On 03/04/2019 """
 
-from django.test import TestCase, Client
+from django.test import Client
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.models import User
 
