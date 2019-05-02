@@ -21,12 +21,10 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 from cookbox_webui import urls as WebUI_urls
 from cookbox_admin import urls as Admin_urls
-from cookbox_rest import urls as Rest_urls
 
 
 urlpatterns = [
     path('', include(WebUI_urls)),
-    path('api/', include(Rest_urls)),
     path('admin/', include(Admin_urls)),
 ]
 
