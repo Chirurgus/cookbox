@@ -13,7 +13,7 @@ from cookbox_core.tests import RecipeBaseTest
 
 from cookbox_webui.forms import RecipeCompleteForm
 
-class ListViewTest(RecipeBaseTest):
+class RecipeCompleteFormTest(RecipeBaseTest):
     # Form data to be used for tests
     form_data_no_related = {
         'name': 'Test recipe',
@@ -116,8 +116,13 @@ class ListViewTest(RecipeBaseTest):
         'notes-__prefix__-text': '',
     }
 
-    #def test_form_save_no_related(self):
-    def test_form_is_valid_all_related(self):
+    def test_form_no_related_is_valid(self):
+        form_data = self.form_data_no_related
+
+        form = RecipeCompleteForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_is_valid(self):
         form_data = self.form_data_no_related
         form_data.update(self.form_data_ingredient_group_only)
         form_data.update(self.form_data_instructions_only)
@@ -125,3 +130,28 @@ class ListViewTest(RecipeBaseTest):
 
         form = RecipeCompleteForm(data=form_data)
         self.assertTrue(form.is_valid())
+
+    def test_form_save(self):
+        form_data = self.form_data_no_related
+        form_data.update(self.form_data_ingredient_group_only)
+        form_data.update(self.form_data_instructions_only)
+        form_data.update(self.form_data_notes_only)
+
+        form = RecipeCompleteForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        form.save()
+    
+    def test_form_save_check_values_outside_related(self):
+        form_data = self.form_data_no_related
+        form_data.update(self.form_data_ingredient_group_only)
+        form_data.update(self.form_data_instructions_only)
+        form_data.update(self.form_data_notes_only)
+
+        form = RecipeCompleteForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        recipe = form.save()
+        
+        for key, value in self.form_data_no_related.items():
+            self.assertEqual(getattr(recipe, key), value)
+
+
