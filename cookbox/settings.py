@@ -75,7 +75,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('recipe-list')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 STATIC_URL = "/static_files/"
 
-# Path for Images in the datbase
+# Path for Images in the database
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = "/images/"
 
