@@ -24,7 +24,7 @@ from cookbox_core.models import (
 from .scrape import scrape
 
 from .forms import (
-    RecipeCompleteForm,
+    RecipeForm,
     TagForm,
     TagCategoryForm,
 )
@@ -59,7 +59,7 @@ class RecipeCreate(BaseLoginRequiredMixin, View):
     template_name = 'recipe/edit.html'
 
     def get(self, request):
-        recipe_form = RecipeCompleteForm()
+        recipe_form = RecipeForm()
 
         return render(request,
                       self.template_name,
@@ -69,7 +69,7 @@ class RecipeCreate(BaseLoginRequiredMixin, View):
     # PUT method is not allowed for HTML forms,
     # so POST is used even for new instances
     def post(self, request):
-        recipe_form = RecipeCompleteForm(data= request.POST)
+        recipe_form = RecipeForm(data= request.POST)
 
         if recipe_form.is_valid():
             recipe_form.create()
@@ -110,7 +110,7 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
     def get(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        recipe_form = RecipeCompleteForm(instance= recipe)
+        recipe_form = RecipeForm(instance= recipe)
 
         return render(request,
             self.template_name,
@@ -120,7 +120,7 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        form = RecipeCompleteForm(data= request.POST,
+        form = RecipeForm(data= request.POST,
                                   files= request.FILES,
                                   instance= recipe)
 

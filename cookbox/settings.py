@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'cookbox_core.apps.CookboxCoreConfig',
     'cookbox_webui.apps.CookboxWebuiConfig',
     'cookbox_admin.apps.CookboxAdminConfig',
+    'django_superform',
     'django_filters',
     'nested_admin',
     'imagekit',

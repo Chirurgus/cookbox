@@ -11,9 +11,9 @@ from cookbox_core.models import (
 )
 from cookbox_core.tests import RecipeBaseTest
 
-from cookbox_webui.forms import RecipeCompleteForm
+from cookbox_webui.forms import RecipeForm
 
-class RecipeCompleteFormTest(RecipeBaseTest):
+class RecipeFormTest(RecipeBaseTest):
     # Form data to be used for tests
     form_data_no_related = {
         'name': 'Test recipe',
@@ -119,7 +119,7 @@ class RecipeCompleteFormTest(RecipeBaseTest):
     def test_form_no_related_is_valid(self):
         form_data = self.form_data_no_related
 
-        form = RecipeCompleteForm(data=form_data)
+        form = RecipeForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_form_is_valid(self):
@@ -128,7 +128,7 @@ class RecipeCompleteFormTest(RecipeBaseTest):
         form_data.update(self.form_data_instructions_only)
         form_data.update(self.form_data_notes_only)
 
-        form = RecipeCompleteForm(data=form_data)
+        form = RecipeForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_form_save(self):
@@ -137,7 +137,7 @@ class RecipeCompleteFormTest(RecipeBaseTest):
         form_data.update(self.form_data_instructions_only)
         form_data.update(self.form_data_notes_only)
 
-        form = RecipeCompleteForm(data=form_data)
+        form = RecipeForm(data=form_data)
         self.assertTrue(form.is_valid())
         form.save()
     
@@ -147,7 +147,7 @@ class RecipeCompleteFormTest(RecipeBaseTest):
         form_data.update(self.form_data_instructions_only)
         form_data.update(self.form_data_notes_only)
 
-        form = RecipeCompleteForm(data=form_data)
+        form = RecipeForm(data=form_data)
         self.assertTrue(form.is_valid())
         recipe = form.save()
         
