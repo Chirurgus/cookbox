@@ -2,7 +2,7 @@ import requests
 
 from bs4 import BeautifulSoup
 
-from recipe_scrapers._utils import on_exception_return
+from cookbox_scraper._utils import on_exception_return
 
 # some sites close their content for 'bots', so user-agent must be supplied
 HEADERS = {
@@ -71,7 +71,9 @@ class AbstractScraper():
         return self.url
 
     def host(self):
-        """ get the host of the url, so we can use the correct scraper """
+        """
+        Get the host of the url, so we can use the correct scraper
+        """
         raise NotImplementedError("This should be implemented.")
 
     def title(self):
@@ -84,7 +86,9 @@ class AbstractScraper():
         return 'min'
 
     def time(self):
-        """ (total_time, prep_time, cook_time) it takes to preparate the recipe in minutes """
+        """
+        (total_time, prep_time, cook_time) it takes to prepare the recipe in minutes
+        """
         raise NotImplementedError("This should be implemented.")
     
     def yield_unit(self):
@@ -99,8 +103,17 @@ class AbstractScraper():
         raise NotImplementedError("This should be implemented.")
 
     def instructions(self):
+        '''
+        List of instruction strings
+        '''
         raise NotImplementedError("This should be implemented.")
 
+    def notes(self):
+        '''
+        List of notes
+        '''
+        raise NotImplementedError("This should be implemented.")
+    
     def links(self):
         invalid_href = ('#', '')
         links_html = self.soup.findAll('a', href=True)

@@ -70,3 +70,5 @@ class BBCGoodFood(AbstractScraper):
             ]
         )
 
+    def notes(self):
+        return []

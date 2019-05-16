@@ -35,7 +35,9 @@ def normalize_string(string):
     )
 
 def parse_ingredients(ing_str):
-    ''' Returns list of tuples (quntity, description) '''
+    '''
+    Returns a list of tuples (quantity, unit, description)
+    '''
     quantity_str = [ ing.split(' ',1)[0] for ing in ing_str ]
     descriptions = [ ing.split(' ',1)[1] for ing in ing_str ]
 
@@ -44,13 +46,16 @@ def parse_ingredients(ing_str):
     for qty, desc in zip(quantity_str, descriptions):
         try:
             q = float(Fraction(qty))
-            ingredients.append((q, desc))
+            ingredients.append((q, None, desc))
         except ValueError:
             q = float(0)
-            ingredients.append( (q, ' '.join([qty, desc])) )
+            ingredients.append( (q, None, ' '.join([qty, desc])) )
     return ingredients
 
 def normalize_instructions(instructions):
+    '''
+    Returns list of strings.
+    '''
     ret = []
 
     for string in instructions:
@@ -66,7 +71,7 @@ def on_exception_return(to_return):
     Still raise some specific errors (as NotImplementedError listed here)
 
     This is needed due to not being able to predict what elements can be missing
-    from the DOM and not being able to foresee all the possible erorrs from bs4
+    from the DOM and not being able to foresee all the possible errors from bs4
     """
     def decorate(decorated_function):
         @wraps(decorated_function)

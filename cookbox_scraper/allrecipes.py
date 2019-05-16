@@ -60,3 +60,6 @@ class AllRecipes(AbstractScraper):
             for instruction in instructions
             ]
         )
+
+    def notes(self):
+        return []

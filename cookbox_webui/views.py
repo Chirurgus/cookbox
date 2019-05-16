@@ -13,7 +13,7 @@ from django.views.generic import (
 
 from dal.autocomplete import Select2QuerySetView
 
-from recipe_scrapers import WebsiteNotImplementedError
+from cookbox_scraper import WebsiteNotImplementedError
 
 from cookbox_core.models import (
     Recipe,
@@ -21,7 +21,7 @@ from cookbox_core.models import (
     TagCategory,
 )
 
-from .scrape import scrape
+from cookbox_scraper import scrape
 
 from .forms import (
     RecipeCompleteForm,
