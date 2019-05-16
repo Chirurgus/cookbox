@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cookbox_scraper.allrecipes import AllRecipes
+from cookbox_scraper.bbcfood import BBCFood
 
 from . import RecipeScraperTestMixin
 

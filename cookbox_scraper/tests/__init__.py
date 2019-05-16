@@ -11,6 +11,34 @@ class RecipeScraperTestMixin(object):
     self.host = URL of the recipe to be scraped
     self.name = Name of the recipe
     etc.
+    To make this easier you can use the following code to generate
+    the code needed to fill out this information.
+    This was done for the BBCFood test
+
+    from cookbox_scraper import scrape_me
+    s = scrape_me("https://thewoksoflife.com/kung-pao-chicken/")
+    code = '''self.url = '{url}'
+    self.host = '{host}'
+    self.title = '{title}'
+    self.description = '{description}'
+    self.time = {time}
+    self.yield_unit = '{yield_unit}'
+    self.yields = {yields}
+    self.ingredients = {ingredients}
+    self.instructions = {instructions}
+    self.notes = {notes}'''.format(
+        url=s.url,
+        host=s.host(),
+        title=s.title(),
+        description=s.description(),
+        time=s.time(),
+        yield_unit=s.yield_unit(),
+        yields=s.yields(),
+        ingredients=s.ingredients(),
+        instructions=s.instructions(),
+        notes=s.notes()
+    )
+    print(code)
     """
     def setUp(self):
         self.scraper = scrape_me(self.url)
