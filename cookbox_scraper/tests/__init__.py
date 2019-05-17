@@ -16,7 +16,7 @@ class RecipeScraperTestMixin(object):
     This was done for the BBCFood test
 
     from cookbox_scraper import scrape_me
-    s = scrape_me("https://thewoksoflife.com/kung-pao-chicken/")
+    s = scrape_me("https://thewoksoflife.com/mongolian-beef-recipe/")
     code = '''self.url = '{url}'
     self.host = '{host}'
     self.title = '{title}'
