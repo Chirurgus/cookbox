@@ -10,7 +10,7 @@ from ._utils import (
 
 class EasyRecipeScraperMixin(object):
     '''
-    EasyRecipe is a plugin for Wordpress that takes care of formating
+    EasyRecipe is a plugin for Wordpress that takes care of formatting
     recipes. This class should be used to scrap recipes from blogs
     using this plugin. Just inherit form this, THEN from AbstractScraper.
     ''' 

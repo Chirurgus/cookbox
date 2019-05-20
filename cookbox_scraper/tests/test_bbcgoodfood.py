@@ -5,7 +5,7 @@ from cookbox_scraper.allrecipes import AllRecipes
 from . import RecipeScraperTestMixin
 
 
-class TestBBCFoodScraper(RecipeScraperTestMixin, TestCase):
+class TestBBCGoodFoodScraper(RecipeScraperTestMixin, TestCase):
     def setUp(self):
         self.url = 'https://www.bbcgoodfood.com/recipes/spiced-halloumi-pineapple-burger-zingy-slaw'
         self.host = 'bbcgoodfood.com'
