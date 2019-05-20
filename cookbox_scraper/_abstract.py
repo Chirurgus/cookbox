@@ -18,36 +18,6 @@ COOKIES = {
 
 
 class AbstractScraper():
-
-    def __getattribute__(self, name):
-        """
-        Decorate custom methods to handle exceptions as we want and as we
-        specify in the "on_exception_return" method decorator
-
-        Do not do this META-decorating on testing so to have better traceback
-        """
-        if not object.__getattribute__(self, 'testing_mode'):
-            to_return = None
-            decorated_methods = [
-                'title',
-                'total_time',
-                'instructions',
-                'ingredients',
-                'links'
-            ]
-            if name in decorated_methods:
-                to_return = ''
-            if name == 'total_time':
-                to_return = 0
-            if name == 'ingredients':
-                to_return = []
-            if name == 'links':
-                to_return = []
-            if to_return is not None:
-                return on_exception_return(to_return)(object.__getattribute__(self, name))
-
-        return object.__getattribute__(self, name)
-
     def __init__(self, url, test=False):
         if test:  # when testing, we load a file
             with url:
