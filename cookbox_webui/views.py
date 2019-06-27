@@ -10,6 +10,7 @@ from django.views.generic import (
     UpdateView,
     CreateView,
 )
+from django.core.paginator import Paginator
 
 from dal.autocomplete import Select2QuerySetView
 
@@ -39,9 +40,12 @@ class RecipeList(BaseLoginRequiredMixin, View):
 
     def get(self, request):
         qs = Recipe.objects.all().order_by("-last_modified")
+        paginator = Paginator(qs, 20)
+        page = request.GET.get('page') or 1
+        recipes = paginator.get_page(page)
         return render(request,
                       self.template_name,
-                      {'query_set' : qs })
+                      {'recipes' : recipes })
 
 class RecipeDetail(BaseLoginRequiredMixin, View):
     template_name = 'recipe/detail.html'
