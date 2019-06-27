@@ -6,6 +6,8 @@ from django.forms import (
     inlineformset_factory,
     formset_factory,
     Textarea,
+    CharField,
+    FloatField,
     ModelChoiceField,
     ModelMultipleChoiceField,
 )
@@ -22,6 +24,7 @@ from cookbox_core.models import (
     InstructionNote,
     Tag,
     TagCategory,
+    CHAR_FIELD_MAX_LEN_SHORT
 )
 
 from .nested_form import (
@@ -225,3 +228,9 @@ class RecipeCompleteForm():
                 form.instance = recipe
             valid = form.is_valid() and valid 
         return valid
+
+class SearchForm(Form):
+    name = CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, required=False)
+    source = CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, required=False)
+    max_duration = FloatField(required=False)
+    min_duration = FloatField(required=False)

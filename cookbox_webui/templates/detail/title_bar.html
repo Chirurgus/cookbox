@@ -2,6 +2,7 @@
     <a id="logo" href="{% url 'recipe-list' %}">Cookbox</a>
     {% if user.is_authenticated %}
     <a href="{% url 'recipe-list' %}">Recipes</a>
+    <a href="{% url 'recipe-search' %}">Search</a>
     <a href="{% url 'tag-list' %}">Tags</a>
     <a href="{% url 'recipe-random' %}">Random</a>
     <a href="{% url 'logout' %}">Logged in as: {{ user }} Logout</a>

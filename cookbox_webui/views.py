@@ -27,9 +27,8 @@ from .forms import (
     RecipeCompleteForm,
     TagForm,
     TagCategoryForm,
+    SearchForm,
 )
-
-from .filters import RecipeFilter
 
 
 class BaseLoginRequiredMixin(LoginRequiredMixin):
@@ -39,11 +38,10 @@ class RecipeList(BaseLoginRequiredMixin, View):
     template_name = 'list.html'
 
     def get(self, request):
-        queryset = Recipe.objects.all().order_by("-last_modified")
-        filter = RecipeFilter(request.GET, queryset=queryset)
+        qs = Recipe.objects.all().order_by("-last_modified")
         return render(request,
                       self.template_name,
-                      {'filter' : filter })
+                      {'query_set' : qs })
 
 class RecipeDetail(BaseLoginRequiredMixin, View):
     template_name = 'recipe/detail.html'
@@ -54,6 +52,44 @@ class RecipeDetail(BaseLoginRequiredMixin, View):
         return render(request,
                       self.template_name,
                       { 'recipe' : recipe })
+
+class RecipeSearch(BaseLoginRequiredMixin, View):
+    template_name = 'search.html'
+    
+    def get(self, request):
+        return render(request,
+                      self.template_name,
+                      { 'search_form' : SearchForm() })
+    
+    def post(self, request):
+        search = SearchForm(data= request.POST)
+
+        if search.is_valid():
+            qs = Recipe.objects.all()
+            if not search.cleaned_data['name'] is None:
+                qs = qs.filter(
+                    name__icontains = search.cleaned_data['name']
+                )
+            if not search.cleaned_data['source'] is None:
+                qs = qs.filter(
+                    source__icontains = search.cleaned_data['source']
+                )
+            if not search.cleaned_data['max_duration'] is None:
+                qs = qs.filter(
+                    total_time__lt = search.cleaned_data['max_duration']
+                )
+            if not search.cleaned_data['min_duration'] is None: 
+                qs = qs.filter(
+                    total_time__gt = search.cleaned_data['min_duration']
+                )
+            return render(request,
+                          'list.html',
+                          { 'query_set' : qs })
+        else:
+            return render(request,
+                          self.template_name,
+                          { 'search_form' : search })
+
 
 class RecipeCreate(BaseLoginRequiredMixin, View):
     template_name = 'recipe/edit.html'
