@@ -88,7 +88,8 @@ class RecipeSearch(BaseLoginRequiredMixin, View):
                 )
             return render(request,
                           'list.html',
-                          { 'query_set' : qs })
+                          { 'recipes'       : qs,
+                            'no_pagination' : True })
         else:
             return render(request,
                           self.template_name,

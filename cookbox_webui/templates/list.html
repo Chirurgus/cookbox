@@ -17,7 +17,6 @@
     </a>
 </div>
 
-{# Recipe list #}
 {% for recipe in recipes %}
 <a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
     {% if recipe.image %}
@@ -30,6 +29,8 @@
 </a>
 {% endfor %}
 
+{% if not no_pagination %}
+{# Recipe list #}
 <div class="pagination fill-width">
     <span class="step-links">
         {% if recipes.has_previous %}
@@ -47,6 +48,7 @@
         {% endif %}
     </span>
 </div>
+{% endif %}
 
 {% endblock %}
 
