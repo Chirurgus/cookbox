@@ -93,6 +93,24 @@ class RecipeDeleteViewTest(WebuiBaseTest):
 
         self.assertEqual(response.status_code, 200)
 
+class RecipeSearchViewTest(WebuiBaseTest):
+    def recipe_search_view_200(self):
+        response = self.client.get(reverse('recipe-search'))
+
+        self.assertEqual(response.status_code, 200)
+
+class RandomRecipeViewTest(WebuiBaseTest):
+    def random_recipe_view_200(self):
+        response = self.client.get(reverse('recipe-random'))
+
+        self.assertEqual(response.status_code, 200)
+
+class RecipeSearchRandomViewTest(WebuiBaseTest):
+    def recipe_search_random_view_200(self):
+        response = self.client.get(reverse('recipe-search-random'))
+
+        self.assertEqual(response.status_code, 200)
+
 class TagListViewTest(WebuiBaseTest):
     def test_tag_list_view_200(self):
         response = self.client.get(reverse('tag-list'))
