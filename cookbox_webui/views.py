@@ -320,6 +320,35 @@ class RecipeTagAutocomplete(Select2QuerySetView):
 
         return qs
 
+def recipe_random_search(request):
+    search = SearchForm(data= request.POST)
+
+    if search.is_valid():
+        qs = Recipe.objects.all()
+        if not search.cleaned_data['name'] is None:
+            qs = qs.filter(
+                name__icontains = search.cleaned_data['name']
+            )
+        if not search.cleaned_data['source'] is None:
+            qs = qs.filter(
+                source__icontains = search.cleaned_data['source']
+            )
+        if not search.cleaned_data['max_duration'] is None:
+            qs = qs.filter(
+                total_time__lt = search.cleaned_data['max_duration']
+            )
+        if not search.cleaned_data['min_duration'] is None: 
+            qs = qs.filter(
+                total_time__gt = search.cleaned_data['min_duration']
+            )
+        id = random.choice(qs).id
+        return HttpResponseRedirect(reverse('recipe-detail',
+                                    kwargs= {'pk': id }))
+    else:
+        return render(request,
+                        "search.html",
+                        { 'search_form' : search })
+
 def recipe_random(request):
     ids = Recipe.objects.values_list('id', flat= True)
     rand_id = random.choice(ids)

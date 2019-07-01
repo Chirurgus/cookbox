@@ -18,6 +18,7 @@ from .views import (
     TagCategoryEdit,
     TagCategoryDelete,
     recipe_random,
+    recipe_random_search,
 )
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('', RecipeList.as_view(), name= 'recipe-list'),
     path('<int:pk>/', RecipeDetail.as_view(), name= 'recipe-detail'),
     path('search/', RecipeSearch.as_view(), name='recipe-search'),
+    path('search_random/', recipe_random_search, name='recipe-search-random'),
     path('import/', RecipeImport.as_view(), name= 'recipe-import'),
     path('edit/<int:pk>/', RecipeEdit.as_view(), name= 'recipe-edit'),
     path('create/', RecipeCreate.as_view(), name= 'recipe-create'),

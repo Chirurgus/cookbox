@@ -8,6 +8,7 @@
 <form method="post">
     {% csrf_token %}
     {{ search_form.as_p }}
-    <button type="submit">Search</button>
+    <input type="submit" value="Search"/>
+    <input type="submit" value="I'm feeling lucky" formaction="{% url 'recipe-search-random' %}"/>
 </form>
 {% endblock %}
