@@ -125,7 +125,7 @@ class InstructionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
-
+ 
 class NoteForm(ModelForm):
     class Meta:
         fields = ['text']
@@ -138,7 +138,7 @@ class InstructionNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
         model = InstructionNote
         abstract = False
-
+    
 class IngredientNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
         model = IngredientNote
@@ -162,12 +162,12 @@ class TagCategoryForm(ModelForm):
         model = TagCategory
         fields = ['name']
 
-InstructionFormset = inlineformset_factory(Recipe, Instruction, form= InstructionForm, extra=0)
 IngredientFormset = inlineformset_factory(IngredientGroup, Ingredient, form= IngredientForm, formset= BaseNestedInnerFormSet, extra=0)
 RecipeNoteFormset = inlineformset_factory(Recipe, RecipeNote, form= RecipeNoteForm, extra= 0)
 IngredientNoteFormset = inlineformset_factory(Ingredient, IngredientNote, form= IngredientNoteForm, extra= 0)
 InstructionNoteFormset = inlineformset_factory(Instruction, InstructionNote, form= InstructionNoteForm, extra= 0)
 IngredientGroupFormset = nestedformset_factory(Recipe, IngredientGroup, IngredientFormset, form= IngredientGroupForm, extra= 0)
+InstructionFormset = nestedformset_factory(Recipe, Instruction, InstructionNoteFormset, form= InstructionForm, extra=0)
 
 class RecipeCompleteForm():
     '''
