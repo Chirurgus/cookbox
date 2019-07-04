@@ -128,7 +128,7 @@ class InstructionForm(ModelForm):
  
 class NoteForm(ModelForm):
     class Meta:
-        fields = ['text']
+        fields = ['text', 'image']
         widgets = {
             'text': Textarea(attrs={}),
         }
