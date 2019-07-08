@@ -22,7 +22,7 @@ from cookbox_core.models import (
     TagCategory,
 )
 
-from cookbox_scraper import scrape
+from cookbox_scraper import scrape, supported_hosts
 
 from .forms import (
     RecipeCompleteForm,
@@ -129,7 +129,8 @@ class RecipeImport(BaseLoginRequiredMixin, View):
     def get(self, request):
         return render(request,
                       self.template_name,
-                      {'submit_button_name' : self.submit_button_name})
+                      {'supported_hosts'    : supported_hosts(),
+                       'submit_button_name' : self.submit_button_name})
 
     def post(self, request):
         import_url = request.POST.get(self.submit_button_name, None)
@@ -142,7 +143,8 @@ class RecipeImport(BaseLoginRequiredMixin, View):
         except WebsiteNotImplementedError:
             return render(request,
                       self.template_name,
-                      {'submit_button_name' : self.submit_button_name,
+                      {'supported_hosts'    : supported_hosts(),
+                       'submit_button_name' : self.submit_button_name,
                        'error'              : 'This domain is not supported' })
 
 class RecipeEdit(BaseLoginRequiredMixin, View):

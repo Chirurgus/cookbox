@@ -83,4 +83,11 @@ def scrape(url):
     
     return recipe
 
-__all__ = ['scrape']
+def supported_hosts():
+    '''
+    Returns a list of website hosts (urls)
+    that can be scraped using this utility.
+    '''
+    return [ host for host in SCRAPERS.keys() ]
+
+__all__ = ['scrape', 'supported_hosts']

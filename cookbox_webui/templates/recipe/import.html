@@ -4,6 +4,14 @@
 <h1 class="fill-width">
     Import recipe from a website
 </h1>
+<div class="fill-width">
+    Only the following sites are supported:
+    <ul>
+        {% for host in supported_hosts %}
+        <li>{{ host }}</li>
+        {% endfor %}
+    </ul>
+</div>
 <form method="POST">
     {% csrf_token %}
 
