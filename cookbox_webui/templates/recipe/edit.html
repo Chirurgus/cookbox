@@ -3,14 +3,9 @@
 {% load static %}
 
 {% block scripts %}
-<script src={% static 'cookbox_webui/jquery-3.3.1.min.js' %}></script>
-<script src={% static 'cookbox_webui/html5sortable.min.js' %}></script>
+<script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
+<script src={% static 'cookbox_webui/js/html5sortable.min.js' %}></script>
 <script>
-    // Prompt the user for confirmation before unloading the page.
-    window.onbeforeunload = function() {
-        return true;
-    };
-
     // Prevent ENTER key from submitting the form.
     $(document).on("keypress", 'form', function (e) {
     var code = e.keyCode || e.which;
@@ -50,7 +45,34 @@
             });
         });
     }
-</script>
+
+    function formUnloadPrompt(formSelector) {
+        var formA = $(formSelector).serialize(), formB, formSubmit = false;
+
+        // Detect Form Submit
+        $(formSelector).submit( function(){
+            formSubmit = true;
+        });
+
+        // Handle Form Unload    
+        window.onbeforeunload = function(){
+            if (formSubmit) return;
+            formB = $(formSelector).serialize();
+            if (formA != formB) return "Your changes have not been saved.";
+        };
+
+        // Enable & Disable Submit Button
+        var formToggleSubmit = function(){
+            formB = $(formSelector).serialize();
+            $(formSelector+' [type="submit"]').attr( "disabled", formA == formB);
+        };
+
+        formToggleSubmit();
+        $(formSelector).change(formToggleSubmit);
+        $(formSelector).keyup(formToggleSubmit);
+    }
+
+    </script>
 {% endblock %}
 
 
@@ -80,8 +102,17 @@
     {% endfor %}
     <button type="submit">Save</button>
 </form>
+
+<script>
+    // Call function on DOM Ready:
+    $(document).ready(function() {
+        formUnloadPrompt('form');
+    });
+
+</script>
+{{ form.forms.recipe_form.media }}
+
 {% endblock %}
 
 {% block footer %}
-{{ form.forms.recipe_form.media }}
 {% endblock %}

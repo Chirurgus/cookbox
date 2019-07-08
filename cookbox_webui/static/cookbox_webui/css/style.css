@@ -195,6 +195,10 @@ input[type=number] {
     max-width: 5em;
 }
 
+input[type=file] {
+    max-width: 10em;
+}
+
 input[type=checkbox] {
     max-width: 1em;
     max-height: 1em;
