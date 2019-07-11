@@ -46,7 +46,7 @@ class WoksOfLife(RecipeMakerScraperMixin, EasyRecipeScraperMixin, AbstractScrape
 
     def time(self):
         if self.old_recipe:
-            return EasyRecipeScraperMixin.time(self)
+            return Ewprm-recipe-group-nammasyRecipeScraperMixin.time(self)
         else:
             return RecipeMakerScraperMixin.time(self)
 

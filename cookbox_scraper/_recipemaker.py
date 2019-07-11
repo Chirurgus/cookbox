@@ -79,15 +79,25 @@ class RecipeMakerScraperMixin(object):
         # Initialize empty ingredient group list
         group_list = []
 
+        # Look for all ingredient group containers
         group_containers = ingredients_container.findAll('div', class_='wprm-recipe-ingredient-group')
+        # Check if there are any ingredients groups
+        # If not we just put all ingredients into
         for group_container in group_containers:
-            ingredient_group_name = group_container.find('h4', class_='wprm-recipe-group-name').get_text()
+            group_name_container = group_container.find('h4', class_='wprm-recipe-group-name')
+            if group_name_container:
+                ingredient_group_name = group_container.get_text()
+            else:
+                ingredient_group_name = 'All'
 
             ingredient_list = []
             ingredient_containers = group_container.findAll('li', class_='wprm-recipe-ingredient')
             for ingredient in ingredient_containers:
                 quantity = ingredient.find('span', class_='wprm-recipe-ingredient-amount').get_text()
-                unit =  ingredient.find('span', class_='wprm-recipe-ingredient-unit').get_text()
+
+                unit_container = ingredient.find('span', class_='wprm-recipe-ingredient-unit')
+                unit =  unit_container.get_text() if unit_container else None
+
                 description = ingredient.find('span', class_='wprm-recipe-ingredient-name').get_text()
 
                 notes_container = ingredient.find('span', class_='wprm-recipe-ingredient-notes')

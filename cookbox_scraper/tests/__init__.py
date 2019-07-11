@@ -16,13 +16,13 @@ class RecipeScraperTestMixin(object):
     Just replace the url with one form website you're testing.
 
     from cookbox_scraper import scrape_me
-    s = scrape_me("https://www.marmiton.org/recettes/recette_tarte-aux-brocolis-et-a-la-poudre-d-amandes_23418.aspx")
-    code = '''self.url = '{url}'
-    self.host = '{host}'
-    self.title = '{title}'
-    self.description = '{description}'
+    s = scrape_me("https://thewoksoflife.com/mongolian-beef-recipe/")
+    code = '''self.url = "{url}"
+    self.host = "{host}"
+    self.title = "{title}"
+    self.description = "{description}"
     self.time = {time}
-    self.yield_unit = '{yield_unit}'
+    self.yield_unit = "{yield_unit}"
     self.yields = {yields}
     self.ingredients = {ingredients}
     self.instructions = {instructions}
