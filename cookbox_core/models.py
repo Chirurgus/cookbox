@@ -11,9 +11,27 @@ DECIMAL_FIELD_MAX_DIGITS = 12
 DECIMAL_FIELD_DPLACES = 2
 
 class Recipe(models.Model):
+    SEC = "sec."
+    MIN = "min."
+    HRS = "hrs."
+    DAYS = "days"
+    WEEKS = "weeks"
+    MONTH = "months"
+    YEAR = "years"
+
+    TIME_UNITS = (
+        (SEC, 'seconds'),
+        (MIN, 'minutes'),
+        (HRS, 'hours'),
+        (DAYS, 'days'),
+        (WEEKS, 'weeks'),
+        (MONTH, 'month'),
+        (YEAR,  'years'),
+    )
+
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default= "")
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN_LONG, default= "")
-    unit_time = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM)
+    unit_time = models.CharField(max_length=6, choices=TIME_UNITS, default=MIN)
     total_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
     cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
