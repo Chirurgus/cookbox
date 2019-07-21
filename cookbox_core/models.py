@@ -31,7 +31,7 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default= "")
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN_LONG, default= "")
-    unit_time = models.CharField(max_length=6, choices=TIME_UNITS, default=MIN)
+    unit_time = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, choices=TIME_UNITS, default=MIN)
     total_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES)
     preparation_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
     cook_time = models.DecimalField(max_digits=DECIMAL_FIELD_MAX_DIGITS,decimal_places=DECIMAL_FIELD_DPLACES, null= True, blank= True)
