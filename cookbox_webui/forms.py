@@ -224,7 +224,8 @@ class RecipeCompleteForm():
         valid = True
         recipe = self.forms[self.RECIPE_FORM].save(commit= False)
         for key, form in self.forms.items():
-            # Why am I assigning recipe here?
+            # Set the form(set) instance
+            # so that .is_valid method can do its validation
             if not form.instance:
                 form.instance = recipe
             valid = form.is_valid() and valid 

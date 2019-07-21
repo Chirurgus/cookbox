@@ -4,7 +4,7 @@
 {% load imagekit %}
 
 {% block scripts %}
-<script src={% static 'cookbox_webui/jquery-3.3.1.min.js' %}></script>
+<script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
 {% endblock %}
 
 {% block content %}
@@ -75,6 +75,17 @@
                 {% for ingredient in ingredient_group.ingredients.all %}
                     <li>
                         <span class="ing-qty">{{ ingredient.quantity }}</span> {{ ingredient.unit }} {{ ingredient.description }}
+                        <ul>
+                            {% for note in ingredient.notes.all %}
+                            <li>
+                                <small>{{ note.text }}</small>
+                                {% if note.image %}
+                                {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                                <img style="max-height: 6em;max-width: 9em;" src="{{ note_th.url }}">
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </li>
                 {% endfor %}
             </ul>
@@ -89,7 +100,20 @@
     <h1>Instructions</h1>
     <ol>
         {% for instruction in recipe.instructions.all %}
-        <li>{{ instruction.instruction }}</li>
+        <li>
+            {{ instruction.instruction }}
+            <ul>
+                {% for note in instruction.notes.all %}
+                <li>
+                    <small>{{ note.text }}</small>
+                    {% if note.image %}
+                    {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                    <img style="max-height: 6em;max-width: 9em;" src="{{ note_th.url }}">
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
         {% empty %}
         No instructions, yet.
         {% endfor %}
@@ -100,7 +124,13 @@
     <h1>Notes</h1>
     <ul>
         {% for note in recipe.notes.all %}
-        <li>{{ note.text }}</li>
+        <li>
+            {{ note.text }}
+            {% if note.image %}
+            {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+            <img style="max-height: 6em;max-width: 9em;" src="{{ note_th.url }}">
+            {% endif %}
+        </li>
         {% empty %}
         No notes, yet.
         {% endfor %}
