@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recipe',
             name='unit_time',
-            field=models.CharField(choices=[('sec.', 'seconds'), ('min.', 'minutes'), ('hrs.', 'hours'), ('days', 'days'), ('weeks', 'weeks'), ('months', 'month'), ('years', 'years')], default='min.', max_length=6),
+            field=models.CharField(choices=[('sec.', 'seconds'), ('min.', 'minutes'), ('hrs.', 'hours'), ('days', 'days'), ('weeks', 'weeks'), ('months', 'month'), ('years', 'years')], default='min.', max_length=126),
         ),
     ]
