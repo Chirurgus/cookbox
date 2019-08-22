@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load imagekit %}
+
+
+{% block  content %}
+<div class="fill-width">
+    <h1>Glossary</h1>
+
+    {# Add/Import recipe buttons #}
+    <a href="{% url 'glossary-entry-create' %}">
+        Add new entry
+    </a>
+</div>
+
+{% for entry in glossary %}
+<a href="{% url 'glossary-entry' entry.pk %}">
+    <div>
+        <p>{{ entry.title }}</p>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}

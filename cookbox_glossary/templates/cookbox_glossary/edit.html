@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block  content %}
+<div class="fill-width">
+    <h1>{{ entry.name }}</h1>
+    <a href="{% url 'glossary-entry-delete' entry.pk %}">
+        delete
+    </a>
+</div>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    {{ form }}
+    <input type="submit" value="Update">
+</form>
+
+{{ form.media }}
+{% endblock %}

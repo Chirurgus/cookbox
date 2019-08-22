@@ -21,11 +21,15 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 from cookbox_webui import urls as WebUI_urls
 from cookbox_admin import urls as Admin_urls
+from cookbox_glossary import urls as Glossary_urls
 
 
 urlpatterns = [
     path('', include(WebUI_urls)),
     path('admin/', include(Admin_urls)),
+    path('glossary/', include(Glossary_urls)),
+    # Load urls for 
+    path('markdownx/', include('markdownx.urls')),
 ]
 
 # If DEBUG is True, then serve media files from here
