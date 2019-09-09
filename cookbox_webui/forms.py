@@ -10,10 +10,8 @@ from django.forms import (
     ModelMultipleChoiceField,
 )
 
-from django_superform import (
-    SuperModelForm,
-    InlineFormSetField,
-)
+from django_superform.forms import SuperModelFormMixin
+from django_superform import InlineFormSetField
 
 from dal.autocomplete import ModelSelect2Multiple
 
@@ -42,24 +40,36 @@ class InstructionNoteForm(NoteForm):
         model = InstructionNote
         abstract = False
 
-InstructionNoteFormset = modelformset_factory(model=InstructionNoteForm.Meta.model, form=InstructionNoteForm)
+InstructionNoteFormset = inlineformset_factory(
+    parent_model=Instruction,
+    model=InstructionNoteForm.Meta.model,
+    form=InstructionNoteForm
+    )
 
 class IngredientNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
         model = IngredientNote
         abstract = False
 
-IngredientNoteFormset = modelformset_factory(model=IngredientNoteForm.Meta.model, form=IngredientNoteForm)
+IngredientNoteFormset = inlineformset_factory(
+    parent_model=Ingredient,
+    model=IngredientNoteForm.Meta.model,
+    form=IngredientNoteForm
+    )
 
 class RecipeNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
         model = RecipeNote
         abstract = False
 
-RecipeNoteFormset = modelformset_factory(model=RecipeNoteForm.Meta.model, form=RecipeNoteForm)
+RecipeNoteFormset = inlineformset_factory(
+    parent_model=Recipe,
+    model=RecipeNoteForm.Meta.model,
+    form=RecipeNoteForm
+    )
 
-class IngredientForm(SuperModelForm):
-    notes = InlineFormSetField(formset_class= IngredientNoteFormset)
+class IngredientForm(SuperModelFormMixin, ModelForm):
+    notes = InlineFormSetField(formset_class=IngredientNoteFormset)
 
     class Meta:
         model = Ingredient
@@ -72,9 +82,13 @@ class IngredientForm(SuperModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
-IngredientFormset = modelformset_factory(model=IngredientForm.Meta.model, form=IngredientForm)
+IngredientFormset = inlineformset_factory(
+    parent_model=IngredientGroup,
+    model=IngredientForm.Meta.model,
+    form=IngredientForm
+    )
 
-class IngredientGroupForm(SuperModelForm):
+class IngredientGroupForm(SuperModelFormMixin, ModelForm):
     ingredients = InlineFormSetField(formset_class= IngredientFormset)
 
     class Meta:
@@ -88,9 +102,13 @@ class IngredientGroupForm(SuperModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
-IngredientGroupFormset = modelformset_factory(model=IngredientGroupForm.Meta.model, form=IngredientGroupForm)
+IngredientGroupFormset = inlineformset_factory(
+    parent_model=Recipe, 
+    model=IngredientGroupForm.Meta.model,
+    form=IngredientGroupForm
+    )
 
-class InstructionForm(SuperModelForm):
+class InstructionForm(SuperModelFormMixin, ModelForm):
     notes = InlineFormSetField(formset_class= InstructionNoteFormset)
 
     class Meta:
@@ -104,7 +122,11 @@ class InstructionForm(SuperModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
-InstructionFormset = modelformset_factory(model=InstructionForm.Meta.model, form=InstructionForm)
+InstructionFormset = inlineformset_factory(
+    parent_model=Recipe,
+    model=InstructionForm.Meta.model,
+    form=InstructionForm
+    )
 
 class TagForm(ModelForm):
     category = ModelChoiceField(queryset= TagCategory.objects.all(),
@@ -119,7 +141,7 @@ class TagCategoryForm(ModelForm):
         model = TagCategory
         fields = ['name']
 
-class RecipeForm(SuperModelForm):
+class RecipeForm(SuperModelFormMixin, ModelForm):
     ingredient_groups = InlineFormSetField(formset_class= IngredientGroupFormset)
     instructions = InlineFormSetField(formset_class= InstructionFormset)
     notes = InlineFormSetField(formset_class= RecipeNoteFormset)
