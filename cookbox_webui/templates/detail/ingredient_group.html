@@ -1,0 +1,11 @@
+<fieldset class="ingredient_group">
+    {% include 'detail/inline_field.html' with field=ing_grp.name %}
+    <ol>
+        {% for ing in ing_grp.ingredients %}
+        <li>
+            {% include 'detail/ingredient.html' with ingredient=ing %}
+        </li>
+        {% endfor %}
+    </ol>
+    <button>Add ingredient</button>
+</fieldset>

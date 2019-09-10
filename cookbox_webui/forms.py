@@ -30,9 +30,11 @@ from cookbox_core.models import (
 class NoteForm(ModelForm):
     class Meta:
         fields = ['text']
+        '''
         widgets = {
             'text': Textarea(attrs={}),
         }
+        '''
         abstract = True
 
 class InstructionNoteForm(NoteForm):
@@ -43,7 +45,8 @@ class InstructionNoteForm(NoteForm):
 InstructionNoteFormset = inlineformset_factory(
     parent_model=Instruction,
     model=InstructionNoteForm.Meta.model,
-    form=InstructionNoteForm
+    form=InstructionNoteForm,
+    extra=0
     )
 
 class IngredientNoteForm(NoteForm):
@@ -54,7 +57,8 @@ class IngredientNoteForm(NoteForm):
 IngredientNoteFormset = inlineformset_factory(
     parent_model=Ingredient,
     model=IngredientNoteForm.Meta.model,
-    form=IngredientNoteForm
+    form=IngredientNoteForm,
+    extra=1
     )
 
 class RecipeNoteForm(NoteForm):
@@ -65,7 +69,8 @@ class RecipeNoteForm(NoteForm):
 RecipeNoteFormset = inlineformset_factory(
     parent_model=Recipe,
     model=RecipeNoteForm.Meta.model,
-    form=RecipeNoteForm
+    form=RecipeNoteForm,
+    extra=0
     )
 
 class IngredientForm(SuperModelFormMixin, ModelForm):
@@ -74,9 +79,11 @@ class IngredientForm(SuperModelFormMixin, ModelForm):
     class Meta:
         model = Ingredient
         fields = ['position', 'quantity', 'unit', 'description']
+        '''
         widgets = {
             'description': Textarea(attrs={}),
         }
+        '''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,7 +92,8 @@ class IngredientForm(SuperModelFormMixin, ModelForm):
 IngredientFormset = inlineformset_factory(
     parent_model=IngredientGroup,
     model=IngredientForm.Meta.model,
-    form=IngredientForm
+    form=IngredientForm,
+    extra=0
     )
 
 class IngredientGroupForm(SuperModelFormMixin, ModelForm):
@@ -94,9 +102,11 @@ class IngredientGroupForm(SuperModelFormMixin, ModelForm):
     class Meta:
         model = IngredientGroup
         fields = ['position', 'name']
+        '''
         widgets = {
             'name': Textarea(attrs={}),
         }
+        '''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -105,7 +115,8 @@ class IngredientGroupForm(SuperModelFormMixin, ModelForm):
 IngredientGroupFormset = inlineformset_factory(
     parent_model=Recipe, 
     model=IngredientGroupForm.Meta.model,
-    form=IngredientGroupForm
+    form=IngredientGroupForm,
+    extra=0
     )
 
 class InstructionForm(SuperModelFormMixin, ModelForm):
@@ -114,9 +125,11 @@ class InstructionForm(SuperModelFormMixin, ModelForm):
     class Meta:
         model = Instruction
         fields = ['position', 'instruction']
+        '''
         widgets = {
             'instruction': Textarea(attrs={}),
         }
+        '''
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -125,7 +138,8 @@ class InstructionForm(SuperModelFormMixin, ModelForm):
 InstructionFormset = inlineformset_factory(
     parent_model=Recipe,
     model=InstructionForm.Meta.model,
-    form=InstructionForm
+    form=InstructionForm,
+    extra=0
     )
 
 class TagForm(ModelForm):
@@ -172,6 +186,11 @@ class RecipeForm(SuperModelFormMixin, ModelForm):
         Gets called automatically from save(commit=True) method.
         '''
         self.instance.tags.set(self.cleaned_data['tags'])
+    
+    class Media:
+        css = {
+            'all' : ('cookbox_webui/css/recipe_form.css',)
+        }
         
     class Meta:
         model = Recipe
@@ -195,7 +214,7 @@ class RecipeForm(SuperModelFormMixin, ModelForm):
             'unit_yield': 'Yield measurement unit',
         }
         widgets = {
-            'name': Textarea(attrs={}),
+            #'name': Textarea(attrs={}),
             'description': Textarea(attrs={}),
-            'source': Textarea(attrs={}),
+            #'source': Textarea(attrs={}),
         }

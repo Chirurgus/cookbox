@@ -1,0 +1,16 @@
+<div class=ingedient-form>
+<span>{% include 'detail/inline_field.html' with field=ingredient.position %}</span>
+<span>{% include 'detail/inline_field.html' with field=ingredient.quantity %}</span>
+<span>{% include 'detail/inline_field.html' with field=ingredient.unit %}</span>
+<span>{% include 'detail/inline_field.html' with field=ingredient.description %}</span>
+<span>{% include 'detail/inline_field.html' with field=ingredient.DELETE %}</span>
+<button>Add note</button>
+</div>
+<ul class=nested-notes>
+{% for note in ingredient.notes %}
+    <li>
+        {% include 'detail/note.html' with note=note %}
+    </li>
+{% endfor %}
+</ul>
+

@@ -1,0 +1,7 @@
+{# Renders an inline form in one line, without the labels #}
+{# Expects variables: form = inlineform to be rendered #}
+
+{% for field in form.visible_fields %}
+{% include 'detail/inline_field.html' with field=field %}
+{% endfor %}
+

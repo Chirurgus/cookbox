@@ -1,0 +1,13 @@
+<div class=ingedient-form>
+<span>{% include 'detail/inline_field.html' with field=instruction.position %}</span>
+<span>{% include 'detail/inline_field.html' with field=instruction.instruction %}</span>
+<span>{% include 'detail/inline_field.html' with field=instruction.DELETE %}</span>
+<button>Add note</button>
+</div>
+<ul class=nested-notes>
+{% for note in instruction.notes %}
+    <li>
+        {% include 'detail/note.html' with note=note %}
+    </li>
+{% endfor %}
+</ul>
