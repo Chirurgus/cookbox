@@ -87,18 +87,19 @@
       {{ hidden_field }}
     {% endfor %}
  
-   
-    <ol>{% include 'detail/input.html' with field=form.name %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.description %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.unit_time %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.total_time %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.preparation_time %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.cook_time %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.unit_yield %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.serving_size %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.source %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.image %} </ol>
-    <ol>{% include 'detail/input.html' with field=form.tags %} </ol>
+    <ol>
+        <li>{% include 'detail/input.html' with field=form.name %} </li>
+        <li>{% include 'detail/input.html' with field=form.description %} </li>
+        <li>{% include 'detail/input.html' with field=form.unit_time %} </li>
+        <li>{% include 'detail/input.html' with field=form.total_time %} </li>
+        <li>{% include 'detail/input.html' with field=form.preparation_time %} </li>
+        <li>{% include 'detail/input.html' with field=form.cook_time %} </li>
+        <li>{% include 'detail/input.html' with field=form.unit_yield %} </li>
+        <li>{% include 'detail/input.html' with field=form.serving_size %} </li>
+        <li>{% include 'detail/input.html' with field=form.source %} </li>
+        <li>{% include 'detail/input.html' with field=form.image %} </li>
+        <li>{% include 'detail/input.html' with field=form.tags %} </li>
+    </ol>
 
     <fieldset>
         <legend>Ingredients</legend>
