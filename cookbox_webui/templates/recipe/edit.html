@@ -3,9 +3,10 @@
 {% load static %}
 
 {% block scripts %}
-<script src={% static 'cookbox_webui/jquery-3.3.1.min.js' %}></script>
-<script src={% static 'cookbox_webui/html5sortable.min.js' %}></script>
+<script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
+<script src={% static 'cookbox_webui/js/html5sortable.min.js' %}></script>
 <script>
+    /*
     // Prompt the user for confirmation before unloading the page.
     window.onbeforeunload = function() {
         return true;
@@ -50,7 +51,9 @@
             });
         });
     }
+    */
 </script>
+{{ form.media }}
 {% endblock %}
 
 
@@ -103,6 +106,7 @@
 
     <fieldset>
         <legend>Ingredients</legend>
+        {{ form.formsets.ingredient_groups.management_form }}
         <ul>
         {% for ing_grp in form.ingredient_groups %}
             <li>
@@ -115,6 +119,7 @@
 
     <fieldset>
         <legend>Instructions</legend>
+        {{ form.formsets.instructions.management_form }}
         <ul>
         {% for instruction in form.instructions %}
             <li>
@@ -127,6 +132,7 @@
 
     <fieldset>
         <legend>Notes</legend>
+        {{ form.formsets.notes.management_form }}
         <ul class="recipe-notes">
         {% for note in form.notes %}
             <li>
@@ -139,9 +145,8 @@
 
     <button type="submit">Save</button>
 </form>
-
-{{ form.media }}
 {% endblock %}
+
 
 {% block footer %}
 {% endblock %}

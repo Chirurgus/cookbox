@@ -121,8 +121,9 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
         recipe = get_object_or_404(Recipe, pk=pk)
 
         form = RecipeForm(data= request.POST,
-                                  files= request.FILES,
-                                  instance= recipe)
+                                files= request.FILES,
+                                instance= recipe)
+    
 
         if form.is_valid():
             form.save()
@@ -131,9 +132,9 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
                         kwargs= {'pk': pk}))
         else:
             return render(request,
-                          self.template_name,
-                          {'recipe'  : recipe,
-                           'form'    : form })
+                        self.template_name,
+                        {'recipe'  : recipe,
+                        'form'    : form })
 
 class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe

@@ -76,6 +76,10 @@ RecipeNoteFormset = inlineformset_factory(
 class IngredientForm(SuperModelFormMixin, ModelForm):
     notes = InlineFormSetField(formset_class=IngredientNoteFormset)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['position'].widget.attrs.update(tabindex=-1)
+
     class Meta:
         model = Ingredient
         fields = ['position', 'quantity', 'unit', 'description']
@@ -84,10 +88,6 @@ class IngredientForm(SuperModelFormMixin, ModelForm):
             'description': Textarea(attrs={}),
         }
         '''
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['position'].widget.attrs.update(tabindex=-1)
 
 IngredientFormset = inlineformset_factory(
     parent_model=IngredientGroup,
@@ -189,8 +189,13 @@ class RecipeForm(SuperModelFormMixin, ModelForm):
     
     class Media:
         css = {
-            'all' : ('cookbox_webui/css/recipe_form.css',)
+            'all' : (
+                'cookbox_webui/css/recipe_form.css',
+            )
         }
+        js = (
+            'cookbox_webui/js/recipe_form.js',
+        )
         
     class Meta:
         model = Recipe
