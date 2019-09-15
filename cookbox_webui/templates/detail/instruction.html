@@ -1,16 +1,21 @@
-<div class=ingedient-form>
-<span>{% include 'detail/inline_field.html' with field=instruction.position %}</span>
-<span>{% include 'detail/inline_field.html' with field=instruction.instruction %}</span>
-<span>{% include 'detail/inline_field.html' with field=instruction.DELETE %}</span>
-<button>Add note</button>
+<div class=instruction-form>
+    <span>{% include 'detail/inline_field.html' with field=instruction.position %}</span>
+    <span>{% include 'detail/inline_field.html' with field=instruction.instruction %}</span>
+    <span>{% include 'detail/inline_field.html' with field=instruction.DELETE %}</span>
+    <button type="button" onclick="add_inline_form('{{ instruction.formsets.notes.prefix }}')">
+        Add note
+    </button>
 </div>
 <div>
     {{ instruction.formsets.notes.management_form }}
-    <ul class=nested-notes>
+    <ul id="{{ instruction.formsets.notes.prefix }}" class="nested-notes">
     {% for note in instruction.notes %}
         <li>
             {% include 'detail/note.html' with note=note %}
         </li>
     {% endfor %}
     </ul>
+    <div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
+        {% include 'detail/inline_form.html' with form=instruction.formsets.notes.empty_form %}
+    </div>
 </div>
