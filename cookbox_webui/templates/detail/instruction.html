@@ -1,4 +1,7 @@
 <div class=instruction-form>
+    {% for hidden in instruction.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
     <span>{% include 'detail/inline_field.html' with field=instruction.position %}</span>
     <span>{% include 'detail/inline_field.html' with field=instruction.instruction %}</span>
     <span>{% include 'detail/inline_field.html' with field=instruction.DELETE %}</span>

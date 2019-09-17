@@ -1,8 +1,12 @@
 <fieldset class="ingredient_group">
+    {% for hidden in ing_grp.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    {% include 'detail/inline_field.html' with field=ing_grp.position %}
     {% include 'detail/inline_field.html' with field=ing_grp.name %}
 
-
     {{ ing_grp.formsets.ingredients.management_form }}
+
     <ol id="{{ ing_grp.formsets.ingredients.prefix }}">
         {% for ing in ing_grp.ingredients %}
         <li>

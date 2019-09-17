@@ -1,4 +1,7 @@
 <div class=ingedient-form>
+    {% for hidden in ingredient.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
     <span>{% include 'detail/inline_field.html' with field=ingredient.position %}</span>
     <span>{% include 'detail/inline_field.html' with field=ingredient.quantity %}</span>
     <span>{% include 'detail/inline_field.html' with field=ingredient.unit %}</span>
