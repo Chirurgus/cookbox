@@ -75,6 +75,11 @@
                 {% for ingredient in ingredient_group.ingredients.all %}
                     <li>
                         <span class="ing-qty">{{ ingredient.quantity }}</span> {{ ingredient.unit }} {{ ingredient.description }}
+                        <ul>
+                            {% for note in ingredient.notes.all %}
+                                <li>{{ note.text }}</li>
+                            {% endfor %}
+                        </ul>
                     </li>
                 {% endfor %}
             </ul>
@@ -89,7 +94,14 @@
     <h1>Instructions</h1>
     <ol>
         {% for instruction in recipe.instructions.all %}
-        <li>{{ instruction.instruction }}</li>
+        <li>
+            {{ instruction.instruction }}
+            <ul>
+                {% for note in instruction.notes.all %}
+                    <li>{{ note.text }}</li>
+                {% endfor %}
+            </ul>
+        </li>
         {% empty %}
         No instructions, yet.
         {% endfor %}
