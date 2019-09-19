@@ -108,40 +108,55 @@
     <fieldset>
         <legend>Ingredients</legend>
         {{ form.formsets.ingredient_groups.management_form }}
-        <ul>
+        <ul id="{{ form.formsets.ingredient_groups.prefix }}" class="ingredient_groups">
         {% for ing_grp in form.ingredient_groups %}
             <li>
                 {% include 'detail/ingredient_group.html' with ing_grp=ing_grp %}
             </li>
         {% endfor %}
         </ul>
-        <button>Add group</button>
+        <button type="button" onclick="add_inline_form('{{ form.formsets.ingredient_groups.prefix }}')">
+            Add group
+        </button>
+        <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ingredient-groups-empty hide">
+            {% include 'detail/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form %}
+        </div>
     </fieldset>
 
     <fieldset>
         <legend>Instructions</legend>
         {{ form.formsets.instructions.management_form }}
-        <ul>
+        <ul id="{{ form.formsets.instructions.prefix }}" class="instructions">
         {% for instruction in form.instructions %}
             <li>
                 {% include 'detail/instruction.html' with instruction=instruction %}
             </li>
         {% endfor %}
         </ul>
-        <button>Add step</button>
+        <button type="button" onclick="add_inline_form('{{ form.formsets.instructions.prefix }}')">
+            Add instruction
+        </button>
+        <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="instructions-empty hide">
+            {% include 'detail/instruction.html' with instruction=form.formsets.instructions.empty_form %}
+        </div>
     </fieldset>
 
     <fieldset>
         <legend>Notes</legend>
         {{ form.formsets.notes.management_form }}
-        <ul class="recipe-notes">
+        <ul id="{{ form.formsets.notes.prefix }}" class="notes">
         {% for note in form.notes %}
             <li>
                 {% include 'detail/note.html' with note=note %}
             </li>
         {% endfor %}
         </ul>
-        <button>Add note</button>
+        <button type="button" onclick="add_inline_form('{{ form.formsets.notes.prefix }}')">
+            Add note
+        </button>
+        <div id="{{ form.formsets.notes.prefix }}_empty_form" class="notes-empty hide">
+            {% include 'detail/note.html' with note=form.formsets.notes.empty_form %}
+        </div>
     </fieldset>
 
     <button type="submit">Save</button>

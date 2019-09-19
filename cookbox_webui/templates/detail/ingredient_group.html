@@ -18,6 +18,6 @@
         Add ingredient
     </button>
     <div id="{{ ing_grp.formsets.ingredients.prefix }}_empty_form" class="hide">
-        {% include 'detail/inline_form.html' with form=ing_grp.formsets.ingredients.empty_form %}
+        {% include 'detail/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form %}
     </div>
 </fieldset>

@@ -19,6 +19,6 @@
     {% endfor %}
     </ul>
     <div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
-        {% include 'detail/inline_form.html' with form=instruction.formsets.notes.empty_form %}
+        {% include 'detail/note.html' with note=instruction.formsets.notes.empty_form %}
     </div>
 </div>

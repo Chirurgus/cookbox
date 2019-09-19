@@ -21,6 +21,6 @@
     {% endfor %}
     </ul>
     <div id="{{ ingredient.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
-        {% include 'detail/inline_form.html' with form=ingredient.formsets.notes.empty_form %}
+        {% include 'detail/note.html' with note=ingredient.formsets.notes.empty_form %}
     </div>
 </div>
