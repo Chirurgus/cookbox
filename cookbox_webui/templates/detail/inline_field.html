@@ -1,0 +1,15 @@
+{# Renders a inline field, i.e. field that takes up only one line #}
+{# Expects variables: field = field to be rendered in this line #}
+
+{% if field.errors %}
+    <ul>
+    {% for error in field.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{{ field }}
+{% if field.help_text %}
+    {{ field.help_text }}
+{% endif %}
+

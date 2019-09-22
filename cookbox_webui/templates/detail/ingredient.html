@@ -1,0 +1,26 @@
+<div class=ingedient-form>
+    {% for hidden in ingredient.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <span>{% include 'detail/inline_field.html' with field=ingredient.position %}</span>
+    <span>{% include 'detail/inline_field.html' with field=ingredient.quantity %}</span>
+    <span>{% include 'detail/inline_field.html' with field=ingredient.unit %}</span>
+    <span>{% include 'detail/inline_field.html' with field=ingredient.description %}</span>
+    <span>{% include 'detail/inline_field.html' with field=ingredient.DELETE %}</span>
+    <button type="button" onclick="add_inline_form('{{ ingredient.formsets.notes.prefix }}', '{{ ingredient.formsets.notes.empty_form_prefix }}')">
+        Add note
+    </button>
+</div>
+<div>
+    {{ ingredient.formsets.notes.management_form }}
+    <ul id="{{ ingredient.formsets.notes.prefix }}" class="nested-notes">
+    {% for note in ingredient.notes %}
+        <li>
+            {% include 'detail/note.html' with note=note %}
+        </li>
+    {% endfor %}
+    </ul>
+    <div id="{{ ingredient.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
+        {% include 'detail/note.html' with note=ingredient.formsets.notes.empty_form %}
+    </div>
+</div>

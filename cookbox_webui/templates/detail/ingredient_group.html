@@ -1,0 +1,24 @@
+<fieldset class="ingredient_group">
+    {% for hidden in ing_grp.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    {% include 'detail/inline_field.html' with field=ing_grp.position %}
+    {% include 'detail/inline_field.html' with field=ing_grp.name %}
+    {% include 'detail/inline_field.html' with field=ing_grp.DELETE %}
+
+    {{ ing_grp.formsets.ingredients.management_form }}
+
+    <ol id="{{ ing_grp.formsets.ingredients.prefix }}">
+        {% for ing in ing_grp.ingredients %}
+        <li>
+            {% include 'detail/ingredient.html' with ingredient=ing %}
+        </li>
+        {% endfor %}
+    </ol>
+    <button type="button" onclick="add_inline_form('{{ ing_grp.formsets.ingredients.prefix }}', '{{ ing_grp.formsets.ingredients.empty_form_prefix }}')">
+        Add ingredient
+    </button>
+    <div id="{{ ing_grp.formsets.ingredients.prefix }}_empty_form" class="hide">
+        {% include 'detail/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form %}
+    </div>
+</fieldset>

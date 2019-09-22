@@ -1,0 +1,24 @@
+<div class=instruction-form>
+    {% for hidden in instruction.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <span>{% include 'detail/inline_field.html' with field=instruction.position %}</span>
+    <span>{% include 'detail/inline_field.html' with field=instruction.instruction %}</span>
+    <span>{% include 'detail/inline_field.html' with field=instruction.DELETE %}</span>
+    <button type="button" onclick="add_inline_form('{{ instruction.formsets.notes.prefix }}', '{{ instruction.formsets.notes.empty_form_prefix }}')">
+        Add note
+    </button>
+</div>
+<div>
+    {{ instruction.formsets.notes.management_form }}
+    <ul id="{{ instruction.formsets.notes.prefix }}" class="nested-notes">
+    {% for note in instruction.notes %}
+        <li>
+            {% include 'detail/note.html' with note=note %}
+        </li>
+    {% endfor %}
+    </ul>
+    <div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
+        {% include 'detail/note.html' with note=instruction.formsets.notes.empty_form %}
+    </div>
+</div>
