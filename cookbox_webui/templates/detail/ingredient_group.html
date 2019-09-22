@@ -4,6 +4,7 @@
     {% endfor %}
     {% include 'detail/inline_field.html' with field=ing_grp.position %}
     {% include 'detail/inline_field.html' with field=ing_grp.name %}
+    {% include 'detail/inline_field.html' with field=ing_grp.DELETE %}
 
     {{ ing_grp.formsets.ingredients.management_form }}
 
@@ -14,7 +15,7 @@
         </li>
         {% endfor %}
     </ol>
-    <button type="button" onclick="add_inline_form('{{ ing_grp.formsets.ingredients.prefix }}')">
+    <button type="button" onclick="add_inline_form('{{ ing_grp.formsets.ingredients.prefix }}', '{{ ing_grp.formsets.ingredients.empty_form_prefix }}')">
         Add ingredient
     </button>
     <div id="{{ ing_grp.formsets.ingredients.prefix }}_empty_form" class="hide">

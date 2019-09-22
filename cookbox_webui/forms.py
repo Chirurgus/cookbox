@@ -8,6 +8,7 @@ from django.forms import (
     Textarea,
     ModelChoiceField,
     ModelMultipleChoiceField,
+    BaseInlineFormSet,
 )
 
 from django_superform.forms import SuperModelFormMixin
@@ -27,6 +28,23 @@ from cookbox_core.models import (
     TagCategory,
 )
 
+class CookboxInlineFormset(BaseInlineFormSet):
+    empty_form_prefix = '__prefix__'
+
+    # Just copies the definition form BaseInlineFormSet
+    # but replaces the hard-coded '__prefix__' by a variable
+    @property
+    def empty_form(self):
+        form = self.form(
+            auto_id=self.auto_id,
+            prefix=self.add_prefix(self.empty_form_prefix),
+            empty_permitted=True,
+            use_required_attribute=False,
+            **self.get_form_kwargs(None)
+        )
+        self.add_fields(form, None)
+        return form
+
 class NoteForm(ModelForm):
     class Meta:
         fields = ['text']
@@ -37,17 +55,21 @@ class NoteForm(ModelForm):
         '''
         abstract = True
 
+class NoteInlineFormset(CookboxInlineFormset):
+    empty_form_prefix = '__note_prefix__'
+
 class InstructionNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
         model = InstructionNote
         abstract = False
-
+    
 InstructionNoteFormset = inlineformset_factory(
     parent_model=Instruction,
     model=InstructionNoteForm.Meta.model,
     form=InstructionNoteForm,
+    formset=NoteInlineFormset,
     extra=0
-    )
+)
 
 class IngredientNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
@@ -58,8 +80,9 @@ IngredientNoteFormset = inlineformset_factory(
     parent_model=Ingredient,
     model=IngredientNoteForm.Meta.model,
     form=IngredientNoteForm,
-    extra=1
-    )
+    formset=NoteInlineFormset,
+    extra=0
+)
 
 class RecipeNoteForm(NoteForm):
     class Meta(NoteForm.Meta):
@@ -70,8 +93,9 @@ RecipeNoteFormset = inlineformset_factory(
     parent_model=Recipe,
     model=RecipeNoteForm.Meta.model,
     form=RecipeNoteForm,
+    formset=NoteInlineFormset,
     extra=0
-    )
+)
 
 class IngredientForm(SuperModelFormMixin, ModelForm):
     notes = InlineFormSetField(formset_class=IngredientNoteFormset)
@@ -89,12 +113,16 @@ class IngredientForm(SuperModelFormMixin, ModelForm):
         }
         '''
 
+class IngredientInlineFormset(CookboxInlineFormset):
+    empty_form_prefix = '__ingredient_prefix__'
+
 IngredientFormset = inlineformset_factory(
     parent_model=IngredientGroup,
     model=IngredientForm.Meta.model,
     form=IngredientForm,
+    formset=IngredientInlineFormset,
     extra=0
-    )
+)
 
 class IngredientGroupForm(SuperModelFormMixin, ModelForm):
     ingredients = InlineFormSetField(formset_class= IngredientFormset)
@@ -112,12 +140,16 @@ class IngredientGroupForm(SuperModelFormMixin, ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
+class IngredientGroupInlineFormset(CookboxInlineFormset):
+    empty_form_prefix = '__ingredient_group_prefix__'
+
 IngredientGroupFormset = inlineformset_factory(
     parent_model=Recipe, 
     model=IngredientGroupForm.Meta.model,
     form=IngredientGroupForm,
+    formset=IngredientGroupInlineFormset,
     extra=0
-    )
+)
 
 class InstructionForm(SuperModelFormMixin, ModelForm):
     notes = InlineFormSetField(formset_class= InstructionNoteFormset)
@@ -135,12 +167,16 @@ class InstructionForm(SuperModelFormMixin, ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['position'].widget.attrs.update(tabindex=-1)
 
+class InstructionInlineFormset(CookboxInlineFormset):
+    empty_form_prefix = '__instruction_prefix__'
+
 InstructionFormset = inlineformset_factory(
     parent_model=Recipe,
     model=InstructionForm.Meta.model,
     form=InstructionForm,
+    formset=InstructionInlineFormset,
     extra=0
-    )
+)
 
 class TagForm(ModelForm):
     category = ModelChoiceField(queryset= TagCategory.objects.all(),
@@ -174,8 +210,17 @@ class RecipeForm(SuperModelFormMixin, ModelForm):
     def save(self, commit=True):
         '''
         Same as ModelForm.save(), but also saves tags if commit=True
+        Also (re)saves the related formsets, so that newly created
+        nested formsets are also created.
         '''
         ret = super().save(commit)
+        for formset in self.formsets.values():
+            for form in formset.forms:
+                form.save(commit)
+                if hasattr(form, 'formsets'):
+                    for nested_formset in form.formsets.values():
+                        for nested_form in nested_formset.forms:
+                            nested_form.save(commit)
         if commit:
             self.save_tags()
         return ret
