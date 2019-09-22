@@ -1,3 +1,27 @@
+# Created by Oleksandr Sorochynskyi
+# On 22/09/2019
+
+"""
+Forms for the Web UI of Cookbox.
+
+Forms in this file can be divided into 3 groups: Recipe,
+Tag, and Search.
+Recipe forms are all the forms of Recipes or its components 
+and build up to RecipeForm which is used to create/edit
+recipes. Forms for the recipe components (eg. IngredientForm)
+can be used on their own in principle. Tag forms are for
+creating and editing tags. Finally SearchForm is a simple form
+to gather information for searching for recipes.
+
+RecipeForm is composed of its own fields on top of formsets
+for forms for recipe components. To achieve this while retaining
+the same interface as the standard ModelForm two thigs were
+required:
+    - Superforms to include formsets as fields
+    - CookboxInlineFormset allows for dynamic replication
+      of nested formsets
+    - ModelFormWithInlineFormsetMixin to save the nested formsets
+"""
 from collections import OrderedDict
 
 from django.forms import (
@@ -33,6 +57,17 @@ from cookbox_core.models import (
 )
 
 class CookboxInlineFormset(BaseInlineFormSet):
+    '''
+    Allows to change the prefix string of the empty_form via
+    `self.empty_form_prefix`.
+
+    Forms are added to formsets on the client-side by replacing
+    '__prefix__' string in the empty_form html. This does not
+    work for nested formsets since the empty_form will contain
+    the empty_form for the nested formset. By changing the
+    '__prefix__' to something else for every formset class we
+    ensure that only the correct __prefix__'s are replaced.
+    '''
     empty_form_prefix = '__prefix__'
 
     # Just copies the definition form BaseInlineFormSet
@@ -48,6 +83,33 @@ class CookboxInlineFormset(BaseInlineFormSet):
         )
         self.add_fields(form, None)
         return form
+
+class ModelFormWithInlineFormsetMixin(object):
+    '''
+    Allow nested forms to be automatically saved.
+
+    If a form containing an InlineFormset is dynamically created on the
+    client the forms in the formset will not have an id of their parent
+    (because it doesn't have one yet). This means that we first need to save
+    the parent form and only then the child form can be saved. However, by
+    default, the forms first saves its children, and only then saves the
+    parent. This is why this class has to be used to save children an
+    additional time after the parent has been saved.
+    '''
+
+    def save(self, commit=True):
+        '''
+        (Re)saves the related formsets, so that newly created
+        nested formsets are also saved.
+        '''
+        # Save the parent
+        ret = super().save(commit)
+        if hasattr(self, 'formsets'):
+            for formset in self.formsets.values():
+                for form in formset.forms:
+                    form.save(commit)
+        return ret
+        
 
 class NoteForm(ModelForm):
     class Meta:
@@ -101,7 +163,10 @@ RecipeNoteFormset = inlineformset_factory(
     extra=0
 )
 
-class IngredientForm(SuperModelFormMixin, ModelForm):
+class IngredientForm(
+    ModelFormWithInlineFormsetMixin,
+    SuperModelFormMixin,
+    ModelForm):
     notes = InlineFormSetField(formset_class=IngredientNoteFormset)
 
     def __init__(self, *args, **kwargs):
@@ -128,7 +193,10 @@ IngredientFormset = inlineformset_factory(
     extra=0
 )
 
-class IngredientGroupForm(SuperModelFormMixin, ModelForm):
+class IngredientGroupForm(
+    ModelFormWithInlineFormsetMixin,
+    SuperModelFormMixin,
+    ModelForm):
     ingredients = InlineFormSetField(formset_class= IngredientFormset)
 
     class Meta:
@@ -155,7 +223,10 @@ IngredientGroupFormset = inlineformset_factory(
     extra=0
 )
 
-class InstructionForm(SuperModelFormMixin, ModelForm):
+class InstructionForm(
+    ModelFormWithInlineFormsetMixin,
+    SuperModelFormMixin,
+    ModelForm):
     notes = InlineFormSetField(formset_class= InstructionNoteFormset)
 
     class Meta:
@@ -195,7 +266,10 @@ class TagCategoryForm(ModelForm):
         model = TagCategory
         fields = ['name']
 
-class RecipeForm(SuperModelFormMixin, ModelForm):
+class RecipeForm(
+    ModelFormWithInlineFormsetMixin,
+    SuperModelFormMixin,
+    ModelForm):
     ingredient_groups = InlineFormSetField(formset_class= IngredientGroupFormset)
     instructions = InlineFormSetField(formset_class= InstructionFormset)
     notes = InlineFormSetField(formset_class= RecipeNoteFormset)
@@ -214,17 +288,8 @@ class RecipeForm(SuperModelFormMixin, ModelForm):
     def save(self, commit=True):
         '''
         Same as ModelForm.save(), but also saves tags if commit=True
-        Also (re)saves the related formsets, so that newly created
-        nested formsets are also created.
         '''
         ret = super().save(commit)
-        for formset in self.formsets.values():
-            for form in formset.forms:
-                form.save(commit)
-                if hasattr(form, 'formsets'):
-                    for nested_formset in form.formsets.values():
-                        for nested_form in nested_formset.forms:
-                            nested_form.save(commit)
         if commit:
             self.save_tags()
         return ret
