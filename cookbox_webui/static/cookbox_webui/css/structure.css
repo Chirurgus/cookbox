@@ -1,0 +1,61 @@
+/*
+ * Created by Oleksandr Sorochynskyi
+ * On 25/09/2019
+ *
+ * CSS styles that influence the physical layout of the file
+ */
+
+:root {
+    --main-color: #14a350;
+    --highlight-color: #1f6d3f;
+    --main-font-size: 15px;
+    --main-font-family: "Open Sans";
+    --main-padding: 15px; 
+}
+
+/* Layout */
+
+html, body {
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    min-width: 300px;
+    min-height: 600px;
+}
+
+main {
+    height: 100%;
+
+    /* margin: auto; centers this element */
+    margin: auto;
+    padding: 2em 1em;
+
+    /* Limit the width for large screens */
+    max-width: 28cm;
+}
+
+footer {
+    /* Footer does not shrink or grow */
+    flex-basis: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+nav {
+    /*
+     * Is a flex container to allow for responsive
+     * rearranging of the navigation links
+     */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    /* Needs to be flush with the edges of the page */
+    padding: 0;
+    margin: 0;
+}
+nav > a {
+    padding: 0.5em;
+}

@@ -308,7 +308,8 @@ class RecipeForm(
             )
         }
         js = (
-            'cookbox_webui/js/recipe_form.js',
+            "cookbox_webui/js/recipe_form.js",
+            "cookbox_webui/js/html5sortable.min.js",
         )
         
     class Meta:

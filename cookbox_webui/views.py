@@ -113,7 +113,7 @@ class RecipeCreate(BaseLoginRequiredMixin, View):
         recipe_form = RecipeForm(data= request.POST)
 
         if recipe_form.is_valid():
-            recipe_form.create()
+            recipe_form.save()
             return HttpResponseRedirect(reverse('recipe-list'))
         else:
             return render(request,

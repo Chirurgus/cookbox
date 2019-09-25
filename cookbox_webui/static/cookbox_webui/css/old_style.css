@@ -1,0 +1,355 @@
+:root {
+    --main-color: #14a350;
+    --highlight-color: #1f6d3f;
+    --main-font-size: 15px;
+    --main-font-family: Arial;
+    --main-padding: 15px; 
+}
+
+
+/* Layout */
+
+body {
+    display: flex;  
+    flex-flow: row wrap;
+
+    font-weight: bold;
+    text-align: center;
+
+    text-align: left;
+}
+
+body > * {
+    padding: .67em;
+    flex: 1 100%;
+}
+
+header {
+    padding: 0em;
+}
+
+aside {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    flex-basis: 10em;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    width: 10em;
+
+    padding: 1em;
+    margin: 1em;
+}
+
+aside:empty {
+    display: none;
+    background: red;
+}
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+
+    flex-basis: 30em;
+    flex-grow: 10;
+    flex-shrink: 1;
+
+    padding: 1em 1em;
+    margin: 1em 1em;
+}
+
+footer {
+    flex-basis: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+h1 {
+    display: inline;
+
+    font-size: 2em;
+    padding: 0.25em 0.25em;
+
+    word-wrap: break-word;
+}
+
+h2 {
+    display: inline;
+}
+
+nav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    flex-grow: 1;
+    flex-basis: 100%;
+    flex-shrink: 1;
+
+    padding: 0em;
+}
+
+/* On small screens, we are no longer using row direction but column */
+@media all and (max-width: 500px) {
+    nav {
+        flex-direction: column;
+    }
+}
+
+p {
+    margin: 1em 0.5em;
+    word-wrap: break-word;
+}
+
+main a {
+    display: inline;
+}
+
+
+aside p {
+    display: inline-block;
+}
+
+div {
+    margin: 1em 1em 1em 1em;
+}
+
+button {
+    display: inline-block;
+
+    padding: 1em 2em;
+    margin: 2em 2em 1em 1em;
+    border: none;
+}
+
+a {
+    display: block;
+
+    padding: 1em;
+}
+
+label {
+    display: block;
+    padding-bottom: 0.5em;
+}
+
+img {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-radius: 0.5em;
+    padding: 0em 1em 0em 1em;
+}
+
+ul,ol {
+    margin: 1em;
+}
+
+li {
+    list-style-position: inside;
+    padding: 0.25em;
+}
+
+input, textarea {
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 2.20em;
+    min-height: 2.2em;
+
+    margin: 0;
+    padding: 6px 8px;
+
+    border: 0.1em solid #ccc;
+    border-radius: 4px;
+
+    text-indent: 0px;
+}
+
+input[type=number] {
+    max-width: 5em;
+}
+
+input[type=file] {
+    max-width: 10em;
+}
+
+input[type=checkbox] {
+    max-width: 1em;
+    max-height: 1em;
+}
+
+
+/* Generic classes */
+
+.hidden {
+    display: none;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.border-line {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0.25em;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 #111111;
+    transition: 0.3s;
+    border-radius: 5px;
+
+    padding: 0em;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 #111111;
+}
+  
+
+/* Project specific */
+
+/* Recipe list */
+.recipe-item {
+    flex-grow: 1;
+    flex-basis: auto;
+    flex-shrink: 0;
+
+    width: 14em;
+    height: 20em;
+
+    max-width: 19em;
+
+    padding-bottom: 0.5em;
+
+    margin: 1em 1em 1em 1em;
+}
+
+.recipe-item img{
+    object-fit: cover;
+}
+
+.list-form ul li {
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.list-form ul li a {
+    float: right;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.list-form ul ul li:nth-child(odd) {
+    background: none;
+}
+
+.list-form input[type=checkbox] {
+    max-width: 2em;
+}
+
+.list-form input[type=text] {
+    max-width: 10em;
+}
+
+.list-form table table {
+    background: grey;
+    border-radius: 0.5em;
+}
+
+.filter-form ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    flex-basis: 8em;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    margin: 1em;
+}
+
+.filter-form li {
+    border-radius: .5em;
+}
+
+.filter-form li:hover {
+    background-color:lightgrey;
+}
+
+.filter-form li label {
+    min-height: 2em;
+    min-width: 7em;
+
+    padding-bottom: 0;
+}
+
+.errorlist li {
+    width: 100%;
+    font-size: 50%;
+    color: red;
+    margin: 0 0 0 0;
+}
+
+/* Cosmetics */
+nav a {
+    background: var(--main-color);
+    color: #000000;
+
+    text-decoration: none;
+}
+
+nav a:hover {
+    background: var(--highlight-color);
+}
+
+a:hover {
+    background: #f1f1f1;
+}
+
+body {
+	font-family: var(--main-font-family);
+    font-size: var(--main-font-size);
+
+    background: #f1f1f1;
+}
+
+main {
+    background: #ffffff;
+}
+
+header {
+    background: var(--main-color)
+}
+
+aside {
+    background: #ffffff;
+}
+
+footer {
+    background: #ffffff;
+}
+
+button {
+    background-color: #d0d0d0;
+
+    text-align: center;
+    text-decoration: none;
+
+    border-radius: 4px; 
+}
+
+ul {
+    list-style: none;
+}
+
+table {
+    background: lightgrey;
+}

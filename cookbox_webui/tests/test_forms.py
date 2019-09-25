@@ -15,7 +15,6 @@ from cookbox_webui.forms import RecipeForm
 
 class RecipeFormTest(RecipeBaseTest):
     # Form data to be used for tests
-    form_data_no_related = {
         'name': 'Test recipe',
         'description': 'A test recipe.',
         'unit_time': 'min',

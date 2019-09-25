@@ -24,6 +24,15 @@ add_inline_form = function(prefix, prefix_str) {
     // new_form.find("input[id$='position']").val(form_idx)
 }
 
+// Fill in the position field for in the given form
+fill_position = function(selector) {
+    $(selector).find('[id$=position]').each(
+        function(index) { 
+                $(this).val(index);
+        }
+    );
+}
+
 make_sortable = function(selector) {
     var sortables = sortable(selector, {
         handle: 'h2'
