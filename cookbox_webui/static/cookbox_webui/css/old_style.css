@@ -186,117 +186,12 @@ input[type=checkbox] {
 
 /* Generic classes */
 
-.hidden {
-    display: none;
-}
-
-.fill-width {
-    width: 100%;
-}
-
-.border-line {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    border-radius: 0.25em;
-}
-
-.card {
-    box-shadow: 0 4px 8px 0 #111111;
-    transition: 0.3s;
-    border-radius: 5px;
-
-    padding: 0em;
-}
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-    box-shadow: 0 8px 16px 0 #111111;
-}
-  
+ 
 
 /* Project specific */
 
 /* Recipe list */
-.recipe-item {
-    flex-grow: 1;
-    flex-basis: auto;
-    flex-shrink: 0;
 
-    width: 14em;
-    height: 20em;
-
-    max-width: 19em;
-
-    padding-bottom: 0.5em;
-
-    margin: 1em 1em 1em 1em;
-}
-
-.recipe-item img{
-    object-fit: cover;
-}
-
-.list-form ul li {
-    padding: 0.5em 0.5em 0.5em 0.5em;
-}
-
-.list-form ul li a {
-    float: right;
-    margin-left: 1em;
-    margin-right: 1em;
-}
-
-.list-form ul ul li:nth-child(odd) {
-    background: none;
-}
-
-.list-form input[type=checkbox] {
-    max-width: 2em;
-}
-
-.list-form input[type=text] {
-    max-width: 10em;
-}
-
-.list-form table table {
-    background: grey;
-    border-radius: 0.5em;
-}
-
-.filter-form ul {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-
-    flex-basis: 8em;
-    flex-grow: 0;
-    flex-shrink: 0;
-
-    margin: 1em;
-}
-
-.filter-form li {
-    border-radius: .5em;
-}
-
-.filter-form li:hover {
-    background-color:lightgrey;
-}
-
-.filter-form li label {
-    min-height: 2em;
-    min-width: 7em;
-
-    padding-bottom: 0;
-}
-
-.errorlist li {
-    width: 100%;
-    font-size: 50%;
-    color: red;
-    margin: 0 0 0 0;
-}
 
 /* Cosmetics */
 nav a {

@@ -3,34 +3,30 @@
 {% load static %}
 {% load imagekit %}
 
-
 {% block  content %}
 <div class="fill-width">
     <h1>Recipes</h1>
 
     {# Add/Import recipe buttons #}
-    <a href="{% url 'recipe-create' %}">
-        Add new recipe
-    </a>
-    <a href="{% url 'recipe-import' %}">
-        Import a recipe
-    </a>
+    <a href="{% url 'recipe-create' %}">Add new recipe</a>
+    <a href="{% url 'recipe-import' %}">Import a recipe</a>
 </div>
 
+<ul class="recipe-list card-list">
 {% for recipe in recipes %}
-<a class="border-line card recipe-item" href="{% url 'recipe-detail' recipe.pk %}">
-    {% if recipe.image %}
-    {% generateimage 'cookbox_webui:thumbnail_small' source=recipe.image as th %}
-    <img class="fill-width" src="{{ th.url }}">
-    {% endif %}
-    <div>
-        <p>{{ recipe.name }}</p>
-    </div>
-</a>
+    <li class="card border-line recipe-list-item">
+        <a href="{% url 'recipe-detail' recipe.pk %}">
+            {% if recipe.image %}
+            {% generateimage 'cookbox_webui:thumbnail_small' source=recipe.image as th %}
+            <img class="fill-width" src="{{ th.url }}">
+            {% endif %}
+            {{ recipe.name }}
+        </a>
+    </li>
 {% endfor %}
+</ul>
 
 {% if not no_pagination %}
-{# Recipe list #}
 <div class="pagination fill-width">
     <span class="step-links">
         {% if recipes.has_previous %}
@@ -49,10 +45,8 @@
     </span>
 </div>
 {% endif %}
-
 {% endblock %}
 
 
 {% block scripts %}
-<script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
 {% endblock %}

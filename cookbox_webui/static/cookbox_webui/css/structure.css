@@ -13,7 +13,9 @@
     --main-padding: 15px; 
 }
 
-/* Layout */
+
+
+/* Structure */
 
 html, body {
     height: 100%;
@@ -25,8 +27,12 @@ html, body {
     min-height: 600px;
 }
 
+body {
+    min-height: 100%;
+}
+
 main {
-    height: 100%;
+    min-height: 100%;
 
     /* margin: auto; centers this element */
     margin: auto;
@@ -58,4 +64,172 @@ nav {
 }
 nav > a {
     padding: 0.5em;
+}
+
+
+
+/* Generic classes */
+
+.force-wrap {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+}
+
+.hidden {
+    display: none;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.border-line {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0.25em;
+}
+
+.card {
+    box-shadow: 0 .25em .5em 0 #111111;
+    transition: 0.3s;
+    border-radius: .33em;
+
+    padding: 0;
+}
+.card:hover {
+    /* On mouse-over, add a deeper shadow */
+    box-shadow: 0 8px 16px 0 #111111;
+}
+
+.card-list {
+    display: flex;
+    flex-flow: row wrap;
+
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+.errorlist li {
+    width: 100%;
+    font-size: 50%;
+    color: red;
+    margin: 0 0 0 0;
+}
+
+.button-link {
+    background-color: lightgrey;
+}
+
+
+
+ 
+
+/* Page-specific classes */
+
+.recipe-list-item {
+    flex-grow: 1;
+    flex-basis: auto;
+    flex-shrink: 0;
+
+    width: 7.5em;
+    height: 11.25em;
+
+    max-width: 10em;
+    max-height: 15em;
+
+
+    padding: .5em .5em .5em .5em;
+    margin: 1em 1em 1em 1em;
+}
+
+.recipe-ingredient-group-list, .ingredient-list,
+.recipe-tag-list {
+    list-style: none;
+}
+
+.recipe-ingredient-group-list, .ingredient-list,
+.ingredient-note-list, .instruction-note-list,
+.recipe-instruction-list, .recipe-note-list,
+.recipe-tag-list {
+    margin: 0.5em 1em 1.5em 1.5em;
+    padding: 0;
+}
+
+.ingredient-note-list, .instruction-note-list
+.recipe-note-list{
+    list-style: disc;
+}
+
+.ingredient-note-list, .instruction-note-list {
+    margin-bottom: 0;
+
+    font-size: 0.75em;
+}
+
+.ingredient, .instruction, .note {
+    margin-bottom: .5em;
+}
+
+.note img, .recipe-note img {
+    max-height: 6em;
+    max-width: 9em;
+}
+
+
+
+/* Specific styles (id-based) */
+
+#recipe-ingredients > h2, #recipe-instructions > h2,
+#recipe-notes > h2, #recipe-tags > h2 {
+    margin-bottom: 0.5em
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 0.0;
+}
+
+
+
+
+
+
+
+
+
+
+/* Visual edits */
+nav {
+    background-color: var(--main-color)
+}
+nav > a {
+    font-weight: bold;
+
+    color: black;
+}
+nav > a:link {
+    text-decoration: none;
+}
+nav > a:hover {
+    background-color: var(--highlight-color)
+}
+
+
+aside {
+    background-color: gray;
+}
+main {
+    background-color: aqua;
+}
+footer {
+    background-color: blueviolet;
 }
