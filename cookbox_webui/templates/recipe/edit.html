@@ -35,7 +35,7 @@
 </div>
 
 {# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
-<form method="POST" enctype="multipart/form-data" class="list-form">
+<form id="recipe-edit-form" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% if form.non_field_errors %}
@@ -57,85 +57,92 @@
       {{ hidden_field }}
     {% endfor %}
  
-    <ol>
-        <li>{% include 'detail/input.html' with field=form.name %} </li>
-        <li>{% include 'detail/input.html' with field=form.description %} </li>
-        <li>{% include 'detail/input.html' with field=form.unit_time %} </li>
-        <li>{% include 'detail/input.html' with field=form.total_time %} </li>
-        <li>{% include 'detail/input.html' with field=form.preparation_time %} </li>
-        <li>{% include 'detail/input.html' with field=form.cook_time %} </li>
-        <li>{% include 'detail/input.html' with field=form.unit_yield %} </li>
-        <li>{% include 'detail/input.html' with field=form.total_yield %} </li>
-        <li>{% include 'detail/input.html' with field=form.serving_size %} </li>
-        <li>{% include 'detail/input.html' with field=form.source %} </li>
-        <li>{% include 'detail/input.html' with field=form.image %} </li>
-        <li>{% include 'detail/input.html' with field=form.tags %} </li>
-    </ol>
+    <fieldset class="detail-forms">
+        <legend>General</legend>
+        <ol>
+            <li>{% include 'recipe/form/input.html' with field=form.name %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.description %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.unit_time %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.total_time %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.preparation_time %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.cook_time %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.unit_yield %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.total_yield %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.serving_size %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.source %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.image %} </li>
+            <li>{% include 'recipe/form/input.html' with field=form.tags %} </li>
+        </ol>
+    </fieldset>
 
-    <fieldset>
+    <fieldset class="ing-grp-forms">
         <legend>Ingredients</legend>
         {{ form.formsets.ingredient_groups.management_form }}
-        <ul id="{{ form.formsets.ingredient_groups.prefix }}" class="ingredient_groups">
+        <ol id="{{ form.formsets.ingredient_groups.prefix }}" class="ing-grp-form-list">
         {% for ing_grp in form.ingredient_groups %}
             <li>
-                {% include 'detail/ingredient_group.html' with ing_grp=ing_grp %}
+                <fieldset class="ing-grp-form">
+                    {% include 'recipe/form/ingredient_group.html' with ing_grp=ing_grp %}
+                </fieldset>
             </li>
         {% endfor %}
-        </ul>
-        <button type="button" onclick="add_inline_form('{{ form.formsets.ingredient_groups.prefix }}', '{{ form.formsets.ingredient_groups.empty_form_prefix }}')">
+        </ol>
+        <button type="button" onclick="on_add_click('{{ form.formsets.ingredient_groups.prefix }}', '{{ form.formsets.ingredient_groups.empty_form_prefix }}')">
             Add group
         </button>
-        <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ingredient-groups-empty hide">
-            {% include 'detail/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form %}
+        <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ing-grp-empty-form hide">
+            <fieldset class="ing-grp-form">
+                {% include 'recipe/form/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form %}
+            </fieldset>
         </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="ins-forms">
         <legend>Instructions</legend>
         {{ form.formsets.instructions.management_form }}
-        <ul id="{{ form.formsets.instructions.prefix }}" class="instructions">
+        <ol id="{{ form.formsets.instructions.prefix }}" class="ins-form-list">
         {% for instruction in form.instructions %}
             <li>
-                {% include 'detail/instruction.html' with instruction=instruction %}
+                <div class="ins-form">
+                {% include 'recipe/form/instruction.html' with instruction=instruction %}
+                </div>
             </li>
         {% endfor %}
-        </ul>
-        <button type="button" onclick="add_inline_form('{{ form.formsets.instructions.prefix }}', '{{ form.formsets.instructions.empty_form_prefix }}')">
+        </ol>
+        <button type="button" onclick="on_add_click('{{ form.formsets.instructions.prefix }}', '{{ form.formsets.instructions.empty_form_prefix }}')">
             Add instruction
         </button>
-        <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="instructions-empty hide">
-            {% include 'detail/instruction.html' with instruction=form.formsets.instructions.empty_form %}
+        <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="ins-empty-form hide">
+            <div class="ins-form">
+            {% include 'recipe/form/instruction.html' with instruction=form.formsets.instructions.empty_form %}
+            </div>
         </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="recipe-note-forms">
         <legend>Notes</legend>
         {{ form.formsets.notes.management_form }}
-        <ul id="{{ form.formsets.notes.prefix }}" class="notes">
+        <ul id="{{ form.formsets.notes.prefix }}" class="recipe-note-form-list">
         {% for note in form.notes %}
             <li>
-                {% include 'detail/note.html' with note=note %}
+                <div class="recipe-note-form">
+                {% include 'recipe/form/note.html' with note=note %}
+                </div>
             </li>
         {% endfor %}
         </ul>
-        <button type="button" onclick="add_inline_form('{{ form.formsets.notes.prefix }}', '{{ form.formsets.notes.empty_form_prefix }}')">
+        <button type="button" onclick="on_add_click('{{ form.formsets.notes.prefix }}', '{{ form.formsets.notes.empty_form_prefix }}')">
             Add note
         </button>
-        <div id="{{ form.formsets.notes.prefix }}_empty_form" class="notes-empty hide">
-            {% include 'detail/note.html' with note=form.formsets.notes.empty_form %}
+        <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
+            <div class="recipe-note-form">
+            {% include 'recipe/form/note.html' with note=form.formsets.notes.empty_form %}
+            </div>
         </div>
     </fieldset>
 
     <button type="submit">Save</button>
 </form>
-
-<script>
-    // Call function on DOM Ready:
-    $(document).ready(function() {
-        formUnloadPrompt('form');
-    });
-
-</script>
 {% endblock %}
 
 

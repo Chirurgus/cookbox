@@ -36,7 +36,7 @@ class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
 
 class RecipeList(BaseLoginRequiredMixin, View):
-    template_name = 'list.html'
+    template_name = 'recipe/list.html'
 
     def get(self, request):
         qs = Recipe.objects.all().order_by("-last_modified")
@@ -58,7 +58,7 @@ class RecipeDetail(BaseLoginRequiredMixin, View):
                       { 'recipe' : recipe })
 
 class RecipeSearch(BaseLoginRequiredMixin, View):
-    template_name = 'search.html'
+    template_name = 'recipe/search.html'
     
     def get(self, request):
         return render(request,
@@ -87,7 +87,7 @@ class RecipeSearch(BaseLoginRequiredMixin, View):
                     total_time__gt = search.cleaned_data['min_duration']
                 )
             return render(request,
-                          'list.html',
+                          'recipe/list.html',
                           { 'recipes'       : qs,
                             'no_pagination' : True })
         else:
@@ -349,7 +349,7 @@ def recipe_random_search(request):
                                     kwargs= {'pk': id }))
     else:
         return render(request,
-                        "search.html",
+                        "recipe/search.html",
                         { 'search_form' : search })
 
 def recipe_random(request):

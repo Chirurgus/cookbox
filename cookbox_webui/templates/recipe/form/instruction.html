@@ -1,0 +1,32 @@
+<span class="ins-form-detail-container">
+    {% for hidden in instruction.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <span class="sortable-handle">||</span>
+    <span class="ins-form-pos hide">{% include 'recipe/form/inline_field.html' with field=instruction.position %}</span>
+    <span class="ins-form-desc">{% include 'recipe/form/inline_field.html' with field=instruction.instruction %}</span>
+    <span class="ins-form-del">{% include 'recipe/form/inline_field.html' with field=instruction.DELETE %}</span>
+</span>
+<button
+    type="button"
+    class="ins-form-add-note-btn"
+    onclick="on_add_click('{{ instruction.formsets.notes.prefix }}', '{{ instruction.formsets.notes.empty_form_prefix }}')">
+    Add note
+</button>
+{{ instruction.formsets.notes.management_form }}
+<ul
+    id="{{ instruction.formsets.notes.prefix }}"
+    class="ins-note-form-list">
+    {% for note in instruction.notes %}
+    <li>
+        <div class="ins-note-form">
+        {% include 'recipe/form/note.html' with note=note %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
+    <div class="ins-note-form">
+    {% include 'recipe/form/note.html' with note=instruction.formsets.notes.empty_form %}
+    </div>
+</div>

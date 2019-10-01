@@ -1,6 +1,8 @@
 // Created by Oleksandr Sorochynskyi
 // On 11/09/2019
 
+// Helper functions
+
 // Add an inline form to a formset
 add_inline_form = function(prefix, prefix_str) {
     // Get the index of the new form
@@ -20,29 +22,57 @@ add_inline_form = function(prefix, prefix_str) {
     // Increment TOTAL_FORMS counter
     $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
 
-    // Add default value for the position
-    // new_form.find("input[id$='position']").val(form_idx)
+    return new_form
 }
 
-// Fill in the position field for in the given form
+// Fill the position field
+// The values are determined by the order in the
+// <ol> of the DOM
 fill_position = function(selector) {
     $(selector).find('[id$=position]').each(
         function(index) { 
-                $(this).val(index);
+            // Set the value to the index (i.e. the position
+            // in the list)
+            $(this).val(index);
         }
     );
 }
 
 make_sortable = function(selector) {
     var sortables = sortable(selector, {
-        handle: 'h2'
+        handle: 'span.sort-handle',
+        forcePlaceholderSize: true
     });
-    // When an item is drag'n'dropped, update the position field automatically
-    sortables[0].addEventListener('sortupdate', function(e) {
-        $(e.detail.destination.container)
-            .find('[id$=position]')
-            .each(function(index) { 
-                $(this).val(index);
-        });
+}
+
+// Selectors for the items that are sortable
+sortables = [
+    '.ingredient-group-form-list', '.ins-form-list',
+    '.ing-grp-ing-form-list', '.ing-note-form-list'
+]
+
+// Selectors for the lists that are ordered
+ordered = [
+    '.ing-grp-form-list', '.ins-form-list',
+    '.ing-grp-ing-form-list'
+]
+
+$('#recipe-edit-form').submit(function(event) {
+    ordered.forEach(fill_position);
+})
+
+// Call function on DOM Ready:
+$(document).ready(function() {
+    sortables.forEach(make_sortable);
+    //formUnloadPrompt('form');
+});
+
+// Handle "Add ingrediennt/instruction/note" button click.
+on_add_click = function(prefix, prefix_str) {
+    // Add the inline form
+    add_inline_form(prefix, prefix_str)
+    // Make the new element sortable
+    sortables.forEach(element => {
+        make_sortable(element)
     });
 }

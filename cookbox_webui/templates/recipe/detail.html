@@ -32,10 +32,10 @@
 
 {% block content %}
 {% if recipe.image %}
-<span>
+<div class="fill-width">
     {% generateimage 'cookbox_webui:thumbnail_large' source=recipe.image as th %}
     <img src="{{ th.url }}">
-</span>
+</div>
 {% endif %}
 
 <section id="recipe-title" class="fill-width">

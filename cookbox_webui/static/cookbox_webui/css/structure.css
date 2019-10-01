@@ -81,7 +81,7 @@ nav > a {
     word-break: break-word;
 }
 
-.hidden {
+.hide {
     display: none;
 }
 
@@ -130,8 +130,6 @@ nav > a {
 }
 
 
-
- 
 
 /* Page-specific classes */
 
@@ -184,7 +182,10 @@ nav > a {
     max-width: 9em;
 }
 
-
+/*
+.ingredient-form-list, .instruction-form-list,
+.note-form-list
+*/
 
 /* Specific styles (id-based) */
 
@@ -221,15 +222,4 @@ nav > a:link {
 }
 nav > a:hover {
     background-color: var(--highlight-color)
-}
-
-
-aside {
-    background-color: gray;
-}
-main {
-    background-color: aqua;
-}
-footer {
-    background-color: blueviolet;
 }
