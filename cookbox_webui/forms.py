@@ -95,6 +95,9 @@ class ModelFormWithInlineFormsetMixin(object):
     default, the forms first saves its children, and only then saves the
     parent. This is why this class has to be used to save children an
     additional time after the parent has been saved.
+
+    Probably for same reasons as above the related fields are not deleted, 
+    so we also all objects from `formset.deleted_objects`.
     '''
 
     def save(self, commit=True):
@@ -108,6 +111,9 @@ class ModelFormWithInlineFormsetMixin(object):
             for formset in self.formsets.values():
                 for form in formset.forms:
                     form.save(commit)
+                for delete_value in formset.deleted_objects:
+                    delete_value.delete()
+
         return ret
         
 
