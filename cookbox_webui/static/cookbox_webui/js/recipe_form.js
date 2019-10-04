@@ -25,6 +25,20 @@ add_inline_form = function(prefix, prefix_str) {
     return new_form
 }
 
+delete_inline_form = function(delete_checkbox_selector, inline_form_selector) {
+    var del_checkbox = $(delete_checkbox_selector);
+
+    // Mark the inline form for deletion
+    del_checkbox.prop('checked', true);
+    
+    // Hide the inline from view (it will still be submitted).
+    del_checkbox.closest(inline_form_selector).addClass("hide");
+}
+
+function reload_page(){
+    window.location.reload();
+}
+
 // Fill the position field
 // The values are determined by the order in the
 // <ol> of the DOM
@@ -45,12 +59,6 @@ make_sortable = function(selector) {
     });
 }
 
-// Selectors for the items that are sortable
-sortables = [
-    '.ingredient-group-form-list', '.ins-form-list',
-    '.ing-grp-ing-form-list', '.ing-note-form-list'
-]
-
 // Selectors for the lists that are ordered
 ordered = [
     '.ing-grp-form-list', '.ins-form-list',
@@ -63,7 +71,7 @@ $('#recipe-edit-form').submit(function(event) {
 
 // Call function on DOM Ready:
 $(document).ready(function() {
-    sortables.forEach(make_sortable);
+    ordered.forEach(make_sortable);
     //formUnloadPrompt('form');
 });
 
@@ -72,7 +80,5 @@ on_add_click = function(prefix, prefix_str) {
     // Add the inline form
     add_inline_form(prefix, prefix_str)
     // Make the new element sortable
-    sortables.forEach(element => {
-        make_sortable(element)
-    });
+    ordered.forEach(make_sortable);
 }
