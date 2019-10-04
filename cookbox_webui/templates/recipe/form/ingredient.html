@@ -7,7 +7,11 @@
     <span class="ing-form-qty">{% include 'recipe/form/inline_field.html' with field=ingredient.quantity %}</span>
     <span class="ing-form-unit">{% include 'recipe/form/inline_field.html' with field=ingredient.unit %}</span>
     <span class="ing-form-desc">{% include 'recipe/form/inline_field.html' with field=ingredient.description %}</span>
-    <span class="ing-form-del">{% include 'recipe/form/inline_field.html' with field=ingredient.DELETE %}</span>
+    <span class="ing-form-del hide">{% include 'recipe/form/inline_field.html' with field=ingredient.DELETE %}</span>
+    <button
+        type="button"
+        class="ing-form-del-btn"
+        onclick="delete_inline_form('#{{ ingredient.DELETE.auto_id }}', '.ing-form')">×</button>
 </span>
 <button
     type="button"
@@ -22,13 +26,13 @@
     {% for note in ingredient.notes %}
     <li>
         <div class="ing-note-form">
-        {% include 'recipe/form/note.html' with note=note %}
+            {% include 'recipe/form/note.html' with note=note form_class="ing-note-form" %}
         </div>
     </li>
     {% endfor %}
 </ul>
 <div id="{{ ingredient.formsets.notes.prefix }}_empty_form" class="ing-note-empty-form hide">
     <div class="ing-note-form">
-    {% include 'recipe/form/note.html' with note=ingredient.formsets.notes.empty_form %}
+        {% include 'recipe/form/note.html' with note=ingredient.formsets.notes.empty_form form_class="ing-note-form" %}
     </div>
 </div>

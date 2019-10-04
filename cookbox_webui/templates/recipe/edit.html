@@ -126,7 +126,7 @@
         {% for note in form.notes %}
             <li>
                 <div class="recipe-note-form">
-                {% include 'recipe/form/note.html' with note=note %}
+                {% include 'recipe/form/note.html' with note=note form_class="recipe-note-form" %}
                 </div>
             </li>
         {% endfor %}
@@ -136,7 +136,7 @@
         </button>
         <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
             <div class="recipe-note-form">
-            {% include 'recipe/form/note.html' with note=form.formsets.notes.empty_form %}
+            {% include 'recipe/form/note.html' with note=form.formsets.notes.empty_form form_class="recipe-note-form" %}
             </div>
         </div>
     </fieldset>

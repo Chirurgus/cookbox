@@ -4,7 +4,11 @@
 <span class="sortable-handle">||</span>
 <span class="ing-grp-form-pos hide">{% include 'recipe/form/inline_field.html' with field=ing_grp.position %}</span>
 <span class="ing-grp-form-name">{% include 'recipe/form/inline_field.html' with field=ing_grp.name %}</span>
-<span class="ing-grp-form-del">{% include 'recipe/form/inline_field.html' with field=ing_grp.DELETE %}</span>
+<span class="ing-grp-form-del hide">{% include 'recipe/form/inline_field.html' with field=ing_grp.DELETE %}</span>
+<button
+    type="button"
+    class="ing-grp-form-del-btn"
+    onclick="delete_inline_form('#{{ ing_grp.DELETE.auto_id }}', '.ing-grp-form')">×</button>
 
 {{ ing_grp.formsets.ingredients.management_form }}
 

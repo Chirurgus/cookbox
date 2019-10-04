@@ -96,8 +96,8 @@ class ModelFormWithInlineFormsetMixin(object):
     parent. This is why this class has to be used to save children an
     additional time after the parent has been saved.
 
-    Probably for same reasons as above the related fields are not deleted, 
-    so we also all objects from `formset.deleted_objects`.
+    Deleted forms should not be saved, since their instance would already be
+    deleted by super().save().
     '''
 
     def save(self, commit=True):
@@ -110,10 +110,8 @@ class ModelFormWithInlineFormsetMixin(object):
         if hasattr(self, 'formsets'):
             for formset in self.formsets.values():
                 for form in formset.forms:
-                    form.save(commit)
-                for delete_value in formset.deleted_objects:
-                    delete_value.delete()
-
+                    if not form in formset.deleted_forms:
+                        form.save(commit)
         return ret
         
 
