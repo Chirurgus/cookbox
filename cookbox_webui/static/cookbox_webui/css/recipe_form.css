@@ -11,6 +11,8 @@ input[type='number'] {
 }
 
 
+
+
 /* Form-specific styles */
 .sortable-placeholder {
     border-width: 1px;
@@ -83,6 +85,14 @@ input[type='number'] {
 }
 */
 
-.ins-form-desc input, .recipe-note-form-desc input[type=text] {
+.ins-form-desc input, .note-form-desc input,
+.recipe-note-form-desc input[type=text] {
     width: 30em;
+}
+
+/* Touch ups for specific elements */
+#id_description {
+    width: 30em;
+    height: 6em; 
+    resize: none;
 }
