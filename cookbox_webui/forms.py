@@ -173,18 +173,9 @@ class IngredientForm(
     ModelForm):
     notes = InlineFormSetField(formset_class=IngredientNoteFormset)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['position'].widget.attrs.update(tabindex=-1)
-
     class Meta:
         model = Ingredient
         fields = ['position', 'quantity', 'unit', 'description']
-        '''
-        widgets = {
-            'description': Textarea(attrs={}),
-        }
-        '''
 
 class IngredientInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__ingredient_prefix__'
@@ -206,15 +197,6 @@ class IngredientGroupForm(
     class Meta:
         model = IngredientGroup
         fields = ['position', 'name']
-        '''
-        widgets = {
-            'name': Textarea(attrs={}),
-        }
-        '''
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['position'].widget.attrs.update(tabindex=-1)
 
 class IngredientGroupInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__ingredient_group_prefix__'
@@ -236,15 +218,6 @@ class InstructionForm(
     class Meta:
         model = Instruction
         fields = ['position', 'instruction']
-        '''
-        widgets = {
-            'instruction': Textarea(attrs={}),
-        }
-        '''
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['position'].widget.attrs.update(tabindex=-1)
 
 class InstructionInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__instruction_prefix__'
@@ -338,9 +311,7 @@ class RecipeForm(
             'unit_yield': 'Yield measurement unit',
         }
         widgets = {
-            #'name': Textarea(attrs={}),
             'description': Textarea(attrs={}),
-            #'source': Textarea(attrs={}),
         }
 
 class SearchForm(Form):
