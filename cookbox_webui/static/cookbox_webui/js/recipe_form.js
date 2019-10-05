@@ -1,6 +1,14 @@
 // Created by Oleksandr Sorochynskyi
 // On 11/09/2019
 
+// Selectors for the lists with position field, together
+// with the class of position field selectors
+const ordered_forms = {
+    '.ing-grp-form-list' : '.ing-grp-form-pos',
+    '.ins-form-list' : '.ins-form-pos',
+    '.ing-grp-ing-form-list' : '.ing-form-pos'
+}
+
 // Helper functions
 
 // Add an inline form to a formset
@@ -39,39 +47,49 @@ function reload_page(){
     window.location.reload();
 }
 
-// Fill the position field
-// The values are determined by the order in the
-// <ol> of the DOM
-fill_position = function(selector) {
-    $(selector).find('[id$=position]').each(
-        function(index) { 
-            // Set the value to the index (i.e. the position
-            // in the list)
-            $(this).val(index);
-        }
-    );
+// Fill the position field (found using pos_field_selector)
+// for the list (found using list_selector).
+// The values are determined by the order in the <ol> of the DOM
+fill_position_fields = function(list_selector, pos_field_selector) {
+    // There may be multipole lists that match to a list_selector
+    $(list_selector).each(function(list_idx, ol) {
+        $(ol).find(pos_field_selector).each(
+            function(field_idx, field) { 
+                // Set the value to the index (i.e. the position
+                // in the list)
+                $(field).find("input").val(field_idx);
+            }
+        );
+    });
 }
 
 make_sortable = function(selector) {
     var sortables = sortable(selector, {
-        handle: 'span.sort-handle',
+        handle: 'span.sortable-handle',
         forcePlaceholderSize: true
     });
 }
 
-// Selectors for the lists that are ordered
-ordered = [
-    '.ing-grp-form-list', '.ins-form-list',
-    '.ing-grp-ing-form-list'
-]
 
+
+
+// On submit fill in the position fields
 $('#recipe-edit-form').submit(function(event) {
-    ordered.forEach(fill_position);
-})
+    // For every ordered list
+    Object.keys(ordered_forms).forEach(
+        (list_selector, index) => {
+            fill_position_fields(
+                list_selector,
+                ordered_forms[list_selector]
+            )
+        }
+    );
+    return true;
+});
 
 // Call function on DOM Ready:
 $(document).ready(function() {
-    ordered.forEach(make_sortable);
+    Object.keys(ordered_forms).forEach(make_sortable);
     //formUnloadPrompt('form');
 });
 
@@ -80,5 +98,5 @@ on_add_click = function(prefix, prefix_str) {
     // Add the inline form
     add_inline_form(prefix, prefix_str)
     // Make the new element sortable
-    ordered.forEach(make_sortable);
+    Object.keys(ordered_forms).forEach(make_sortable);
 }

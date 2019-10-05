@@ -169,20 +169,25 @@ class RecipeEdit(BaseLoginRequiredMixin, View):
     
 
         if form.is_valid():
-            form.save()
+            recipe = form.save()
 
         # Re-render the form if there are errors or user
         # wants to continue editing (in this case submit button
         # has name "_continue" and this is in the POST dict.)
-        if not form.is_valid() or "_continue" in request.POST:
-            return render(request,
-                        self.template_name,
-                        {'recipe'  : recipe,
-                         'form'    : form })
-        else:
+        if not form.is_valid():
+                return render(request,
+                            self.template_name,
+                            {'recipe'  : recipe,
+                            'form'    : form })
+
+        if "_continue" in request.POST:
             return HttpResponseRedirect(
-                reverse('recipe-detail',
+                reverse('recipe-edit',
                         kwargs= {'pk': pk}))
+
+        return HttpResponseRedirect(
+            reverse('recipe-detail',
+                    kwargs= {'pk': pk}))
 
 class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
