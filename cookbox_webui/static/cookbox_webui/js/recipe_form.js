@@ -7,7 +7,16 @@ const ordered_forms = {
     '.ing-grp-form-list' : '.ing-grp-form-pos',
     '.ins-form-list' : '.ins-form-pos',
     '.ing-grp-ing-form-list' : '.ing-form-pos'
-}
+};
+
+const enter_handler_args = [
+    [".ing-grp-form-name input", ".ing-grp-add-ing-grp-btn"],
+    [".ins-form-desc input", ".ins-add-ins-btn"],
+    [".recipe-note-form .note-form-desc input", ".recipe-note-add-note-btn"],
+    [".ing-form-qty input, .ing-form-unit input, .ing-form-desc input", ".ing-grp-add-ing-btn", ".ing-grp-form"],
+    [".ing-note-form-list .note-form-desc input", ".ing-form-add-note-btn", ".ing-form"],
+    [".ins-note-form-list .note-form-desc input", ".ins-form-add-note-btn", ".ins-form"],
+];
 
 // Helper functions
 
@@ -47,6 +56,32 @@ function reload_page(){
     window.location.reload();
 }
 
+function set_enter_key_handler(
+    event_source_selector,
+    button_selector,
+    via_selector=null)
+{
+    $('#recipe-edit-form').on(
+        "keydown",
+        event_source_selector,
+        function(event) {
+            if (event.key == "Enter") {
+                if (via_selector === null) {
+                    $(button_selector).click();
+                }
+                else {
+                    $(this)
+                        .parents(via_selector)
+                        .find(button_selector)
+                        .click();
+                }
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        }
+    );
+}
+
 // Fill the position field (found using pos_field_selector)
 // for the list (found using list_selector).
 // The values are determined by the order in the <ol> of the DOM
@@ -61,16 +96,44 @@ fill_position_fields = function(list_selector, pos_field_selector) {
             }
         );
     });
-}
+};
 
 make_sortable = function(selector) {
     var sortables = sortable(selector, {
         handle: 'span.sortable-handle',
         forcePlaceholderSize: true
     });
+};
+
+
+// Set contextual behavior for the Enter key
+// If were in a inline form list Enter should add
+// another form to the list
+function setup_enter_handlers() {
+    // By default ignore Enter key
+    $(document).on("keydown", function(event) {
+        if (event.key == "Enter") {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    })
+
+    // But allow it for buttons
+    $("button").on("keydown", function(event) {
+        if (event.key == "Enter") {
+            event.stopPropagation();
+        }
+    })
+
+    // If inside a list of inline forms Enter adds new form.
+    // If inside nested list the deepest item is added, for 
+    // this to work these have to be called in order from
+    // outside inside.
+    enter_handler_args.forEach(function(args) {
+        // ... spread operator (like * in Python)
+        set_enter_key_handler(...args);
+    })
 }
-
-
 
 
 // On submit fill in the position fields
@@ -91,6 +154,8 @@ $('#recipe-edit-form').submit(function(event) {
 $(document).ready(function() {
     Object.keys(ordered_forms).forEach(make_sortable);
     //formUnloadPrompt('form');
+
+    setup_enter_handlers();
 });
 
 // Handle "Add ingrediennt/instruction/note" button click.
@@ -100,3 +165,6 @@ on_add_click = function(prefix, prefix_str) {
     // Make the new element sortable
     Object.keys(ordered_forms).forEach(make_sortable);
 }
+
+
+

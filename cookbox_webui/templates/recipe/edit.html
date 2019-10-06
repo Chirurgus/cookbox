@@ -87,7 +87,10 @@
             </li>
         {% endfor %}
         </ol>
-        <button type="button" onclick="on_add_click('{{ form.formsets.ingredient_groups.prefix }}', '{{ form.formsets.ingredient_groups.empty_form_prefix }}')">
+        <button
+            type="button"
+            class="ing-grp-add-ing-grp-btn"
+            onclick="on_add_click('{{ form.formsets.ingredient_groups.prefix }}', '{{ form.formsets.ingredient_groups.empty_form_prefix }}')">
             Add group
         </button>
         <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ing-grp-empty-form hide">
@@ -109,7 +112,10 @@
             </li>
         {% endfor %}
         </ol>
-        <button type="button" onclick="on_add_click('{{ form.formsets.instructions.prefix }}', '{{ form.formsets.instructions.empty_form_prefix }}')">
+        <button
+            type="button"
+            class="ins-add-ins-btn"
+            onclick="on_add_click('{{ form.formsets.instructions.prefix }}', '{{ form.formsets.instructions.empty_form_prefix }}')">
             Add instruction
         </button>
         <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="ins-empty-form hide">
@@ -131,7 +137,10 @@
             </li>
         {% endfor %}
         </ul>
-        <button type="button" onclick="on_add_click('{{ form.formsets.notes.prefix }}', '{{ form.formsets.notes.empty_form_prefix }}')">
+        <button
+            type="button"
+            class="recipe-note-add-note-btn"
+            onclick="on_add_click('{{ form.formsets.notes.prefix }}', '{{ form.formsets.notes.empty_form_prefix }}')">
             Add note
         </button>
         <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
