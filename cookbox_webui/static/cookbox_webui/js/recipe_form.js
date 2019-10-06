@@ -119,7 +119,7 @@ function setup_enter_handlers() {
     })
 
     // But allow it for buttons
-    $("button").on("keydown", function(event) {
+    $(document).on("keydown", "button", function(event) {
         if (event.key == "Enter") {
             event.stopPropagation();
         }
