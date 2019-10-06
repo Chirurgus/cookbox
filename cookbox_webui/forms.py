@@ -117,12 +117,7 @@ class ModelFormWithInlineFormsetMixin(object):
 
 class NoteForm(ModelForm):
     class Meta:
-        fields = ['text']
-        '''
-        widgets = {
-            'text': Textarea(attrs={}),
-        }
-        '''
+        fields = ['text', 'image']
         abstract = True
 
 class NoteInlineFormset(CookboxInlineFormset):
