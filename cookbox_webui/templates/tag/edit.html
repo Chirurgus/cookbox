@@ -8,20 +8,14 @@
     <h1>New Tag</h1>
     {% else %}
     <h1>Edit Tag</h1>
-    <a href="{% url 'tag-delete' pk=tag.id %}">Delete</a>
+    <a class="button-link" href="{% url 'tag-delete' pk=tag.id %}">Delete</a>
     {% endif %}
 </div>
 
-{# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
-<form method="POST" enctype="multipart/form-data" class="list-form">
+<form enctype="multipart/form-data">
     {% csrf_token %}
    
-    <div>
-        {{ form.as_p }}
-    </div>
+    {{ form.as_p }}
     <button type="submit">Save</button>
 </form>
-{% endblock %}
-
-{% block footer %}
 {% endblock %}
