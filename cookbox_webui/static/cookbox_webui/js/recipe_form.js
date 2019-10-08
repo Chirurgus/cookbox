@@ -19,9 +19,9 @@ const enter_handler_args = [
 ];
 
 // Helper functions
-
+var x;
 // Add an inline form to a formset
-add_inline_form = function(prefix, prefix_str) {
+add_inline_form = function(prefix, prefix_str, focus_new=true) {
     // Get the index of the new form
     var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
 
@@ -38,6 +38,10 @@ add_inline_form = function(prefix, prefix_str) {
     new_form.appendTo('#' + prefix);
     // Increment TOTAL_FORMS counter
     $('#id_' + prefix + '-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+    if (focus_new) {
+        new_form.find("input:visible").first().focus();
+    }
 
     return new_form
 }
