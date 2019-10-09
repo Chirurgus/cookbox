@@ -23,6 +23,8 @@
             {{ recipe.name }}
         </a>
     </li>
+    {% empty %}
+    <h2>No recipes matching the query.</h2>
 {% endfor %}
 </ul>
 
