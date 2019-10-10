@@ -24,7 +24,7 @@
     <ul class="tag-list card-list">
         {% for tag in category.tags.all %}
         <li class="tag-list-item card border-line">
-            <a href="{% url 'tag-edit' tag.pk %}">{{ tag.name }}</a>
+            <a href="{% url 'tag-recipe-list' tag.pk %}">{{ tag.name }}</a>
         </li>
         {% endfor %}
     </ul>
@@ -39,7 +39,7 @@
     <ul class="tag-list card-list">
         {% for tag in uncategorized_tags %}
         <li class="tag-list-item border-line card">
-            <a href="{% url 'tag-edit' tag.pk %}">{{ tag.name }}</a>
+            <a href="{% url 'tag-recipe-list' tag.pk %}">{{ tag.name }}</a>
         </li>
         {% endfor %}
     </ul>

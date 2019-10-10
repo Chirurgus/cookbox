@@ -321,6 +321,20 @@ class TagCategoryDelete(BaseLoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('tag-list')
     template_name = 'delete.html'
 
+class TagRecipeList(BaseLoginRequiredMixin, View):
+    template_name = 'tag/detail.html'
+
+    def get(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+        qs = tag.recipes.all()
+        paginator = Paginator(qs, 20)
+        page = request.GET.get('page') or 1
+        recipes = paginator.get_page(page)
+        return render(request,
+                      self.template_name,
+                      {'recipes' : recipes,
+                       'tag'     : tag })
+
 class RecipeTagAutocomplete(Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated:
