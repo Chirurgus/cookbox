@@ -142,6 +142,7 @@ button, .button-link {
     border-radius: 1px;
 
     padding: 2.5px 7.5px;
+    margin: 2px 4px;
 }
 
 button:hover, .button-link:hover {
