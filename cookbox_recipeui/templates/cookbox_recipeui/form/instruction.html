@@ -3,9 +3,9 @@
         {{ hidden }}
     {% endfor %}
     <span class="sortable-handle">||</span>
-    <span class="ins-form-pos hide">{% include 'recipe/form/inline_field.html' with field=instruction.position %}</span>
-    <span class="ins-form-desc">{% include 'recipe/form/inline_field.html' with field=instruction.instruction %}</span>
-    <span class="ins-form-del hide">{% include 'recipe/form/inline_field.html' with field=instruction.DELETE %}</span>
+    <span class="ins-form-pos hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=instruction.position %}</span>
+    <span class="ins-form-desc">{% include 'cookbox_recipeui/form/inline_field.html' with field=instruction.instruction %}</span>
+    <span class="ins-form-del hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=instruction.DELETE %}</span>
     <button
         type="button"
         class="ins-form-del-btn"
@@ -25,13 +25,13 @@
     {% for note in instruction.notes %}
     <li>
         <div class="ins-note-form">
-        {% include 'recipe/form/note.html' with note=note form_class="ins-note-form" %}
+        {% include 'cookbox_recipeui/form/note.html' with note=note form_class="ins-note-form" %}
         </div>
     </li>
     {% endfor %}
 </ul>
 <div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
     <div class="ins-note-form">
-    {% include 'recipe/form/note.html' with note=instruction.formsets.notes.empty_form form_class="ins-note-form" %}
+    {% include 'cookbox_recipeui/form/note.html' with note=instruction.formsets.notes.empty_form form_class="ins-note-form" %}
     </div>
 </div>

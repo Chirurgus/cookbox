@@ -85,6 +85,7 @@ MEDIA_URL = "/images/"
 INSTALLED_APPS = [
     'cookbox_core.apps.CookboxCoreConfig',
     'cookbox_webui.apps.CookboxWebuiConfig',
+    'cookbox_recipeui.apps.CookboxRecipeuiConfig',
     'cookbox_admin.apps.CookboxAdminConfig',
     'django_superform',
     'django_filters',

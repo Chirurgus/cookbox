@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load imagekit %}
+
+{% block scripts %}
+<script>
+    // Remember the at what scale ingredients are scaled
+    // This is 1 before any re-scaling
+    var current_scale = 1;
+    $('#id_target_qty').change(function() {
+        const new_scale = $('#id_target_qty').val()/{{ recipe.total_yield }};
+
+        if (new_scale <= 0) {
+            return;
+        }
+
+        $('.ing-qty').each(function(i) {
+            // First un-scale the quantities
+            const original_qty = $(this).text()/current_scale
+            // And re-scale them using the new scale
+            // .toFixed(2) rounds to 2 decimal places
+            $(this).text( (new_scale*original_qty).toFixed(2) );
+        });
+        // Update the scaling
+        current_scale = new_scale;
+    });
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+{% if recipe.image %}
+<div class="fill-width">
+    {% generateimage 'cookbox_webui:thumbnail_large' source=recipe.image as th %}
+    <img src="{{ th.url }}">
+</div>
+{% endif %}
+
+<section id="recipe-title" class="fill-width">
+    <h1 class="force-wrap">{{ recipe.name }}</h1>
+    <a href="{% url 'recipe-edit' recipe.id %}" class="button-link">Edit</a>
+    <p>{{ recipe.description }}</p>
+</section>
+
+<section id="recipe-detail" class="fill-width">
+    <p>      Total time: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
+    {% if recipe.preparation_time %}
+    <p>Preparation time: {{ recipe.preparation_time }} {{ recipe.unit_time }}</p>
+    {% endif %}
+    {% if recipe.cook_time %}
+    <p>       Cook time: {{ recipe.cook_time }} {{ recipe.unit_type }}</p>
+    {% endif %}
+    <p>           Yield: {{ recipe.total_yield }} {{ recipe.unit_yield }}</p>
+    {% if recipe.serving_size %}
+    <p>    Serving size: {{ recipe.serving_size }} {{ recipe.unit_yield }}</p>
+    {% endif %}
+    {% if recipe.source %}
+    <p>          Source: {{ recipe.source }}</p>
+    {% endif %}
+    <p>
+        <label for="id_target_qty">Target quantity:</label>
+        <input type="number" name="target_qty" step="0.1" id="id_target_qty">
+    </p>
+</section>
+
+
+<section id="recipe-ingredients" class="fill-width">
+    <h2>Ingredients</h2>
+    <ol class="recipe-ingredient-group-list">
+        {% for ingredient_group in recipe.ingredient_groups.all %}
+        <li class="ingredient-group">
+            <h3>{{ ingredient_group.name }}</h3>
+            <ol class="ingredient-list">
+                {% for ingredient in ingredient_group.ingredients.all %}
+                    <li class="ingredient">
+                        <span class="ing-qty">{{ ingredient.quantity }}</span><span>{{ ingredient.unit }} {{ ingredient.description }}</span>
+                        <ul class="ingredient-note-list">
+                            {% for note in ingredient.notes.all %}
+                            <li class="note">
+                                <span>{{ note.text }}</span>
+                                {% if note.image %}
+                                <br>
+                                {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                                <img class="note-image" src="{{ note_th.url }}">
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ol>
+        </li>
+        {% empty %}
+        No ingredients, yet.
+        {% endfor %}
+    </ol>
+</section>
+
+<section id="recipe-instructions" class="fill-width">
+    <h2>Instructions</h2>
+    <ol class="recipe-instruction-list">
+        {% for instruction in recipe.instructions.all %}
+        <li class="instruction">
+            {{ instruction.instruction }}
+            <ul class="instruction-note-list">
+                {% for note in instruction.notes.all %}
+                <li class="note">
+                    <span>{{ note.text }}</span>
+                    {% if note.image %}
+                    <br>
+                    {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                    <img class="note-image" src="{{ note_th.url }}">
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% empty %}
+        No instructions, yet.
+        {% endfor %}
+    </ol>
+</section>
+
+<section id="recipe-notes" class="fill-width">
+    <h2>Notes</h2>
+    <ul class="recipe-note-list">
+        {% for note in recipe.notes.all %}
+        <li class="recipe-note">
+            {{ note.text }}
+            {% if note.image %}
+            <br>
+            {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+            <img src="{{ note_th.url }}">
+            {% endif %}
+        </li>
+        {% empty %}
+        No notes, yet.
+        {% endfor %}
+    </ul>
+</section>
+
+<section id="recipe-tags" class="fill-width">
+    <h2>Tags</h2>
+    <ul class="recipe-tag-list">
+        {% for tag in recipe.tags.all %}
+        <li class="recipe-tag">{{ tag.name }}</li>
+        {% empty %}
+        No tags, yet.
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}

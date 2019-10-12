@@ -14,9 +14,9 @@
     <span>{{ hidden }}</span>
 {% endfor %}
 
-<span class="note-form-desc">{% include 'recipe/form/inline_field.html' with field=note.text %}</span>
-<span class="note-form-img">{% include 'recipe/form/inline_field.html' with field=note.image %}</span>
-<span class="note-form-del hide">{% include 'recipe/form/inline_field.html' with field=note.DELETE %}</span>
+<span class="note-form-desc">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.text %}</span>
+<span class="note-form-img">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.image %}</span>
+<span class="note-form-del hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.DELETE %}</span>
 <button
     type="button"
     class="{{ form_class }}-del-btn"

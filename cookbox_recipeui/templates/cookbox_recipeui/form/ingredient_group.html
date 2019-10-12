@@ -2,9 +2,9 @@
     {{ hidden }}
 {% endfor %}
 <span class="sortable-handle">||</span>
-<span class="ing-grp-form-pos hide">{% include 'recipe/form/inline_field.html' with field=ing_grp.position %}</span>
-<span class="ing-grp-form-name">{% include 'recipe/form/inline_field.html' with field=ing_grp.name %}</span>
-<span class="ing-grp-form-del hide">{% include 'recipe/form/inline_field.html' with field=ing_grp.DELETE %}</span>
+<span class="ing-grp-form-pos hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=ing_grp.position %}</span>
+<span class="ing-grp-form-name">{% include 'cookbox_recipeui/form/inline_field.html' with field=ing_grp.name %}</span>
+<span class="ing-grp-form-del hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=ing_grp.DELETE %}</span>
 <button
     type="button"
     class="ing-grp-form-del-btn"
@@ -17,7 +17,7 @@
     {% for ing in ing_grp.ingredients %}
     <li>
         <div class="ing-form">
-        {% include 'recipe/form/ingredient.html' with ingredient=ing %}
+        {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing %}
         </div>
     </li>
     {% endfor %}
@@ -30,6 +30,6 @@
 </button>
 <div id="{{ ing_grp.formsets.ingredients.prefix }}_empty_form" class="ing-grp-ing-empty-form hide">
     <div class="ing-form">
-    {% include 'recipe/form/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form %}
+    {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form %}
     </div>
 </div>

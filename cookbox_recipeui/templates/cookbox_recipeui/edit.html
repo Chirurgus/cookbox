@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block scripts %}
+<script>
+    /*
+    // Prompt the user for confirmation before unloading the page.
+    window.onbeforeunload = function() {
+        return true;
+    };
+
+    // Prevent ENTER key from submitting the form.
+    $(document).on("keypress", 'form', function (e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    */
+</script>
+{{ form.media }}
+{% endblock %}
+
+
+{% block content %}
+<div class="fill-width">
+    {% if new %}
+    <h1>New Recipe</h1>
+    {% else %}
+    <h1 class="force-wrap">{{ recipe.name }}</h1>
+    <a class="button-link" href="{% url 'recipe-delete' recipe.id %}">Delete</a>
+    <button type="button">Delete</button>
+    {% endif %}
+</div>
+
+{# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
+<form id="recipe-edit-form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+    <ul>
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+ 
+    {% for hidden_field in form.hidden_fields %}
+      {% if hidden_field.errors %}
+        <ul>
+          {% for error in hidden_field.errors %}
+            <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {{ hidden_field }}
+    {% endfor %}
+ 
+    <fieldset class="detail-forms">
+        <legend>General</legend>
+        <ol>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.name %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.description %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.unit_time %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.total_time %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.preparation_time %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.cook_time %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.unit_yield %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.total_yield %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.serving_size %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.source %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.image %} </li>
+            <li>{% include 'cookbox_recipeui/form/input.html' with field=form.tags %} </li>
+        </ol>
+    </fieldset>
+
+    <fieldset class="ing-grp-forms">
+        <legend>Ingredients</legend>
+        {{ form.formsets.ingredient_groups.management_form }}
+        <ol id="{{ form.formsets.ingredient_groups.prefix }}" class="ing-grp-form-list">
+        {% for ing_grp in form.ingredient_groups %}
+            <li>
+                <fieldset class="ing-grp-form">
+                    {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=ing_grp %}
+                </fieldset>
+            </li>
+        {% endfor %}
+        </ol>
+        <button
+            type="button"
+            class="ing-grp-add-ing-grp-btn"
+            onclick="on_add_click('{{ form.formsets.ingredient_groups.prefix }}', '{{ form.formsets.ingredient_groups.empty_form_prefix }}')">
+            Add group
+        </button>
+        <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ing-grp-empty-form hide">
+            <fieldset class="ing-grp-form">
+                {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form %}
+            </fieldset>
+        </div>
+    </fieldset>
+
+    <fieldset class="ins-forms">
+        <legend>Instructions</legend>
+        {{ form.formsets.instructions.management_form }}
+        <ol id="{{ form.formsets.instructions.prefix }}" class="ins-form-list">
+        {% for instruction in form.instructions %}
+            <li>
+                <div class="ins-form">
+                {% include 'cookbox_recipeui/form/instruction.html' with instruction=instruction %}
+                </div>
+            </li>
+        {% endfor %}
+        </ol>
+        <button
+            type="button"
+            class="ins-add-ins-btn"
+            onclick="on_add_click('{{ form.formsets.instructions.prefix }}', '{{ form.formsets.instructions.empty_form_prefix }}')">
+            Add instruction
+        </button>
+        <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="ins-empty-form hide">
+            <div class="ins-form">
+            {% include 'cookbox_recipeui/form/instruction.html' with instruction=form.formsets.instructions.empty_form %}
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="recipe-note-forms">
+        <legend>Notes</legend>
+        {{ form.formsets.notes.management_form }}
+        <ul id="{{ form.formsets.notes.prefix }}" class="recipe-note-form-list">
+        {% for note in form.notes %}
+            <li>
+                <div class="recipe-note-form">
+                {% include 'cookbox_recipeui/form/note.html' with note=note form_class="recipe-note-form" %}
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        <button
+            type="button"
+            class="recipe-note-add-note-btn"
+            onclick="on_add_click('{{ form.formsets.notes.prefix }}', '{{ form.formsets.notes.empty_form_prefix }}')">
+            Add note
+        </button>
+        <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
+            <div class="recipe-note-form">
+            {% include 'cookbox_recipeui/form/note.html' with note=form.formsets.notes.empty_form form_class="recipe-note-form" %}
+            </div>
+        </div>
+    </fieldset>
+
+    {% include 'cookbox_recipeui/form/save_actions.html' %}
+</form>
+{% endblock %}
+
+
+{% block footer %}
+{% endblock %}
