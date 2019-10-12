@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from cookbox_recipeui import urls as RecipeUI_urls
 
 from .views import (
+    HomePageView,
     TagList,
     TagRecipeList,
     TagEdit,
@@ -15,6 +16,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('', HomePageView.as_view(), name="home"),
     path('login/', LoginView.as_view(template_name= 'login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page= reverse_lazy('login')), name='logout'),
     path('tags/', TagList.as_view(), name="tag-list"),
@@ -26,5 +28,4 @@ urlpatterns = [
     path('tags/edit_category/<int:pk>/', TagCategoryEdit.as_view(), name="tag-category-edit"),
     path('tags/delete_category/<int:pk>/', TagCategoryDelete.as_view(), name="tag-category-delete"),
     path('recipes/', include(RecipeUI_urls)),
- 
 ]

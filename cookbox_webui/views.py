@@ -27,6 +27,9 @@ from .forms import (
 class BaseLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
 
+class HomePageView(BaseLoginRequiredMixin, View):
+    def get(self, request):
+        return HttpResponseRedirect(reverse("recipe-list"))
 
 class TagList(BaseLoginRequiredMixin, View):
     template_name = 'tag/list.html'
