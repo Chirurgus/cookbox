@@ -242,12 +242,12 @@ class RecipeForm(
     class Media:
         css = {
             'all' : (
-                'cookbox_webui/css/recipe_form.css',
+                'cookbox_recipeui/css/recipe_form.css',
             )
         }
         js = (
-            "cookbox_webui/js/recipe_form.js",
-            "cookbox_webui/js/html5sortable.min.js",
+            "cookbox_recipeui/js/recipe_form.js",
+            "cookbox_recipeui/js/html5sortable.min.js",
         )
         
     class Meta:
