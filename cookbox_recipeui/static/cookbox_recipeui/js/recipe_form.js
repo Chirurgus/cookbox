@@ -19,7 +19,7 @@ const enter_handler_args = [
 ];
 
 // Helper functions
-var x;
+
 // Add an inline form to a formset
 add_inline_form = function(prefix, prefix_str, focus_new=true) {
     // Get the index of the new form
@@ -89,8 +89,8 @@ function set_enter_key_handler(
 // Fill the position field (found using pos_field_selector)
 // for the list (found using list_selector).
 // The values are determined by the order in the <ol> of the DOM
-fill_position_fields = function(list_selector, pos_field_selector) {
-    // There may be multipole lists that match to a list_selector
+function fill_position_fields(list_selector, pos_field_selector) {
+    // There may be multiple lists that match to a list_selector
     $(list_selector).each(function(list_idx, ol) {
         $(ol).find(pos_field_selector).each(
             function(field_idx, field) { 
@@ -102,10 +102,17 @@ fill_position_fields = function(list_selector, pos_field_selector) {
     });
 };
 
-make_sortable = function(selector) {
-    var sortables = sortable(selector, {
+make_sortable = function(list_selector, pos_field_selector) {
+    var sortables = sortable(list_selector, {
         handle: 'span.sortable-handle',
         forcePlaceholderSize: true
+    });
+    sortables[0].addEventListener("sortupdate", event => {
+        $(event.detail.destination.container)
+            .find(pos_field_selector)
+            .each((index, field) => {
+                $(field).find("input").val(index)
+            });
     });
 };
 
@@ -156,8 +163,9 @@ $('#recipe-edit-form').submit(function(event) {
 
 // Call function on DOM Ready:
 $(document).ready(function() {
-    Object.keys(ordered_forms).forEach(make_sortable);
-    //formUnloadPrompt('form');
+    Object.keys(ordered_forms).forEach((key, idx) => {
+        make_sortable(key, ordered_forms[key]);
+    });
 
     setup_enter_handlers();
 });
@@ -167,7 +175,9 @@ on_add_click = function(prefix, prefix_str) {
     // Add the inline form
     add_inline_form(prefix, prefix_str)
     // Make the new element sortable
-    Object.keys(ordered_forms).forEach(make_sortable);
+    Object.keys(ordered_forms).forEach((key, idx) => {
+        make_sortable(key, ordered_forms[key]);
+    });
 }
 
 
