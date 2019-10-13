@@ -8,6 +8,9 @@ from cookbox_core.models import (
     IngredientGroup,
     Ingredient,
     Instruction,
+    IngredientNote,
+    InstructionNote,
+    RecipeNote,
     TagCategory,
     Tag,
 )
@@ -31,41 +34,47 @@ class RecipeBaseTest(TestCase):
         "source"            : "me",
     }
 
-    def setUp(self):
-        '''
-        Create an instance of a recipe and add to the (temporary) database
-        '''
-        recipe = Recipe(**self.recipe_data)
-        recipe.save()
+    ingredient_group_data = {
+        "name"     : "an test ingredient group",
+        "position" : 0,
+    }
 
-        ing_group = IngredientGroup(
-            recipe= recipe,
-            name= "an test ingredient group",
-            position= 0
-        )
+    ingredient_data = {
+        "unit"        : "a unit",
+        "quantity"    : 1,
+        "description" : "a test ingredient",
+        "position"    : 1,
+    }
 
-        for i in range(10):
-            Ingredient(
-                group= ing_group,
-                unit= "a unit",
-                quantity= i,
-                description= "a test ingredient",
-                position= i
-            )
-        
-        for i in range(10):
-            Instruction(
-                recipe= recipe,
-                instruction= "step" + str(i),
-                position= i
-            )
-        
-        tag_category = TagCategory(name="Test tag category")
-        tag_category.save()
+    note_data = {
+        "text"  : "A test note",
+        "image" : None,
+    }
 
-        tag = Tag(name= "a test tag", category= tag_category)
-        tag.save()
+    @staticmethod
+    def generate_recipe(data=recipe_data):
+        return Recipe(**data)
 
+    @staticmethod
+    def generate_ingredient_group(recipe, data=ingredient_group_data):
+        return IngredientGroup(recipe=recipe, **data)
+
+    @staticmethod
+    def generate_ingredient(ing_grp, data=ingredient_data):
+        return Ingredient(ingredient_group=ing_grp, **data)
+
+    @staticmethod
+    def generate_ingredient_note(ing, data=note_data):
+        return IngredientNote(ingredient=ing, **data)
+
+    @staticmethod
+    def generate_instruction_note(ins, data=note_data):
+        return InstructionNote(instruction=ins, **data)
+
+    @staticmethod
+    def generate_recipe_note(recipe, data=note_data):
+        return RecipeNote(recipe=recipe, **data)
+    
 class RecipeModelTest(RecipeBaseTest):
     def test_recipe_str(self):
         recipe_name = "New recipe name"
