@@ -90,29 +90,17 @@ function set_enter_key_handler(
 // for the list (found using list_selector).
 // The values are determined by the order in the <ol> of the DOM
 function fill_position_fields(list_selector, pos_field_selector) {
-    // There may be multiple lists that match to a list_selector
-    $(list_selector).each(function(list_idx, ol) {
-        $(ol).find(pos_field_selector).each(
-            function(field_idx, field) { 
-                // Set the value to the index (i.e. the position
-                // in the list)
-                $(field).find("input").val(field_idx);
-            }
-        );
-    });
+    $(list_selector)
+        .find(pos_field_selector)
+        .each((index, field) => {
+            $(field).find("input").val(index)
+        });
 };
 
 make_sortable = function(list_selector, pos_field_selector) {
     var sortables = sortable(list_selector, {
         handle: 'span.sortable-handle',
         forcePlaceholderSize: true
-    });
-    sortables[0].addEventListener("sortupdate", event => {
-        $(event.detail.destination.container)
-            .find(pos_field_selector)
-            .each((index, field) => {
-                $(field).find("input").val(index)
-            });
     });
 };
 
@@ -147,22 +135,23 @@ function setup_enter_handlers() {
 }
 
 
-// On submit fill in the position fields
-$('#recipe-edit-form').submit(function(event) {
-    // For every ordered list
-    Object.keys(ordered_forms).forEach(
-        (list_selector, index) => {
-            fill_position_fields(
-                list_selector,
-                ordered_forms[list_selector]
-            )
-        }
-    );
-    return true;
-});
 
 // Call function on DOM Ready:
 $(document).ready(function() {
+    // On submit fill in the position fields
+    $('#recipe-edit-form').submit((event) => {
+        // For every ordered list
+        Object.keys(ordered_forms).forEach(
+            (list_selector, index) => {
+                fill_position_fields(
+                    list_selector,
+                    ordered_forms[list_selector]
+                )
+            }
+        );
+        return true;
+    });
+
     Object.keys(ordered_forms).forEach((key, idx) => {
         make_sortable(key, ordered_forms[key]);
     });
