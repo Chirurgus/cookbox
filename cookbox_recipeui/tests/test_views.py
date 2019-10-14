@@ -103,7 +103,7 @@ class RecipeSearchViewTest(CookboxBaseTest):
         response = self.client.get(reverse('recipe-search'))
         self.assertEqual(response.status_code, 302)
 
-    def recipe_search_view_200(self):
+    def test_recipe_search_view_200(self):
         self.authenticate()
         response = self.client.get(reverse('recipe-search'))
         self.assertEqual(response.status_code, 200)
@@ -114,7 +114,7 @@ class RandomRecipeViewTest(CookboxBaseTest):
         response = self.client.get(reverse('recipe-random'))
         self.assertEqual(response.status_code, 302)
 
-    def random_recipe_view_200_empty_database(self):
+    def test_random_recipe_view_200_empty_database(self):
         """
         Check that the view correctly handles an empty db.
         """
@@ -122,11 +122,11 @@ class RandomRecipeViewTest(CookboxBaseTest):
         response = self.client.get(reverse('recipe-random'))
         self.assertEqual(response.status_code, 200)
     
-    def random_recipe_view_200(self):
+    def test_random_recipe_view_200(self):
         self.authenticate()
-        Recipe(**self.recipe_data).save()
+        recipe = Recipe(**self.recipe_data)
+        recipe.save()
         response = self.client.get(reverse('recipe-random'))
-
         self.assertEqual(response.status_code, 200)
 
 class RecipeSearchRandomViewTest(CookboxBaseTest):
@@ -134,8 +134,7 @@ class RecipeSearchRandomViewTest(CookboxBaseTest):
         response = self.client.get(reverse('recipe-search-random'))
         self.assertEqual(response.status_code, 302)
 
-    def recipe_search_random_view_200(self):
+    def test_recipe_search_random_view_200(self):
         self.authenticate()
-        Recipe(**self.recipe_data).save()
         response = self.client.get(reverse('recipe-search-random'))
         self.assertEqual(response.status_code, 200)
