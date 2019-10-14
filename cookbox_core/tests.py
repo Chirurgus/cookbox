@@ -1,6 +1,8 @@
 # Created by Oleksandr Sorochynskyi
 # On 10/03/2019
 
+from django.contrib.auth.models import User
+
 from django.test import TestCase
 
 from cookbox_core.models import (
@@ -15,7 +17,7 @@ from cookbox_core.models import (
     Tag,
 )
 
-class RecipeBaseTest(TestCase):
+class CookboxBaseTest(TestCase):
     '''
     Base class for all cookbox TestCases.
     In setUp creates an instance of a recipe.
@@ -51,31 +53,27 @@ class RecipeBaseTest(TestCase):
         "image" : None,
     }
 
-    @staticmethod
-    def generate_recipe(data=recipe_data):
-        return Recipe(**data)
+    tag_data = {
+        "name"  : "A test tag",
+    }
 
-    @staticmethod
-    def generate_ingredient_group(recipe, data=ingredient_group_data):
-        return IngredientGroup(recipe=recipe, **data)
+    tag_category_data = {
+        "name" : "A test tag category",
+    }
 
-    @staticmethod
-    def generate_ingredient(ing_grp, data=ingredient_data):
-        return Ingredient(ingredient_group=ing_grp, **data)
+    user = "testuser123"
+    user_pswrd = "password123"
 
-    @staticmethod
-    def generate_ingredient_note(ing, data=note_data):
-        return IngredientNote(ingredient=ing, **data)
+    def setUp(self):
+        user = User.objects.create(username=self.user)
+        user.set_password(self.user_pswrd)
+        user.save()
 
-    @staticmethod
-    def generate_instruction_note(ins, data=note_data):
-        return InstructionNote(instruction=ins, **data)
+    def authenticate(self):
+        self.client.login(username=self.user,
+                          password=self.user_pswrd)
 
-    @staticmethod
-    def generate_recipe_note(recipe, data=note_data):
-        return RecipeNote(recipe=recipe, **data)
-    
-class RecipeModelTest(RecipeBaseTest):
+class RecipeModelTest(CookboxBaseTest):
     def test_recipe_str(self):
         recipe_name = "New recipe name"
         recipe_data = self.recipe_data
@@ -84,7 +82,7 @@ class RecipeModelTest(RecipeBaseTest):
         recipe = Recipe(**recipe_data)
         self.assertEquals(recipe_name, str(recipe))
 
-class TagModelTest(RecipeBaseTest):
+class TagModelTest(CookboxBaseTest):
     def test_tag_str(self):
         # Use only lower case tag name since
         # tag names are supposed to be lower case

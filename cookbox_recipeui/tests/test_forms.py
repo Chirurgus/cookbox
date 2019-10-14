@@ -9,11 +9,11 @@ from cookbox_core.models import (
     Tag,
     TagCategory,
 )
-from django.test import TestCase
+from cookbox_core.tests import CookboxBaseTest
 
 from cookbox_recipeui.forms import RecipeForm
-#
-class RecipeFormTest(TestCase):
+
+class RecipeFormTest(CookboxBaseTest):
     form_data_recipe_no_related = {
         'name': "Test recipe",
         'description': "Test description",
@@ -193,7 +193,14 @@ class RecipeFormTest(TestCase):
         self.assertTrue(form.is_valid())
         recipe = form.save()
         
-        for key, value in self.form_data_recipe_no_related.items():
-            self.assertEqual(getattr(recipe, key), value)
+        # Compare only the keys that are both in form, and form_data
+        compare_keys = set(RecipeForm.Meta.fields).intersection(
+            set(form_data.keys())
+        )
+        for key in compare_keys:
+            self.assertEqual(
+                getattr(recipe, key),
+                form_data[key]
+            )
 
 
