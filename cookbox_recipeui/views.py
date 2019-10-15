@@ -130,6 +130,6 @@ def recipe_random(request):
         return render(
                 request,
                 'cookbox_recipeui/list.html',
-                { 'recipes' : qs, 'no_pagination' : True }
+                { 'recipes' : [], 'no_pagination' : True }
         )
         
