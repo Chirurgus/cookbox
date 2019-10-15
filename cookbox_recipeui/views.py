@@ -9,138 +9,66 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     View,
+    FormView,
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
     DeleteView,
 )
 from django.core.paginator import Paginator
 
 from dal.autocomplete import Select2QuerySetView
 
-from cookbox_scraper import WebsiteNotImplementedError
+import cookbox_scraper as scraper
 
 from cookbox_core.models import Recipe
 
-from cookbox_scraper import scrape, supported_hosts
-
 from cookbox_webui.views import BaseLoginRequiredMixin
 
-from .forms import RecipeForm, SearchForm
+from .forms import RecipeForm, SearchForm, ImportRecipeForm
 
 
-class RecipeList(BaseLoginRequiredMixin, View):
+class RecipeList(BaseLoginRequiredMixin, ListView):
     template_name = 'cookbox_recipeui/list.html'
+    queryset = Recipe.objects.all().order_by("-last_modified") 
+    context_object_name = "recipes"
+    paginate_by = 20
 
-    def get(self, request):
-        qs = Recipe.objects.all().order_by("-last_modified")
-        paginator = Paginator(qs, 20)
-        page = request.GET.get('page') or 1
-        recipes = paginator.get_page(page)
-        return render(request,
-                      self.template_name,
-                      {'recipes' : recipes })
-
-class RecipeDetail(BaseLoginRequiredMixin, View):
+class RecipeDetail(BaseLoginRequiredMixin, DetailView):
     template_name = 'cookbox_recipeui/detail.html'
+    model = Recipe
+    context_object_name = "recipe"
 
-    def get(self, request, pk):
-        recipe = get_object_or_404(Recipe, pk=pk)
-
-        return render(request,
-                      self.template_name,
-                      { 'recipe' : recipe })
-
-
-class RecipeCreate(BaseLoginRequiredMixin, View):
+class RecipeCreate(BaseLoginRequiredMixin, CreateView):
     template_name = 'cookbox_recipeui/edit.html'
+    model = Recipe
+    context_object_name = "recipe"
+    form_class = RecipeForm
+    success_url = reverse_lazy('recipe-list')
 
-    def get(self, request):
-        recipe_form = RecipeForm()
-
-        return render(request,
-                      self.template_name,
-                      { 'form' : recipe_form,
-                        'new'  : True })
-
-    # PUT method is not allowed for HTML forms,
-    # so POST is used even for new instances
-    def post(self, request):
-        recipe_form = RecipeForm(data= request.POST)
-
-        if recipe_form.is_valid():
-            recipe_form.save()
-            return HttpResponseRedirect(reverse('recipe-list'))
-        else:
-            return render(request,
-                          self.template_name,
-                          { 'form' : recipe_form,
-                            'new'  : True  })
-
-class RecipeImport(BaseLoginRequiredMixin, View):
+class RecipeImport(BaseLoginRequiredMixin, FormView):
     template_name = 'cookbox_recipeui/import.html'
-
-    submit_button_name = 'import-url'
-
-    def get(self, request):
-        return render(request,
-                      self.template_name,
-                      {'supported_hosts'    : supported_hosts(),
-                       'submit_button_name' : self.submit_button_name})
-
-    def post(self, request):
-        import_url = request.POST.get(self.submit_button_name, None)
-        try:
-            recipe = scrape(import_url)
-            return HttpResponseRedirect(
-                reverse('recipe-edit',
-                        kwargs= { 'pk': recipe.id }))
-
-        except WebsiteNotImplementedError:
-            return render(request,
-                      self.template_name,
-                      {'supported_hosts'    : supported_hosts(),
-                       'submit_button_name' : self.submit_button_name,
-                       'error'              : 'This domain is not supported' })
-
-class RecipeEdit(BaseLoginRequiredMixin, View):
-    template_name = 'cookbox_recipeui/edit.html'
-
-    def get(self, request, pk):
-        recipe = get_object_or_404(Recipe, pk=pk)
-
-        recipe_form = RecipeForm(instance= recipe)
-
-        return render(request,
-            self.template_name,
-            {'recipe'    : recipe,
-             'form'      : recipe_form})
-
-    def post(self, request, pk):
-        recipe = get_object_or_404(Recipe, pk=pk)
-
-        form = RecipeForm(data= request.POST,
-                                files= request.FILES,
-                                instance= recipe)
+    form_class = ImportRecipeForm
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['supported_hosts'] = scraper.supported_hosts()
+        return context
 
-        if form.is_valid():
-            recipe = form.save()
-
-        # Re-render the form if there are errors or user
-        # wants to continue editing (in this case submit button
-        # has name "_continue" and this is in the POST dict.)
-        if not form.is_valid():
-                return render(request,
-                            self.template_name,
-                            {'recipe'  : recipe,
-                            'form'    : form })
-
-        if "_continue" in request.POST:
-            return HttpResponseRedirect(
-                reverse('recipe-edit',
-                        kwargs= {'pk': pk}))
-
+    def form_valid(self, form):
+        import_url = form.cleaned_data['url']
+        recipe = scraper.scrape(import_url)
         return HttpResponseRedirect(
-            reverse('recipe-detail',
-                    kwargs= {'pk': pk}))
+            reverse('recipe-edit', kwargs= { 'pk': recipe.id })
+        )
+
+class RecipeEdit(BaseLoginRequiredMixin, UpdateView):
+    template_name = 'cookbox_recipeui/edit.html'
+    model = Recipe
+    context_object_name = "recipe"
+    form_class = RecipeForm
+    success_url = reverse_lazy('recipe-list')
 
 class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
     model = Recipe
@@ -159,68 +87,34 @@ class RecipeTagAutocomplete(Select2QuerySetView):
 
         return qs
 
-class RecipeSearch(BaseLoginRequiredMixin, View):
+class RecipeSearch(BaseLoginRequiredMixin, FormView):
     template_name = 'cookbox_recipeui/search.html'
+    form_class = SearchForm
     
-    def get(self, request):
-        return render(request,
-                      self.template_name,
-                      { 'search_form' : SearchForm() })
-    
-    def post(self, request):
-        search = SearchForm(data= request.POST)
-
-        if search.is_valid():
-            qs = Recipe.objects.all()
-            if not search.cleaned_data['name'] is None:
-                qs = qs.filter(
-                    name__icontains = search.cleaned_data['name']
-                )
-            if not search.cleaned_data['source'] is None:
-                qs = qs.filter(
-                    source__icontains = search.cleaned_data['source']
-                )
-            if not search.cleaned_data['max_duration'] is None:
-                qs = qs.filter(
-                    total_time__lt = search.cleaned_data['max_duration']
-                )
-            if not search.cleaned_data['min_duration'] is None: 
-                qs = qs.filter(
-                    total_time__gt = search.cleaned_data['min_duration']
-                )
-            return render(request,
-                          'cookbox_recipeui/list.html',
-                          { 'recipes'       : qs,
-                            'no_pagination' : True })
-        else:
-            return render(request,
-                          self.template_name,
-                          { 'search_form' : search })
+    def form_valid(self, form):
+        qs = form.filtered_qs()
+        return render(
+            self.request,
+            'cookbox_recipeui/list.html',
+            { 'recipes' : qs, 'no_pagination' : True }
+        )
 
 def recipe_random_search(request):
     search = SearchForm(data= request.POST)
 
     if search.is_valid():
-        qs = Recipe.objects.all()
-        if not search.cleaned_data['name'] is None:
-            qs = qs.filter(
-                name__icontains = search.cleaned_data['name']
+        qs = search.filtered_qs()
+        if (len(qs) > 0):
+            id = random.choice(qs).id
+            return HttpResponseRedirect(
+                reverse('recipe-detail', kwargs= {'pk': id })
             )
-        if not search.cleaned_data['source'] is None:
-            qs = qs.filter(
-                source__icontains = search.cleaned_data['source']
+        else:
+            return render(
+                request,
+                'cookbox_recipeui/list.html',
+                { 'recipes' : qs, 'no_pagination' : True }
             )
-        if not search.cleaned_data['max_duration'] is None:
-            qs = qs.filter(
-                total_time__lt = search.cleaned_data['max_duration']
-            )
-        if not search.cleaned_data['min_duration'] is None: 
-            qs = qs.filter(
-                total_time__gt = search.cleaned_data['min_duration']
-            )
-        id = random.choice(qs).id
-        return HttpResponseRedirect(reverse('recipe-detail',
-                                    kwargs= {'pk': id }))
     else:
         return render(request,
                         "cookbox_recipeui/search.html",
@@ -228,6 +122,14 @@ def recipe_random_search(request):
 
 def recipe_random(request):
     ids = Recipe.objects.values_list('id', flat= True)
-    rand_id = random.choice(ids)
-    return HttpResponseRedirect(reverse('recipe-detail',
-                                kwargs= {'pk': rand_id}))
+    if (len(ids) > 0):
+        rand_id = random.choice(ids)
+        return HttpResponseRedirect(reverse('recipe-detail',
+                                    kwargs= {'pk': rand_id}))
+    else:
+        return render(
+                request,
+                'cookbox_recipeui/list.html',
+                { 'recipes' : qs, 'no_pagination' : True }
+        )
+        

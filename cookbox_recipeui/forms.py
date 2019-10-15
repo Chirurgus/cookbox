@@ -5,6 +5,7 @@
 Forms for interacting with Recipe objects.
 
 """
+
 from django.forms import (
     Form,
     ModelForm,
@@ -15,6 +16,7 @@ from django.forms import (
     Textarea,
     CharField,
     FloatField,
+    ValidationError,
 )
 from django.forms.widgets import CheckboxSelectMultiple
 
@@ -34,6 +36,8 @@ from cookbox_core.models import (
     Tag,
     CHAR_FIELD_MAX_LEN_SHORT,
 )
+
+import cookbox_scraper as scraper
 
 class CookboxInlineFormset(BaseInlineFormSet):
     '''
@@ -286,3 +290,35 @@ class SearchForm(Form):
         queryset= Tag.objects.all(),
         widget= CheckboxSelectMultiple()
     )
+
+    def filtered_qs(self):
+        """
+        Filter the Recipes that respond to the search.
+        """
+        qs = Recipe.objects.all()
+        if not self.cleaned_data['name'] is None:
+            qs = qs.filter(
+                name__icontains = self.cleaned_data['name']
+            )
+        if not self.cleaned_data['source'] is None:
+            qs = qs.filter(
+                source__icontains = self.cleaned_data['source']
+            )
+        if not self.cleaned_data['max_duration'] is None:
+            qs = qs.filter(
+                total_time__lt = self.cleaned_data['max_duration']
+            )
+        if not self.cleaned_data['min_duration'] is None: 
+            qs = qs.filter(
+                total_time__gt = self.cleaned_data['min_duration']
+            )
+        return qs
+
+
+class ImportRecipeForm(Form):
+    url = CharField(required=True)
+
+    def clean_url(self):
+        url = self.cleaned_data['url']
+        if not scraper.host_supported(url):
+            raise ValidationError("This host is not supported")

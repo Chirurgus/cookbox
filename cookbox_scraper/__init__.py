@@ -90,4 +90,11 @@ def supported_hosts():
     '''
     return [ host for host in SCRAPERS.keys() ]
 
-__all__ = ['scrape', 'supported_hosts']
+def host_supported(url):
+    """
+    Check if the provided URL is in the supported hosts.
+    """
+    host_name = url_path_to_dict(url.replace('://www.', '://'))['host']
+    return host_name in SCRAPERS.keys()
+
+__all__ = ['scrape', 'supported_hosts', 'host_supported']

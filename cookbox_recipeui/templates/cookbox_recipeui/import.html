@@ -15,13 +15,7 @@
 <form method="POST">
     {% csrf_token %}
 
-    <label> Website: </label>
-    {% if error %}
-        <p>
-            {{ error }}
-        </p>
-    {% endif %}
-    <textarea name="{{ submit_button_name }}"></textarea>
+    {{ form }}
     
     <button type="submit">Import</button>
 </form>
