@@ -1,6 +1,13 @@
 import os
 
-from cookbox_scraper import scrape_me
+from cookbox_core.models import (
+    Recipe,
+    IngredientGroup,
+    Ingredient,
+    Instruction,
+)
+    
+from cookbox_scraper import scrape_me, scrape
 
 class RecipeScraperTestMixin(object):
     """
@@ -16,7 +23,7 @@ class RecipeScraperTestMixin(object):
     Just replace the url with one form website you're testing.
 
     from cookbox_scraper import scrape_me
-    s = scrape_me("https://thewoksoflife.com/mongolian-beef-recipe/")
+    s = scrape_me("https://thewoksoflife.com/beef-with-broccoli-all-purpose-stir-fry-sauce/")
     code = '''self.url = "{url}"
     self.host = "{host}"
     self.title = "{title}"
@@ -42,6 +49,12 @@ class RecipeScraperTestMixin(object):
     """
     def setUp(self):
         self.scraper = scrape_me(self.url)
+        self.maxDiff = None
+    
+    def test_save_recipe(self):
+        # If this doesn't throw anything we're happy
+        recipe = scrape(self.url)
+        recipe.save()
 
     def test_host(self):
         self.assertEqual(
@@ -53,6 +66,12 @@ class RecipeScraperTestMixin(object):
         self.assertEqual(
             self.title,
             self.scraper.title()
+        )
+
+    def test_title_length(self):
+        title = self.scraper.title()
+        self.assertTrue(
+            len(title) <= Recipe._meta.get_field('name').max_length
         )
     
     def test_description(self):
