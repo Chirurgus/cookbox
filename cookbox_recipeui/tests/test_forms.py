@@ -11,7 +11,37 @@ from cookbox_core.models import (
 )
 from cookbox_core.tests import CookboxBaseTest
 
-from cookbox_recipeui.forms import RecipeForm
+from cookbox_recipeui.forms import RecipeForm, ImportRecipeForm
+
+class ImportFormTest(CookboxBaseTest):
+    url_string = "https://thewoksoflife.com/beef-with-broccoli-all-purpose-stir-fry-sauce/"
+
+    form_data = {
+        'url' : url_string
+    }
+
+    def test_invalid_url_not_accepted(self):
+        invalid_url = "not_a_url"
+        form_data = self.form_data
+        form_data['url'] = invalid_url
+        form = ImportRecipeForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_host_not_supported_not_accepted(self):
+        not_supported_host = "http://not_a_supported_host.com/recipes/23"
+        form_data = self.form_data
+        form_data['url'] = not_supported_host
+        form = ImportRecipeForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_url_form_form(self):
+        url = self.url_string
+        form_data = self.form_data
+        form_data['url'] = url
+        form = ImportRecipeForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        new_url = form.cleaned_data['url']
+        self.assertEqual(url, new_url)
 
 class RecipeFormTest(CookboxBaseTest):
     form_data_recipe_no_related = {
