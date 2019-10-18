@@ -16,20 +16,20 @@ class TestAllRecipesScraper(RecipeScraperTestMixin, TestCase):
         self.yields = (5.0, 1.0)
         self.ingredients = [
             ('All', [
-                (4.0, None, 'cups water'),
-                (2.0, None, 'cups uncooked white rice'),
-                (0.5, None, 'cup seasoned rice vinegar'),
-                (1.0, None, 'teaspoon white sugar, or as needed'),
-                (1.0, None, 'teaspoon salt, or as needed'),
-                (0.25, None, 'pound cooked crab meat, drained of excess liquid and shredded'),
-                (1.0, None, 'tablespoon mayonnaise'),
-                (5.0, None, 'sheets nori (dry seaweed)'),
-                (1.0, None, 'avocado, sliced'),
-                (0.25, None, 'cup red caviar, such as tobiko'),
-                (1.0, None, 'English cucumber, seeded and sliced into strips'),
-                (2.0, None, 'tablespoons drained pickled ginger, for garnish'),
-                (2.0, None, 'tablespoons soy sauce, or to taste'),
-                (1.0, None, 'tablespoon wasabi paste')
+                (4.0, "", 'cups water'),
+                (2.0, "", 'cups uncooked white rice'),
+                (0.5, "", 'cup seasoned rice vinegar'),
+                (1.0, "", 'teaspoon white sugar, or as needed'),
+                (1.0, "", 'teaspoon salt, or as needed'),
+                (0.25, "", 'pound cooked crab meat, drained of excess liquid and shredded'),
+                (1.0, "", 'tablespoon mayonnaise'),
+                (5.0, "", 'sheets nori (dry seaweed)'),
+                (1.0, "", 'avocado, sliced'),
+                (0.25, "", 'cup red caviar, such as tobiko'),
+                (1.0, "", 'English cucumber, seeded and sliced into strips'),
+                (2.0, "", 'tablespoons drained pickled ginger, for garnish'),
+                (2.0, "", 'tablespoons soy sauce, or to taste'),
+                (1.0, "", 'tablespoon wasabi paste')
                 ]
             )
         ]

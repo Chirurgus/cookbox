@@ -1,9 +1,12 @@
-""" Created by Oleksandr Sorocynskyi """
-""" On 19/05/2019 """
+# Created by Oleksandr Sorochynskyi
+# On 19/05/2019
+
+from fractions import Fraction
 
 from ._utils import (
     get_minutes,
     normalize_string,
+    parse_quantity,
     parse_ingredients,
     normalize_instructions,
 )
@@ -86,7 +89,7 @@ class RecipeMakerScraperMixin(object):
         for group_container in group_containers:
             group_name_container = group_container.find('h4', class_='wprm-recipe-group-name')
             if group_name_container:
-                ingredient_group_name = group_container.get_text()
+                ingredient_group_name = group_name_container.get_text()
             else:
                 ingredient_group_name = 'All'
 
@@ -96,7 +99,7 @@ class RecipeMakerScraperMixin(object):
                 quantity = ingredient.find('span', class_='wprm-recipe-ingredient-amount').get_text()
 
                 unit_container = ingredient.find('span', class_='wprm-recipe-ingredient-unit')
-                unit =  unit_container.get_text() if unit_container else None
+                unit =  unit_container.get_text() if unit_container else ""
 
                 description = ingredient.find('span', class_='wprm-recipe-ingredient-name').get_text()
 
@@ -105,6 +108,11 @@ class RecipeMakerScraperMixin(object):
                 if notes_container:
                     description += (", " + notes_container.get_text())
 
+                try:
+                    quantity = parse_quantity(quantity)
+                except ValueError:
+                    description = ' '.join([quantity, description,])
+                
                 # append the ingredient tuple to ingredient list
                 ingredient_list.append( (quantity, unit, description) )
             
