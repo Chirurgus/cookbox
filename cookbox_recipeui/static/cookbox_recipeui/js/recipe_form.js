@@ -1,5 +1,6 @@
 // Created by Oleksandr Sorochynskyi
 // On 11/09/2019
+"use strict";
 
 // Selectors for the lists with position field, together
 // with the class of position field selectors
@@ -21,7 +22,7 @@ const enter_handler_args = [
 // Helper functions
 
 // Add an inline form to a formset
-add_inline_form = function(prefix, prefix_str, focus_new=true) {
+function add_inline_form(prefix, prefix_str, focus_new=true) {
     // Get the index of the new form
     var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
 
@@ -46,7 +47,7 @@ add_inline_form = function(prefix, prefix_str, focus_new=true) {
     return new_form
 }
 
-delete_inline_form = function(delete_checkbox_selector, inline_form_selector) {
+function delete_inline_form(delete_checkbox_selector, inline_form_selector) {
     var del_checkbox = $(delete_checkbox_selector);
 
     // Mark the inline form for deletion
@@ -97,7 +98,7 @@ function fill_position_fields(list_selector, pos_field_selector) {
         });
 };
 
-make_sortable = function(list_selector, pos_field_selector) {
+function make_sortable(list_selector, pos_field_selector) {
     var sortables = sortable(list_selector, {
         handle: 'span.sortable-handle',
         forcePlaceholderSize: true
@@ -165,7 +166,7 @@ $(document).ready(function() {
 });
 
 // Handle "Add ingrediennt/instruction/note" button click.
-on_add_click = function(prefix, prefix_str) {
+function on_add_click(prefix, prefix_str) {
     // Add the inline form
     add_inline_form(prefix, prefix_str)
     // Make the new element sortable
