@@ -252,6 +252,7 @@ class RecipeForm(
         js = (
             "cookbox_recipeui/js/recipe_form.js",
             "cookbox_recipeui/js/html5sortable.min.js",
+            "cookbox_webui/js/jquery.are-you-sure-1.9.0.js"
         )
         
     class Meta:

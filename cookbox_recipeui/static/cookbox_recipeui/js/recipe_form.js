@@ -138,6 +138,10 @@ function setup_enter_handlers() {
 
 // Call function on DOM Ready:
 $(document).ready(function() {
+    // Prompt the user if he tries to leave the page
+    // without saving the form
+    $('#recipe-edit-form').areYouSure();
+
     // On submit fill in the position fields
     $('#recipe-edit-form').submit((event) => {
         // For every ordered list
@@ -156,6 +160,7 @@ $(document).ready(function() {
         make_sortable(key, ordered_forms[key]);
     });
 
+    // Handle Enter key
     setup_enter_handlers();
 });
 
