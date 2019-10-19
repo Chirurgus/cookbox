@@ -15,9 +15,13 @@ from .views import (
     TagCategoryDelete,
 )
 
+# Don't require authentication for the login page
+login_view = LoginView.as_view(template_name= 'login.html')
+login_view.auth_exempt = True
+
 urlpatterns = [
     path('', HomePageView.as_view(), name="home"),
-    path('login/', LoginView.as_view(template_name= 'login.html'), name='login'),
+    path('login/', login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page= reverse_lazy('login')), name='logout'),
     path('tags/', TagList.as_view(), name="tag-list"),
     path('tags/<int:pk>/recipes/', TagRecipeList.as_view(), name="tag-recipe-list"),
