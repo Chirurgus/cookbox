@@ -47,6 +47,11 @@ class RecipeCreate(BaseLoginRequiredMixin, CreateView):
     form_class = RecipeForm
     success_url = reverse_lazy('recipe-list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = True
+        return context
+
 class RecipeImport(BaseLoginRequiredMixin, FormView):
     template_name = 'cookbox_recipeui/import.html'
     form_class = ImportRecipeForm
