@@ -42,11 +42,12 @@ class AuthRequiredMiddleware(object):
     it with `auth_exempt` decorator.
 
     If the user is not authenticated redirects to a page
-    named 'login'. To override this behavior override
-    the `redirect_to` class attribute.
+    named 'login', with `next` url parameter set to the page
+    address that the user tried to access. To override this
+    behavior override the `redirect_to` class attribute.
     """
 
-    redirect_to = reverse_lazy('login')
+    redirect_to = reverse_lazy('login') + "?next={next}"
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         assert hasattr(request, 'user'), """
@@ -71,7 +72,12 @@ class AuthRequiredMiddleware(object):
                     """.format(
                         target=request.path
                     ))
-            return HttpResponseRedirect(self.redirect_to)
+            # Set the `next` parameter if it is in the url
+            if self.redirect_to.find("{next}") != -1:
+                redirect_to = self.redirect_to.format(next=request.path)
+            else:
+                redirect_to = self.redirect_to
+            return HttpResponseRedirect(redirect_to)
         return None
 
     # What follows is boilerplate code required to be valid middleware
