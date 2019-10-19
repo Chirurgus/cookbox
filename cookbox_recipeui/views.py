@@ -24,23 +24,21 @@ import cookbox_scraper as scraper
 
 from cookbox_core.models import Recipe
 
-from cookbox_webui.views import BaseLoginRequiredMixin
-
 from .forms import RecipeForm, SearchForm, ImportRecipeForm
 
 
-class RecipeList(BaseLoginRequiredMixin, ListView):
+class RecipeList(ListView):
     template_name = 'cookbox_recipeui/list.html'
     queryset = Recipe.objects.all().order_by("-last_modified") 
     context_object_name = "recipes"
     paginate_by = 20
 
-class RecipeDetail(BaseLoginRequiredMixin, DetailView):
+class RecipeDetail(DetailView):
     template_name = 'cookbox_recipeui/detail.html'
     model = Recipe
     context_object_name = "recipe"
 
-class RecipeCreate(BaseLoginRequiredMixin, CreateView):
+class RecipeCreate(CreateView):
     template_name = 'cookbox_recipeui/edit.html'
     model = Recipe
     context_object_name = "recipe"
@@ -52,7 +50,7 @@ class RecipeCreate(BaseLoginRequiredMixin, CreateView):
         context['new'] = True
         return context
 
-class RecipeImport(BaseLoginRequiredMixin, FormView):
+class RecipeImport(FormView):
     template_name = 'cookbox_recipeui/import.html'
     form_class = ImportRecipeForm
     
@@ -68,14 +66,14 @@ class RecipeImport(BaseLoginRequiredMixin, FormView):
             reverse('recipe-edit', kwargs= { 'pk': recipe.id })
         )
 
-class RecipeEdit(BaseLoginRequiredMixin, UpdateView):
+class RecipeEdit(UpdateView):
     template_name = 'cookbox_recipeui/edit.html'
     model = Recipe
     context_object_name = "recipe"
     form_class = RecipeForm
     success_url = reverse_lazy('recipe-list')
 
-class RecipeDelete(BaseLoginRequiredMixin, DeleteView):
+class RecipeDelete(DeleteView):
     model = Recipe
     success_url = reverse_lazy('recipe-list')
     template_name = 'delete.html'
@@ -92,7 +90,7 @@ class RecipeTagAutocomplete(Select2QuerySetView):
 
         return qs
 
-class RecipeSearch(BaseLoginRequiredMixin, FormView):
+class RecipeSearch(FormView):
     template_name = 'cookbox_recipeui/search.html'
     form_class = SearchForm
     

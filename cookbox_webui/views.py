@@ -24,14 +24,11 @@ from .forms import (
     TagCategoryForm,
 )
 
-class BaseLoginRequiredMixin(LoginRequiredMixin):
-    login_url = reverse_lazy('login')
-
-class HomePageView(BaseLoginRequiredMixin, View):
+class HomePageView(View):
     def get(self, request):
         return HttpResponseRedirect(reverse("recipe-list"))
 
-class TagList(BaseLoginRequiredMixin, View):
+class TagList(View):
     template_name = 'tag/list.html'
 
     def get(self, request):
@@ -42,7 +39,7 @@ class TagList(BaseLoginRequiredMixin, View):
                       {'uncategorized_tags' :uncategorized_tags,
                        'categories': categories })
 
-class TagCreate(BaseLoginRequiredMixin, View):
+class TagCreate(View):
     template_name = 'tag/edit.html'
 
     def get(self, request):
@@ -67,7 +64,7 @@ class TagCreate(BaseLoginRequiredMixin, View):
                           { 'form' : form,
                             'new'   : True })
 
-class TagEdit(BaseLoginRequiredMixin, View):
+class TagEdit(View):
     template_name = 'tag/edit.html'
 
     def get(self, request, pk):
@@ -96,12 +93,12 @@ class TagEdit(BaseLoginRequiredMixin, View):
                           {'tag'  : tag,
                            'form'    : form })
 
-class TagDelete(BaseLoginRequiredMixin, DeleteView):
+class TagDelete(DeleteView):
     model = Tag
     success_url = reverse_lazy('tag-list')
     template_name = 'delete.html'
 
-class TagCategoryCreate(BaseLoginRequiredMixin, View):
+class TagCategoryCreate(View):
     template_name = 'tag_category/edit.html'
 
     def get(self, request):
@@ -126,7 +123,7 @@ class TagCategoryCreate(BaseLoginRequiredMixin, View):
                           { 'form' : form,
                             'new'   : True })
 
-class TagCategoryEdit(BaseLoginRequiredMixin, UpdateView):
+class TagCategoryEdit(UpdateView):
     template_name = 'tag_category/edit.html'
 
     def get(self, request, pk):
@@ -153,12 +150,12 @@ class TagCategoryEdit(BaseLoginRequiredMixin, UpdateView):
                           {'category' : category,
                            'form'     : form })
 
-class TagCategoryDelete(BaseLoginRequiredMixin, DeleteView):
+class TagCategoryDelete(DeleteView):
     model = TagCategory
     success_url = reverse_lazy('tag-list')
     template_name = 'delete.html'
 
-class TagRecipeList(BaseLoginRequiredMixin, View):
+class TagRecipeList(View):
     template_name = 'tag/detail.html'
 
     def get(self, request, pk):
