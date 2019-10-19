@@ -17,7 +17,10 @@ from cookbox_core.tests import CookboxBaseTest
 class TagListViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('tag-list'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('tag-list')
+        )
 
     def test_tag_list_view_200(self):
         self.authenticate()
@@ -27,7 +30,10 @@ class TagListViewTest(CookboxBaseTest):
 class TagCreateViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('tag-create'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('tag-create')
+        )
 
     def test_tag_create_view_200(self):
         self.authenticate()
@@ -41,7 +47,11 @@ class TagEditViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('tag-edit', kwargs= {'pk' : tag.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+                reverse('tag-edit', kwargs= {'pk' : tag.id })
+        )
 
     def test_tag_edit_view_200(self):
         self.authenticate()
@@ -55,7 +65,10 @@ class TagEditViewTest(CookboxBaseTest):
 class TagCategoryCreateViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('tag-category-create'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('tag-category-create')
+        )
 
     def test_tag_category_create_view_200(self):
         self.authenticate()
@@ -69,7 +82,11 @@ class TagCategoryEditViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('tag-category-edit', kwargs= {'pk' : tag_category.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+                reverse('tag-category-edit', kwargs= {'pk' : tag_category.id })
+        )
 
     def test_tag_category_edit_view_200(self):
         self.authenticate()
@@ -87,7 +104,11 @@ class TagCategoryDeleteViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('tag-category-delete', kwargs= {'pk' : tag_category.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+                reverse('tag-category-delete', kwargs= {'pk' : tag_category.id })
+        )
 
     def test_tag_category_delete_view_200(self):
         self.authenticate()

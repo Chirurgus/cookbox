@@ -17,7 +17,10 @@ from cookbox_core.tests import CookboxBaseTest
 class ListViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('recipe-list'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('recipe-list')
+        )
 
     def test_list_view_get_200(self):
         self.authenticate()
@@ -31,7 +34,11 @@ class DetailViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('recipe-detail', kwargs= {'pk' : recipe.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+                reverse('recipe-detail', kwargs= {'pk' : recipe.id })
+        )
 
     def test_detail_view_get_200(self):
         self.authenticate()
@@ -45,7 +52,10 @@ class DetailViewTest(CookboxBaseTest):
 class RecipeImport(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('recipe-import'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('recipe-import')
+        )
 
     def test_import_view_get_200(self):
         self.authenticate()
@@ -55,7 +65,10 @@ class RecipeImport(CookboxBaseTest):
 class RecipeCreateViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('recipe-create'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('recipe-create')
+        )
 
     def test_create_view_get_200(self):
         self.authenticate()
@@ -69,7 +82,11 @@ class RecipeEditViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('recipe-edit', kwargs= {'pk' : recipe.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + 
+                reverse('recipe-edit', kwargs= {'pk' : recipe.id })
+        )
 
     def test_edit_view_get_200(self):
         self.authenticate()
@@ -87,7 +104,11 @@ class RecipeDeleteViewTest(CookboxBaseTest):
         response = self.client.get(
             reverse('recipe-delete', kwargs= {'pk' : recipe.id })
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+            reverse('recipe-delete', kwargs= {'pk' : recipe.id })
+        )
 
     def test_delete_view_get_200(self):
         self.authenticate()
@@ -101,7 +122,10 @@ class RecipeDeleteViewTest(CookboxBaseTest):
 class RecipeSearchViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('recipe-search'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('recipe-search')
+        )
 
     def test_recipe_search_view_200(self):
         self.authenticate()
@@ -112,7 +136,11 @@ class RandomRecipeViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         Recipe(**self.recipe_data).save()
         response = self.client.get(reverse('recipe-random'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" +
+            reverse('recipe-random')
+        )
 
     def test_random_recipe_view_200_empty_database(self):
         """
@@ -127,12 +155,18 @@ class RandomRecipeViewTest(CookboxBaseTest):
         recipe = Recipe(**self.recipe_data)
         recipe.save()
         response = self.client.get(reverse('recipe-random'))
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            reverse('recipe-detail', kwargs={'pk' : recipe.id})
+        )
 
 class RecipeSearchRandomViewTest(CookboxBaseTest):
     def test_requires_auth(self):
         response = self.client.get(reverse('recipe-search-random'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            reverse('login') + "?next=" + reverse('recipe-search-random')
+        )
 
     def test_recipe_search_random_view_200(self):
         self.authenticate()
