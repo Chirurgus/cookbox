@@ -39,6 +39,8 @@ from cookbox_core.models import (
 
 import cookbox_scraper as scraper
 
+from .widgets import ImageWidget
+
 class CookboxInlineFormset(BaseInlineFormSet):
     '''
     Allows to change the prefix string of the empty_form via
@@ -100,8 +102,9 @@ class ModelFormWithInlineFormsetMixin(object):
 
 class NoteForm(ModelForm):
     class Meta:
-        fields = ['text', 'image']
         abstract = True
+        fields = ['text', 'image']
+        widgets = { 'image' : ImageWidget(), }
 
 class NoteInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__note_prefix__'
@@ -278,6 +281,7 @@ class RecipeForm(
         }
         widgets = {
             'description': Textarea(attrs={}),
+            'image': ImageWidget(),
         }
 
 class SearchForm(Form):
