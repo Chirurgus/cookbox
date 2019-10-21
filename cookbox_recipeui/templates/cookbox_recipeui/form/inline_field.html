@@ -2,9 +2,9 @@
 {# Expects variables: field = field to be rendered in this line #}
 
 {% if field.errors %}
-    <ul>
+    <ul class="field-errors">
     {% for error in field.errors %}
-        <li>{{ error }}</li>
+        <li class="field-error">{{ error }}</li>
     {% endfor %}
     </ul>
 {% endif %}

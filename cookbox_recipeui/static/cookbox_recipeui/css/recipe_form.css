@@ -29,6 +29,16 @@ input[type='number'] {
     font-weight: bolder;
 }
 
+.field-errors {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.field-error {
+    font-weight: bold;
+}
+
 .detail-forms legend,
 .ing-grp-forms legend,
 .ins-forms legend,
