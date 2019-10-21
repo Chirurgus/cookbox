@@ -54,7 +54,7 @@ function delete_inline_form(delete_checkbox_selector, inline_form_selector) {
     del_checkbox.prop('checked', true);
     
     // Hide the inline from view (it will still be submitted).
-    del_checkbox.closest(inline_form_selector).addClass("hide");
+    del_checkbox.closest(inline_form_selector).hide();
 }
 
 function reload_page(){
