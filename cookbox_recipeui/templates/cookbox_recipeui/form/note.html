@@ -11,7 +11,7 @@
 {% endif %}
 
 {% for hidden in note.hidden_fields %}
-    <span>{{ hidden }}</span>
+    {{ hidden }}
 {% endfor %}
 
 <span class="note-form-desc">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.text %}</span>
@@ -21,4 +21,6 @@
     type="button"
     class="{{ form_class }}-del-btn"
     tabindex="-1"
-    onclick="delete_inline_form('#{{ note.DELETE.auto_id }}', '.{{ form_class }}')">×</button>
+    onclick="delete_inline_form('#{{ note.DELETE.auto_id }}', '.{{ form_class }}')">
+    ×
+</button>

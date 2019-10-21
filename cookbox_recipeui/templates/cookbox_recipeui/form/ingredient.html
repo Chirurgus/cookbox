@@ -12,14 +12,16 @@
         type="button"
         class="ing-form-del-btn"
         tabindex="-1"
-        onclick="delete_inline_form('#{{ ingredient.DELETE.auto_id }}', '.ing-form')">×</button>
+        onclick="delete_inline_form('#{{ ingredient.DELETE.auto_id }}', '.ing-form')">
+        ×
+    </button>
+    <button
+        type="button"
+        class="ing-form-add-note-btn"
+        onclick="on_add_click('{{ ingredient.formsets.notes.prefix }}', '{{ ingredient.formsets.notes.empty_form_prefix }}')">
+        Add note
+    </button>
 </span>
-<button
-    type="button"
-    class="ing-form-add-note-btn"
-    onclick="on_add_click('{{ ingredient.formsets.notes.prefix }}', '{{ ingredient.formsets.notes.empty_form_prefix }}')">
-    Add note
-</button>
 {{ ingredient.formsets.notes.management_form }}
 <ul
     id="{{ ingredient.formsets.notes.prefix }}"

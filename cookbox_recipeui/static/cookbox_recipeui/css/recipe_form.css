@@ -10,10 +10,8 @@ input[type='number'] {
     -moz-appearance:textfield;
 }
 
-
-
-
 /* Form-specific styles */
+
 .sortable-placeholder {
     border-width: 1px;
     border-style: dashed;
@@ -25,6 +23,7 @@ input[type='number'] {
 }
 
 .sortable-handle {
+    max-width: 0.8em;
     margin-right: 0.2em;
     font-size: 1.2em;
     font-weight: bolder;
@@ -46,53 +45,79 @@ input[type='number'] {
     padding: 0;
 }
 
-
-/* Everything flex related does not seem to work 
- * This is why width property is explicitly defined for
- * for the description field. */
-.ing-form-detail-container  {
+.ing-form-detail-container, .ins-form-detail-container,
+.ing-note-form, .ins-note-form, .recipe-note-form {
     display: flex;
     flex-flow: row wrap;
-    /* width: 100%; */
+    justify-content: flex-start;
 }
 
-.ing-form-qty input, .ing-form-unit input {
+.ing-form-detail-container > *,
+.ins-form-detail-container > * , .ing-note-form > *,
+.ins-note-form > *, .recipe-note-form > * {
+    flex-basis: 10em;
+
+    flex-grow: 2;
+    flex-shrink: .5;
+
+    margin: 3px 3px 3px 3px;
+}
+
+/* The inputs are all wrapped with a span */
+.ing-form-qty > input, .ing-form-unit > input,
+.ing-form-desc > input,  .ins-form-desc > input,
+.note-form-desc > input {
+    width: 100%;
+}
+
+.ing-form-qty, .ing-form-unit {
     flex-basis: 3em;
 
     flex-grow: 1;
     flex-shrink: 1;
 
-    max-width: 5em;
+    max-width: 7em;
     min-width: 2em;
 }
 
-.ing-form-desc input {
-    flex-basis: 30em;
-    width: 30em;
+.ing-form-desc, .ins-form-desc, .note-form-desc {
+    flex-basis: 10em;
 
-    flex-grow: 2;
-    flex-shrink: 0.5;
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    min-width: 15em;
 }
 
-.ing-form-add-note-btn .ins-form-add-note-btn {
+.note-form-desc {
+    /* Take up all the space to force the image form to new line */
+    flex-basis: 100%;
+}
+
+.ing-form-del-btn, .ins-form-del-btn,
+.ing-note-form-del-btn, .ins-note-form-del-btn,
+.recipe-note-form-del-btn {
+    flex-basis: 2em;
+
+    max-width: 2em;
+    max-height: 2em;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.ing-form-add-note-btn, .ins-form-add-note-btn {
+    max-width: 6em;
     margin: 0.2em 0.2em 0.2em 0.2em;
 }
 
-/*
-.ins-form-detail-container {
-    display: flex;
-    flex-flow: column nowrap;
-}
-*/
-
-.ins-form-desc input, .note-form-desc input,
-.recipe-note-form-desc input[type=text] {
-    width: 30em;
+.note-form-img {
+    display: inline-block;
 }
 
 /* Touch ups for specific elements */
 #id_description {
-    width: 30em;
-    height: 6em; 
+    max-width: 30em;
+    max-height: 6em; 
     resize: none;
 }

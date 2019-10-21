@@ -10,14 +10,16 @@
         type="button"
         class="ins-form-del-btn"
         tabindex="-1"
-        onclick="delete_inline_form('#{{ instruction.DELETE.auto_id }}', '.ins-form')">×</button>
+        onclick="delete_inline_form('#{{ instruction.DELETE.auto_id }}', '.ins-form')">
+        ×
+    </button>
+    <button
+        type="button"
+        class="ins-form-add-note-btn"
+        onclick="on_add_click('{{ instruction.formsets.notes.prefix }}', '{{ instruction.formsets.notes.empty_form_prefix }}')">
+        Add note
+    </button>
 </span>
-<button
-    type="button"
-    class="ins-form-add-note-btn"
-    onclick="on_add_click('{{ instruction.formsets.notes.prefix }}', '{{ instruction.formsets.notes.empty_form_prefix }}')">
-    Add note
-</button>
 {{ instruction.formsets.notes.management_form }}
 <ul
     id="{{ instruction.formsets.notes.prefix }}"
