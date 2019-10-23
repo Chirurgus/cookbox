@@ -154,6 +154,13 @@ button:hover, .button-link:hover {
 
 /* Page-specific classes */
 
+/* Have these elements center the inner anchor */
+.recipe-list-item, .tag-list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .recipe-list-item {
     flex-grow: 1;
     flex-basis: auto;
@@ -168,13 +175,10 @@ button:hover, .button-link:hover {
     margin: 1em 1em 1em 1em;
     padding: .5em .5em .5em .5em;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Links inside the cards should fill the cards */
-.recipe-list-item > a {
+.recipe-list-item > a, .tag-list-item > a {
     height: 100%;
     width: 100%;
 
