@@ -69,7 +69,7 @@ class TagCategoryCreate(CreateView):
     template_name = 'tag_category/edit.html'
     model = TagCategory
     context_object_name = "category"
-    form_class = TagCategory
+    form_class = TagCategoryForm
     success_url = reverse_lazy('tag-list')
 
     def get_context_data(self, **kwargs):
@@ -81,7 +81,7 @@ class TagCategoryEdit(UpdateView):
     template_name = 'tag_category/edit.html'
     model = TagCategory
     context_object_name = "category"
-    form_class = TagCategory
+    form_class = TagCategoryForm
     success_url = reverse_lazy('tag-list')
 
     def get_context_data(self, **kwargs):
