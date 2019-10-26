@@ -92,6 +92,8 @@ class RecipeDelete(DeleteView):
     template_name = 'delete.html'
 
 class RecipeTagAutocomplete(Select2QuerySetView):
+    create_field = 'name'
+
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Tag.objects.none()
