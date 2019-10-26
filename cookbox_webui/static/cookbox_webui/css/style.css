@@ -113,8 +113,14 @@ nav > a {
 }
 
 .card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    grid-gap: 1rem;
+
+    /*
     display: flex;
     flex-flow: row wrap;
+    */
 
     list-style: none;
 
@@ -162,10 +168,6 @@ button:hover, .button-link:hover {
 }
 
 .recipe-list-item {
-    flex-grow: 1;
-    flex-basis: auto;
-    flex-shrink: 0;
-
     width: 7.5em;
     height: 11.25em;
 
