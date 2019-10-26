@@ -22,7 +22,7 @@ from dal.autocomplete import Select2QuerySetView
 
 import cookbox_scraper as scraper
 
-from cookbox_core.models import Recipe
+from cookbox_core.models import Recipe, Tag
 
 from .forms import RecipeForm, SearchForm, ImportRecipeForm
 
