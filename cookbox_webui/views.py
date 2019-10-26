@@ -7,8 +7,10 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     View,
+    ListView,
     DeleteView,
     UpdateView,
+    CreateView,
 )
 from django.core.paginator import Paginator
 
@@ -28,127 +30,64 @@ class HomePageView(View):
     def get(self, request):
         return HttpResponseRedirect(reverse("recipe-list"))
 
-class TagList(View):
+class TagList(ListView):
     template_name = 'tag/list.html'
+    queryset = TagCategory.objects.all()
+    context_object_name = "categories"
 
-    def get(self, request):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         uncategorized_tags = Tag.objects.filter(category=None)
-        categories = TagCategory.objects.all()
-        return render(request,
-                      self.template_name,
-                      {'uncategorized_tags' :uncategorized_tags,
-                       'categories': categories })
+        context.update({'uncategorized_tags' :uncategorized_tags})
+        return context
 
-class TagCreate(View):
+class TagCreate(CreateView):
     template_name = 'tag/edit.html'
+    model = Tag
+    context_object_name = "tag"
+    form_class = TagForm
+    success_url = reverse_lazy('tag-list')
 
-    def get(self, request):
-        form = TagForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = True
+        return context
 
-        return render(request,
-                      self.template_name,
-                      { 'form' : form,
-                        'new'  : True })
-
-    # PUT method is not allowed for HTML forms,
-    # so POST is used even for new instances
-    def post(self, request):
-        form = TagForm(data= request.POST)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('tag-list'))
-        else:
-            return render(request,
-                          self.template_name,
-                          { 'form' : form,
-                            'new'   : True })
-
-class TagEdit(View):
+class TagEdit(UpdateView):
     template_name = 'tag/edit.html'
-
-    def get(self, request, pk):
-        tag = get_object_or_404(Tag, pk=pk)
-
-        tag_form = TagForm(instance= tag)
-
-        return render(request,
-            self.template_name,
-            {'tag'    : tag,
-             'form'      : tag_form})
-
-    def post(self, request, pk):
-        tag = get_object_or_404(Tag, pk=pk)
-
-        form = TagForm(data= request.POST, files= request.FILES, instance= tag)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(
-                        reverse('tag-list')
-                        )
-        else:
-            return render(request,
-                          self.template_name,
-                          {'tag'  : tag,
-                           'form'    : form })
+    model = Tag
+    context_object_name = "tag"
+    form_class = TagForm
+    success_url = reverse_lazy('tag-list')
 
 class TagDelete(DeleteView):
     model = Tag
     success_url = reverse_lazy('tag-list')
     template_name = 'delete.html'
 
-class TagCategoryCreate(View):
+class TagCategoryCreate(CreateView):
     template_name = 'tag_category/edit.html'
+    model = TagCategory
+    context_object_name = "category"
+    form_class = TagCategory
+    success_url = reverse_lazy('tag-list')
 
-    def get(self, request):
-        form = TagCategoryForm()
-
-        return render(request,
-                      self.template_name,
-                      { 'form' : form,
-                        'new'  : True })
-
-    # PUT method is not allowed for HTML forms
-    # so POST is used even for new instances
-    def post(self, request):
-        form = TagCategoryForm(data= request.POST)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('tag-list'))
-        else:
-            return render(request,
-                          self.template_name,
-                          { 'form' : form,
-                            'new'   : True })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = True
+        return context
 
 class TagCategoryEdit(UpdateView):
     template_name = 'tag_category/edit.html'
+    model = TagCategory
+    context_object_name = "category"
+    form_class = TagCategory
+    success_url = reverse_lazy('tag-list')
 
-    def get(self, request, pk):
-        category = get_object_or_404(TagCategory, pk=pk)
-        form = TagCategoryForm(instance= category)
-
-        return render(request,
-                        self.template_name,
-                        {'category' : category,
-                         'form'     : form })
-
-    def post(self, request, pk):
-        category = get_object_or_404(TagCategory, pk=pk)
-        form = TagCategoryForm(data= request.POST,
-                               files= request.FILES,
-                               instance= category)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('tag-list'))
-        else:
-            return render(request,
-                          self.template_name,
-                          {'category' : category,
-                           'form'     : form })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = False
+        return context
 
 class TagCategoryDelete(DeleteView):
     model = TagCategory
