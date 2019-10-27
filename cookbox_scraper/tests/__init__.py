@@ -28,6 +28,7 @@ class RecipeScraperTestMixin(object):
     self.host = "{host}"
     self.title = "{title}"
     self.description = "{description}"
+    self.time_unit = {time_unit}
     self.time = {time}
     self.yield_unit = "{yield_unit}"
     self.yields = {yields}
@@ -38,6 +39,7 @@ class RecipeScraperTestMixin(object):
         host=s.host(),
         title=s.title(),
         description=s.description(),
+        time_unit=s.time_unit(),
         time=s.time(),
         yield_unit=s.yield_unit(),
         yields=s.yields(),
@@ -47,9 +49,10 @@ class RecipeScraperTestMixin(object):
     )
     print(code)
     """
-    def setUp(self):
-        self.scraper = scrape_me(self.url)
-        self.maxDiff = None
+    @classmethod
+    def setUpClass(cls):
+        cls.scraper = scrape_me(cls.url)
+        cls.maxDiff = None
     
     def test_save_recipe(self):
         # If this doesn't throw anything we're happy
@@ -78,6 +81,18 @@ class RecipeScraperTestMixin(object):
         self.assertEqual(
             self.description,
             self.scraper.description()
+        )
+
+    def test_time_unit(self):
+        self.assertEqual(
+            self.time_unit,
+            self.scraper.time_unit()
+        )
+
+    def test_time(self):
+        self.assertTupleEqual(
+            self.time,
+            self.scraper.time()
         )
     
     def test_yield_unit(self):
