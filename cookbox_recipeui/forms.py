@@ -5,7 +5,7 @@
 Forms for interacting with Recipe objects.
 
 """
-
+from django.db import transaction
 from django.forms import (
     Form,
     ModelForm,
@@ -234,10 +234,11 @@ class RecipeForm(
         '''
         Same as ModelForm.save(), but also saves tags if commit=True
         '''
-        ret = super().save(commit)
-        if commit:
-            self.save_tags()
-        return ret
+        with transaction.atomic():
+            ret = super().save(commit)
+            if commit:
+                self.save_tags()
+            return ret
     
     def save_tags(self):
         '''
