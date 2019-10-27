@@ -289,12 +289,6 @@ class SearchForm(Form):
     source = CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, required=False)
     max_duration = FloatField(required=False)
     min_duration = FloatField(required=False)
-    tags = ModelMultipleChoiceField(
-        required=False,
-        to_field_name= 'name',
-        queryset= Tag.objects.all(),
-        widget= CheckboxSelectMultiple()
-    )
 
     def filtered_qs(self):
         """
