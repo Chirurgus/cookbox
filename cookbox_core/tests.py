@@ -80,7 +80,7 @@ class RecipeModelTest(CookboxBaseTest):
         recipe_data.update({'name' : recipe_name})
 
         recipe = Recipe(**recipe_data)
-        self.assertEquals(recipe_name, str(recipe))
+        self.assertEqual(recipe_name, str(recipe))
 
 class TagModelTest(CookboxBaseTest):
     def test_tag_str(self):
@@ -89,7 +89,7 @@ class TagModelTest(CookboxBaseTest):
         tag_name = "only miniscule tag name"
 
         tag = Tag(name= tag_name)
-        self.assertEquals(tag_name, str(tag))
+        self.assertEqual(tag_name, str(tag))
     
     def test_tag_save_converts_to_lower(self):
         tag_name1 = "UPPER ONLY TAG NAME"
