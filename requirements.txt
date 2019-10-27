@@ -1,10 +1,9 @@
-﻿Django==2.1.6
+﻿Django==2.2.6
 django-nested-admin==3.1.3
-django-filter==2.1.0
 git+https://github.com/labd/django-superform
 Pillow==5.4.1
-django-autocomplete-light>=3.3.2
-django-imagekit>=4.0.1
-beautifulsoup4>=4.7.1
-requests>=2.21.0
-mysqlclient==1.3.13
+django-autocomplete-light==3.4.1
+django-imagekit==4.0.2
+beautifulsoup4==4.8.1
+requests==2.22.0
+mysqlclient==1.4.4
