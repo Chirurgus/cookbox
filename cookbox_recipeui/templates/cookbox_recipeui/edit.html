@@ -3,23 +3,6 @@
 {% load static %}
 
 {% block scripts %}
-<script>
-    /*
-    // Prompt the user for confirmation before unloading the page.
-    window.onbeforeunload = function() {
-        return true;
-    };
-
-    // Prevent ENTER key from submitting the form.
-    $(document).on("keypress", 'form', function (e) {
-        var code = e.keyCode || e.which;
-        if (code == 13) {
-            e.preventDefault();
-            return false;
-        }
-    });
-    */
-</script>
 {{ form.media }}
 {% endblock %}
 
