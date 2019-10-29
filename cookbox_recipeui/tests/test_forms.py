@@ -173,7 +173,7 @@ class RecipeFormTest(CookboxBaseTest):
     }
 
     def test_is_valid_no_related(self):
-        form_data = self.form_data_recipe_no_related
+        form_data = self.form_data_recipe_no_related.copy()
 
         form = RecipeForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -195,7 +195,7 @@ class RecipeFormTest(CookboxBaseTest):
         self.assertEqual(len(recipe.notes.all()), 0)
 
     def test_form_is_valid(self):
-        form_data = self.form_data_recipe_no_related
+        form_data = self.form_data_recipe_no_related.copy()
         form_data.update(self.form_data_ingredients)
         form_data.update(self.form_data_instructions)
         form_data.update(self.form_data_notes)
@@ -204,7 +204,7 @@ class RecipeFormTest(CookboxBaseTest):
         self.assertTrue(form.is_valid())
 
     def test_form_save(self):
-        form_data = self.form_data_recipe_no_related
+        form_data = self.form_data_recipe_no_related.copy()
         form_data.update(self.form_data_ingredients)
         form_data.update(self.form_data_instructions)
         form_data.update(self.form_data_notes)
@@ -214,7 +214,7 @@ class RecipeFormTest(CookboxBaseTest):
         form.save()
     
     def test_form_save_check_values_outside_related(self):
-        form_data = self.form_data_recipe_no_related
+        form_data = self.form_data_recipe_no_related.copy()
         form_data.update(self.form_data_ingredients)
         form_data.update(self.form_data_instructions)
         form_data.update(self.form_data_notes)
