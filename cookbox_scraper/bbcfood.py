@@ -1,3 +1,5 @@
+import re
+
 from ._abstract import AbstractScraper
 from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
@@ -34,7 +36,8 @@ class BBCFood(AbstractScraper):
         return (total_time, prep_time, cook_time)
 
     def yield_unit(self):
-        return 'serving'
+        return "serving(s)"
+
     
     def yields(self):
         serves = self.soup.find(
@@ -42,9 +45,9 @@ class BBCFood(AbstractScraper):
             {'class': 'recipe-metadata__serving'}
         ).get_text()
 
-        servings_sz_range = serves.split(' ', 1)[1]
-        nservings = float(servings_sz_range.split('-')[-1])
-        
+        match = re.search('([1-9]+)', serves)
+        nservings = float(match.group(1)) if match else 0
+
         return (nservings, 1)
 
     def ingredients(self):
