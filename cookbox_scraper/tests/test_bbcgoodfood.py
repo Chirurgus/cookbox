@@ -59,3 +59,5 @@ class TestBBCGoodFoodScraper3(RecipeScraperTestMixin, TestCase):
         cls.ingredients = [('All', [(0, '', '3-4 ripe mangoes (honey mangoes if possible)'), (0, '', '500g natural yogurt'), (2.0, '', 'tsp ground cardamom'), (1.0, '', 'tbsp honey'), (2.0, '', 'limes')])]
         cls.instructions = ['Put all the ingredients apart from the lime juice in a food processor and blitz', ' Add the lime juice along with a pinch of salt, to taste, then pour into glasses with some ice cubes and serve']
         cls.notes = []
+
+        super().setUpClass()
