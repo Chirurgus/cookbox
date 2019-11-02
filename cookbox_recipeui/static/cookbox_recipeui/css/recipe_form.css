@@ -36,6 +36,7 @@ input[type='number'] {
 }
 
 .field-error {
+    color: red;
     font-weight: bold;
 }
 
