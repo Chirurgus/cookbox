@@ -71,7 +71,6 @@ class RecipeEdit(UpdateView):
     model = Recipe
     context_object_name = "recipe"
     form_class = RecipeForm
-    success_url = reverse_lazy('recipe-list')
 
     def form_valid(self, form):
         recipe = form.save()
@@ -83,7 +82,12 @@ class RecipeEdit(UpdateView):
                 )
             )
         else:
-            return super().form_valid(form)
+            return HttpResponseRedirect(
+                reverse(
+                    'recipe-detail',
+                    kwargs= { 'pk': recipe.id }
+                )
+            )
 
 
 class RecipeDelete(DeleteView):
