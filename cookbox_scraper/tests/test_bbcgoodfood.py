@@ -51,7 +51,7 @@ class TestBBCGoodFoodScraper3(RecipeScraperTestMixin, TestCase):
         cls.url = "https://www.bbcgoodfood.com/recipes/mango-lassi"
         cls.host = "bbcgoodfood.com"
         cls.title = "Mango lassi"
-        cls.description = "Blitz up mangoes with yogurt, cardamom, lime and honey and you have the most delicious Indian drink – a bit like a smoothie and great for breakfast"
+        cls.description = "Blitz up mangoes with yogurt, cardamom, lime and honey and you have the most delicious Indian drink\xa0–\xa0a bit like a smoothie and great for breakfast"
         cls.time_unit = "min"
         cls.time = (10, 10, 0)
         cls.yield_unit = "serving(s)"
