@@ -31,7 +31,7 @@ class RecipeList(ListView):
     template_name = 'cookbox_recipeui/list.html'
     queryset = Recipe.objects.all().order_by("-last_modified") 
     context_object_name = "recipes"
-    paginate_by = 20
+    paginate_by = 24
 
 class RecipeDetail(DetailView):
     template_name = 'cookbox_recipeui/detail.html'
