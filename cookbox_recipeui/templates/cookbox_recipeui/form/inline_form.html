@@ -1,0 +1,28 @@
+{# Renders an inline form in one line, without the labels #}
+{# Expects variables: form = inlineform to be rendered #}
+
+{% if form.non_field_errors %}
+    <ul>
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+{% endif %}
+
+{% for hidden in form.hidden_fields %}
+    <span>{{ hidden }}</span>
+{% endfor %}
+
+{% for field in form.visible_fields %}
+<span>
+    {% if field.errors %}
+        <ul>
+        {% for error in field.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% include 'cookbox_recipeui/form/inline_field.html' with field=field %}
+</span>
+{% endfor %}
+

@@ -1,6 +1,7 @@
+import re
+
 from ._abstract import AbstractScraper
 from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
-
 
 class BBCGoodFood(AbstractScraper):
 
@@ -15,29 +16,52 @@ class BBCGoodFood(AbstractScraper):
         return self.soup.find('div', {'itemprop': 'description'}).get_text()
 
     def time(self):
-        prep_time = get_minutes(self.soup.find(
+        prep_container = self.soup.find(
             'span',
             {'class': 'recipe-details__cooking-time-prep'}
-        ).find('span'))
+        )
+        if prep_container:
+            prep_time = get_minutes(prep_container.find('span')) 
+        else:
+            prep_time = 0
 
-        cook_time =get_minutes(self.soup.find(
+        cook_container = self.soup.find(
             'span',
             {'class': 'recipe-details__cooking-time-cook'}
-        ).find('span'))
+        )
+        if cook_container:
+            cook_time = get_minutes(cook_container.find('span'))
+        else:
+            cook_time = 0
 
         total_time = prep_time + cook_time
         return (total_time, prep_time, cook_time)
 
     def yield_unit(self):
-        return 'serving'
+        serves = self.soup.find(
+            'span',
+            {'itemprop': 'recipeYield'}
+        ).get_text().strip()
+
+        servings = re.search('([1-9]+)([^0-9]+)', serves)
+
+        return servings.group(2).strip() if servings else 'serving(s)'
+
 
     def yields(self):
-        serves= self.soup.find('span', {'itemprop': 'recipeYield'}).get_text()
+        serves = self.soup.find(
+            'span',
+            {'itemprop': 'recipeYield'}
+        ).get_text().strip()
 
-        servings_sz_range = serves.strip().split(' ', 1)[1]
-        nservings = servings_sz_range.split('-')[-1]
+        servings = re.search('([1-9]+)', serves)
+        if servings:
+            nservings = float(servings.group(1))
+        else:
+            nservings = 0
+        
+        return (nservings, 1)
 
-        return (float(nservings), 1)
 
     def ingredients(self):
         ingredients = self.soup.find(

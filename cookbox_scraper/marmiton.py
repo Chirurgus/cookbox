@@ -65,7 +65,7 @@ class Marmiton(AbstractScraper):
             for d in zip(ing_desc, ing_desc_comp)
         ]
 
-        ingredients = [ (ing[0], "", ing[1]) for ing in zip(qty, desc) ]
+        ingredients = [ (ing[0], None, ing[1]) for ing in zip(qty, desc) ]
 
         return [('All', ingredients)]
 

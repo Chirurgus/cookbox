@@ -6,34 +6,36 @@ from . import RecipeScraperTestMixin
 
 
 class TestAllRecipesScraper(RecipeScraperTestMixin, TestCase):
-    def setUp(self):
-        self.url = "https://www.allrecipes.com/recipe/228953/california-roll/"
-        self.host = 'allrecipes.com'
-        self.title = 'California Roll'
-        self.description = '\r\n"A California roll is a fresh take on traditional Japanese rice rolls. Filled with avocado, crab, and cucumber, it\'s fresh and crunchy and makes a filling meal. You can use real or imitation crab."        '
-        self.time = (110.0, None, None)
-        self.yield_unit = 'servings'
-        self.yields = (5.0, 1.0)
-        self.ingredients = [
+    @classmethod
+    def setUpClass(cls):
+        cls.url = "https://www.allrecipes.com/recipe/228953/california-roll/"
+        cls.host = 'allrecipes.com'
+        cls.title = 'California Roll'
+        cls.description = '\r\n"A California roll is a fresh take on traditional Japanese rice rolls. Filled with avocado, crab, and cucumber, it\'s fresh and crunchy and makes a filling meal. You can use real or imitation crab."        '
+        cls.time_unit = "min"
+        cls.time = (110.0, None, None)
+        cls.yield_unit = 'servings'
+        cls.yields = (5.0, 1.0)
+        cls.ingredients = [
             ('All', [
-                (4.0, None, 'cups water'),
-                (2.0, None, 'cups uncooked white rice'),
-                (0.5, None, 'cup seasoned rice vinegar'),
-                (1.0, None, 'teaspoon white sugar, or as needed'),
-                (1.0, None, 'teaspoon salt, or as needed'),
-                (0.25, None, 'pound cooked crab meat, drained of excess liquid and shredded'),
-                (1.0, None, 'tablespoon mayonnaise'),
-                (5.0, None, 'sheets nori (dry seaweed)'),
-                (1.0, None, 'avocado, sliced'),
-                (0.25, None, 'cup red caviar, such as tobiko'),
-                (1.0, None, 'English cucumber, seeded and sliced into strips'),
-                (2.0, None, 'tablespoons drained pickled ginger, for garnish'),
-                (2.0, None, 'tablespoons soy sauce, or to taste'),
-                (1.0, None, 'tablespoon wasabi paste')
+                (4.0, "", 'cups water'),
+                (2.0, "", 'cups uncooked white rice'),
+                (0.5, "", 'cup seasoned rice vinegar'),
+                (1.0, "", 'teaspoon white sugar, or as needed'),
+                (1.0, "", 'teaspoon salt, or as needed'),
+                (0.25, "", 'pound cooked crab meat, drained of excess liquid and shredded'),
+                (1.0, "", 'tablespoon mayonnaise'),
+                (5.0, "", 'sheets nori (dry seaweed)'),
+                (1.0, "", 'avocado, sliced'),
+                (0.25, "", 'cup red caviar, such as tobiko'),
+                (1.0, "", 'English cucumber, seeded and sliced into strips'),
+                (2.0, "", 'tablespoons drained pickled ginger, for garnish'),
+                (2.0, "", 'tablespoons soy sauce, or to taste'),
+                (1.0, "", 'tablespoon wasabi paste')
                 ]
             )
         ]
-        self.instructions = [
+        cls.instructions = [
             'Wrap a sushi rolling mat completely in plastic wrap and set aside',
             'Bring water and rice to a boil in a saucepan over high heat',
             ' Reduce heat to medium-low, cover, and simmer until the rice is tender and the liquid has been absorbed, 20 to 25 minutes',
@@ -54,6 +56,6 @@ class TestAllRecipesScraper(RecipeScraperTestMixin, TestCase):
             ' Repeat with remaining sheets of nori and filling',
             ' Serve garnished with pickled ginger, soy sauce, and wasabi paste'
         ]
-        self.notes = []
+        cls.notes = []
 
-        super().setUp()
+        super().setUpClass()

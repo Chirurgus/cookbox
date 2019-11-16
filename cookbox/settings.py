@@ -85,8 +85,11 @@ MEDIA_URL = "/images/"
 INSTALLED_APPS = [
     'cookbox_core.apps.CookboxCoreConfig',
     'cookbox_webui.apps.CookboxWebuiConfig',
-    'cookbox_admin.apps.CookboxAdminConfig',
+    'cookbox_recipeui.apps.CookboxRecipeuiConfig',
     'cookbox_glossary.apps.CookboxGlossaryConfig',
+    'cookbox_admin.apps.CookboxAdminConfig',
+    'django_superform',
+    'django_filters',
     'nested_admin',
     'imagekit',
     'dal',
@@ -108,6 +111,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cookbox_webui.middleware.AuthRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'cookbox.urls'

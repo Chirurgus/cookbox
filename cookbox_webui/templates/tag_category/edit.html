@@ -8,11 +8,11 @@
     <h1>New Tag Category</h1>
     {% else %}
     <h1>Edit Tag Category</h1>
-    <a href="{% url 'tag-category-delete' pk=category.pk %}">Delete</a>
+    <a class="button-link" href="{% url 'tag-category-delete' pk=category.pk %}">Delete</a>
     {% endif %}
 </div>
 
-<form method="POST" enctype="multipart/form-data" class="list-form">
+<form method="POST" class="list-form">
     {% csrf_token %}
    
     <div>

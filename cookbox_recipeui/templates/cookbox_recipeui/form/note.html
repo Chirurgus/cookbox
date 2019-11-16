@@ -1,0 +1,26 @@
+{# Renders an inline note #}
+{# note = note inline form to be rendered #}
+{# form_class = class of the form where this note is included from #}
+
+{% if note.non_field_errors %}
+    <ul>
+      {% for error in note.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+{% endif %}
+
+{% for hidden in note.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+<span class="note-form-desc">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.text %}</span>
+<span class="note-form-img">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.image %}</span>
+<span class="note-form-del hide">{% include 'cookbox_recipeui/form/inline_field.html' with field=note.DELETE %}</span>
+<button
+    type="button"
+    class="{{ form_class }}-del-btn"
+    tabindex="-1"
+    onclick="delete_inline_form('#{{ note.DELETE.auto_id }}', '.{{ form_class }}')">
+    ×
+</button>

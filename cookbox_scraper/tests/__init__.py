@@ -1,6 +1,13 @@
 import os
 
-from cookbox_scraper import scrape_me
+from cookbox_core.models import (
+    Recipe,
+    IngredientGroup,
+    Ingredient,
+    Instruction,
+)
+    
+from cookbox_scraper import scrape_me, scrape
 
 class RecipeScraperTestMixin(object):
     """
@@ -16,21 +23,23 @@ class RecipeScraperTestMixin(object):
     Just replace the url with one form website you're testing.
 
     from cookbox_scraper import scrape_me
-    s = scrape_me("https://thewoksoflife.com/mongolian-beef-recipe/")
-    code = '''self.url = "{url}"
-    self.host = "{host}"
-    self.title = "{title}"
-    self.description = "{description}"
-    self.time = {time}
-    self.yield_unit = "{yield_unit}"
-    self.yields = {yields}
-    self.ingredients = {ingredients}
-    self.instructions = {instructions}
-    self.notes = {notes}'''.format(
+    s = scrape_me("https://www.bbcgoodfood.com/recipes/mango-lassi")
+    code = '''cls.url = "{url}"
+    cls.host = "{host}"
+    cls.title = "{title}"
+    cls.description = "{description}"
+    cls.time_unit = "{time_unit}"
+    cls.time = {time}
+    cls.yield_unit = "{yield_unit}"
+    cls.yields = {yields}
+    cls.ingredients = {ingredients}
+    cls.instructions = {instructions}
+    cls.notes = {notes}'''.format(
         url=s.url,
         host=s.host(),
         title=s.title(),
         description=s.description(),
+        time_unit=s.time_unit(),
         time=s.time(),
         yield_unit=s.yield_unit(),
         yields=s.yields(),
@@ -40,8 +49,15 @@ class RecipeScraperTestMixin(object):
     )
     print(code)
     """
-    def setUp(self):
-        self.scraper = scrape_me(self.url)
+    @classmethod
+    def setUpClass(cls):
+        cls.scraper = scrape_me(cls.url)
+        cls.maxDiff = None
+    
+    def test_save_recipe(self):
+        # If this doesn't throw anything we're happy
+        recipe = scrape(self.url)
+        recipe.save()
 
     def test_host(self):
         self.assertEqual(
@@ -54,11 +70,29 @@ class RecipeScraperTestMixin(object):
             self.title,
             self.scraper.title()
         )
+
+    def test_title_length(self):
+        title = self.scraper.title()
+        self.assertTrue(
+            len(title) <= Recipe._meta.get_field('name').max_length
+        )
     
     def test_description(self):
         self.assertEqual(
             self.description,
             self.scraper.description()
+        )
+
+    def test_time_unit(self):
+        self.assertEqual(
+            self.time_unit,
+            self.scraper.time_unit()
+        )
+
+    def test_time(self):
+        self.assertTupleEqual(
+            self.time,
+            self.scraper.time()
         )
     
     def test_yield_unit(self):

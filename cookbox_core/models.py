@@ -65,6 +65,11 @@ class Ingredient(models.Model):
     description = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default= "")
     position = models.PositiveSmallIntegerField(null= True)
 
+    def save(self, *args, **kwargs):
+        if self.unit is None:
+            self.unit = ''
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['position']
 

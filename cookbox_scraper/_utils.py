@@ -33,6 +33,15 @@ def normalize_string(string):
             '\n', ' ').replace(
             '\t', ' ').strip()
     )
+def parse_quantity(quantity):
+    try:
+        return float(quantity)
+    except ValueError:
+        quantity_list = quantity.split(' ')
+        quantity_float = []
+        for qty in quantity_list:
+            quantity_float.append(float(Fraction(qty)))
+        return sum(quantity_float)
 
 def parse_ingredients(ing_str):
     '''
@@ -45,11 +54,10 @@ def parse_ingredients(ing_str):
 
     for qty, desc in zip(quantity_str, descriptions):
         try:
-            q = float(Fraction(qty))
-            ingredients.append((q, None, desc))
+            q = parse_quantity(qty)
+            ingredients.append((q, "", desc))
         except ValueError:
-            q = float(0)
-            ingredients.append( (q, None, ' '.join([qty, desc])) )
+            ingredients.append((0, "", ' '.join([qty, desc])))
     return ingredients
 
 def normalize_instructions(instructions):

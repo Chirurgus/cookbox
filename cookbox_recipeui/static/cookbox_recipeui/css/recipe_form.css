@@ -1,0 +1,134 @@
+/* Remove the arrow spinners for number inputs */
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+/* Form-specific styles */
+
+.sortable-placeholder {
+    border-width: 1px;
+    border-style: dashed;
+
+    margin: .5em;
+
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.sortable-handle {
+    max-width: 0.8em;
+    margin-right: 0.2em;
+    font-size: 1.2em;
+    font-weight: bolder;
+}
+
+.field-errors {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.field-error {
+    color: red;
+    font-weight: bold;
+}
+
+.detail-forms legend,
+.ing-grp-forms legend,
+.ins-forms legend,
+.recipe-note-forms legend {
+    font-size: 2em;
+}
+
+.ing-grp-form-list, .ins-form-list, .recipe-note-list,
+.ing-grp-ing-form-list, .ing-note-form-list,
+.ins-note-form-list {
+    list-style: none;
+
+    margin: 0.5em 1em 1.5em 1.5em;
+    padding: 0;
+}
+
+.ing-form-detail-container, .ins-form-detail-container,
+.ing-note-form, .ins-note-form, .recipe-note-form {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.ing-form-detail-container > *,
+.ins-form-detail-container > * , .ing-note-form > *,
+.ins-note-form > *, .recipe-note-form > * {
+    flex-basis: 10em;
+
+    flex-grow: 2;
+    flex-shrink: .5;
+
+    margin: 3px 3px 3px 3px;
+}
+
+/* The inputs are all wrapped with a span */
+.ing-form-qty > input, .ing-form-unit > input,
+.ing-form-desc > input,  .ins-form-desc > input,
+.note-form-desc > input {
+    width: 100%;
+}
+
+.ing-form-qty, .ing-form-unit {
+    flex-basis: 3em;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    max-width: 7em;
+    min-width: 2em;
+}
+
+.ing-form-desc, .ins-form-desc, .note-form-desc {
+    flex-basis: 10em;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    min-width: 15em;
+}
+
+.note-form-desc {
+    /* Take up all the space to force the image form to new line */
+    flex-basis: 100%;
+}
+
+.ing-form-del-btn, .ins-form-del-btn,
+.ing-note-form-del-btn, .ins-note-form-del-btn,
+.recipe-note-form-del-btn {
+    flex-basis: 2em;
+
+    max-width: 2em;
+    max-height: 2em;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.ing-form-add-note-btn, .ins-form-add-note-btn {
+    max-width: 6em;
+    margin: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.note-form-img {
+    display: inline-block;
+}
+
+/* Touch ups for specific elements */
+#id_description {
+    max-width: 30em;
+    max-height: 6em; 
+    resize: none;
+}

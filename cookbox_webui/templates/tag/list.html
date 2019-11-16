@@ -4,42 +4,45 @@
 <div class="fill-width">
     <h1>Tags</h1>
 
-    <a href="{% url 'tag-create' %}">
+    <a class="button-link" href="{% url 'tag-create' %}">
         Add new tag
     </a>
-    <a href="{% url 'tag-category-create' %}">
+    <a class="button-link" href="{% url 'tag-category-create' %}">
         Add new tag category
     </a>
 </div>
 
 {# tag list listed by category #}
 {% for category in categories %}
-<div class="fill-width">
-    <h2>{{ category.name }}</h2>
+<section>
+    <div class="fill-width">
+        <h2>{{ category.name }}</h2>
 
-    <a href="{% url 'tag-category-edit' pk=category.pk %}">edit</a>
-
-</div>
-{% for tag in category.tags.all %}
-<a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
-    <div>
-        <p>{{ tag.name }}</p>
+        <a class="button-link" href="{% url 'tag-category-edit' pk=category.pk %}">edit</a>
     </div>
-</a>
-{% endfor %}
+
+    <ul class="tag-list card-list">
+        {% for tag in category.tags.all %}
+        <li class="tag-list-item card border-line">
+            <a href="{% url 'tag-recipe-list' tag.pk %}">{{ tag.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 {% endfor %}
 
-<div class="fill-width">
-    <h2>
-        Uncategorized tags
-    </h2>
-</div>
-{% for tag in uncategorized_tags %}
-<a class="border-line card" href="{% url 'tag-edit' tag.pk %}">
-    <div>
-        <p>{{ tag.name }}</p>
+<section>
+    <div class="fill-width">
+        <h2>Uncategorized tags</h2>
     </div>
-</a>
-{% endfor %}
+
+    <ul class="tag-list card-list">
+        {% for tag in uncategorized_tags %}
+        <li class="tag-list-item border-line card">
+            <a href="{% url 'tag-recipe-list' tag.pk %}">{{ tag.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 
 {% endblock %}

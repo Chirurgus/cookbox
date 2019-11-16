@@ -6,32 +6,25 @@
     <meta charset="utf-8" />
     <title>{% block title %}Cookbox{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static "cookbox_webui/css/style.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "cookbox_webui/css/reset.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "cookbox_webui/css/style.css" %}" />
+    {% block scripts %}
+    <script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
+    {% endblock %}
 </head>
 
-{% block scripts %}{% endblock %}
 
 <body>
-    <header>
-    {% include "detail/title_bar.html" %}
-    </header>
-
-    <aside>
-    {% block aside-left %}{% endblock %}
-    </aside>
+    <header>{% include "detail/title_bar.html" %}</header>
 
     <main>
-    {% block content %}{% endblock %}
+        <aside>{% block aside-left %}{% endblock %}</aside>
+
+        {% block content %}{% endblock %}
+
+        <aside>{% block aside-right %}{% endblock %}</aside>
     </main>
 
-    <aside>
-    {% block aside-right %}{% endblock %}
-    </aside>
-
-    <footer>
-    {% block footer %}{% endblock %}
-    </footer>
+    <footer>{% block footer %}{% endblock %}</footer>
 </body>
-
-
 </html>

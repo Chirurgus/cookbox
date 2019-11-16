@@ -7,6 +7,8 @@
 1) Update/install required python libraries: `pip3 install -r requirements.txt`
 1) Migrate the database: `python3 manage.py migrate`
 1) Collect static files: `python3 manage.py collectstatic;`
+1) Check if the app is functional: `python3 manage.py check`
+1) Run tests: `python3 manage.py test`
 1) Restart Apache2: `sudo service apache2 restart`
 
 # Setup for developpment
