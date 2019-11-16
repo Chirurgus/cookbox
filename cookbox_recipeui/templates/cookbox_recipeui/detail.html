@@ -82,7 +82,9 @@
     <ol class="recipe-ingredient-group-list">
         {% for ingredient_group in recipe.ingredient_groups.all %}
         <li class="ingredient-group">
+            {% if ingredient_group.name %}
             <h3>{{ ingredient_group.name }}</h3>
+            {% endif %}
             <ol class="ingredient-list">
                 {% for ingredient in ingredient_group.ingredients.all %}
                     <li class="ingredient">
