@@ -106,6 +106,10 @@ class NoteForm(ModelForm):
         fields = ['text', 'image']
         widgets = { 'image' : ImageWidget(), }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({'placeholder': 'Note text'})
+
 class NoteInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__note_prefix__'
 
@@ -158,6 +162,18 @@ class IngredientForm(
         model = Ingredient
         fields = ['position', 'quantity', 'unit', 'description']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['quantity'].widget.attrs.update(
+            {'placeholder': 'Quantity'}
+        )
+        self.fields['unit'].widget.attrs.update(
+            {'placeholder': 'Unit'}
+        )
+        self.fields['description'].widget.attrs.update(
+            {'placeholder': 'Ingredient'}
+        )
+
 class IngredientInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__ingredient_prefix__'
 
@@ -179,6 +195,12 @@ class IngredientGroupForm(
         model = IngredientGroup
         fields = ['position', 'name']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update(
+            {'placeholder': 'Ingredient group'}
+        )
+
 class IngredientGroupInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__ingredient_group_prefix__'
 
@@ -199,6 +221,12 @@ class InstructionForm(
     class Meta:
         model = Instruction
         fields = ['position', 'instruction']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['instruction'].widget.attrs.update(
+            {'placeholder': 'Instruction'}
+        )
 
 class InstructionInlineFormset(CookboxInlineFormset):
     empty_form_prefix = '__instruction_prefix__'
