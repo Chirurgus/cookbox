@@ -19,19 +19,17 @@ from django.utils.safestring import mark_safe
 
 from markdownx.utils import markdownify
 
-from cookbox_webui.views import BaseLoginRequiredMixin
-
 from .models import (
     GlosarrySynonym,
     GlossaryEntry,
 )
 
-class GlossaryView(BaseLoginRequiredMixin, ListView):
+class GlossaryView(ListView):
     template_name = 'cookbox_glossary/list.html'
     model = GlossaryEntry
     context_object_name = "glossary"
     
-class GlossaryEntryView(BaseLoginRequiredMixin, DetailView):
+class GlossaryEntryView(DetailView):
     template_name = 'cookbox_glossary/detail.html'
     model = GlossaryEntry
     context_object_name = "entry"
@@ -42,21 +40,21 @@ class GlossaryEntryView(BaseLoginRequiredMixin, DetailView):
         entry.formatted_markdown =  mark_safe(markdownify(entry.text))
         return entry
 
-class GlossaryEntryCreateView(BaseLoginRequiredMixin, CreateView):
+class GlossaryEntryCreateView(CreateView):
     template_name = 'cookbox_glossary/edit.html'
     model = GlossaryEntry
     fields = ['title']
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
    
-class GlossaryEntryEditView(BaseLoginRequiredMixin, UpdateView):
+class GlossaryEntryEditView(UpdateView):
     template_name = 'cookbox_glossary/edit.html'
     model = GlossaryEntry
     fields = ['title', 'text']
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
 
-class GlossaryEntryDeleteView(BaseLoginRequiredMixin, DeleteView):
+class GlossaryEntryDeleteView(DBaseLoginRequiredMixin, eleteView):
     template_name = 'delete.html' # Use delete template from webui
     model = GlossaryEntry
     success_url = reverse_lazy('glossary')
