@@ -143,7 +143,9 @@
     <ul class="recipe-note-list">
         {% for note in recipe.notes.all %}
         <li class="recipe-note">
+            {% if note.text %}
             {{ note.text }}
+            {% endif %}
             {% if note.image %}
             <br>
             {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
