@@ -47,6 +47,11 @@ class GlossaryEntryCreateView(CreateView):
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = True
+        return context
+
 class GlossaryEntryEditView(UpdateView):
     template_name = 'cookbox_glossary/edit.html'
     model = GlossaryEntry
@@ -54,7 +59,7 @@ class GlossaryEntryEditView(UpdateView):
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
 
-class GlossaryEntryDeleteView(DBaseLoginRequiredMixin, eleteView):
+class GlossaryEntryDeleteView(DeleteView):
     template_name = 'delete.html' # Use delete template from webui
     model = GlossaryEntry
     success_url = reverse_lazy('glossary')

@@ -5,9 +5,11 @@
 {% block  content %}
 <div class="fill-width">
     <h1>{{ entry.name }}</h1>
+    {% if not new %}
     <a href="{% url 'glossary-entry-delete' entry.pk %}">
         delete
     </a>
+    {% endif %}
 </div>
 
 <form method="POST" action="">
