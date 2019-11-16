@@ -189,6 +189,11 @@ button:hover, .button-link:hover {
     color: #000000;
 }
 
+.recipe-image {
+    max-width: 100%;
+    width: 100%;
+}
+
 .recipe-ingredient-group-list, .ingredient-list,
 .recipe-tag-list {
     list-style: none;
