@@ -21,6 +21,8 @@
 <form id="recipe-edit-form" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
+    {% include 'cookbox_recipeui/form/save_actions.html' %}
+
     {% if form.non_field_errors %}
     <ul>
       {% for error in form.non_field_errors %}
