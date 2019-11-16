@@ -24,6 +24,23 @@ from .models import (
     GlossaryEntry,
 )
 
+def insert_links(html):
+    '''
+    Replace all occurrences of words found in the Cookbox Glossary
+    by a link to the page of that term Wikipedia style.
+
+    :param str html: String in which to find and replace the glossary terms.
+    :return: String with all glossary terms replaced.
+    '''
+    ancor_link = '<a href="{link}">{term}</a>'
+    for entry in GlossaryEntry.objects.all():
+        link = reverse('glossary-entry', kwargs={ 'pk': entry.id })
+        terms = [ synonym.synonym for synonym in entry.synonyms.all() ]
+        terms.append(entry.title)
+        for term in terms:
+            html = html.replace(term, ancor_link.format(link=link, term=term))
+    return html
+
 class GlossaryView(ListView):
     template_name = 'cookbox_glossary/list.html'
     model = GlossaryEntry
@@ -37,7 +54,7 @@ class GlossaryEntryView(DetailView):
     def get_object(self):
         entry = super().get_object()
         # Format markdown
-        entry.formatted_markdown =  mark_safe(markdownify(entry.text))
+        entry.formatted_markdown =  mark_safe(insert_links(markdownify(entry.text)))
         return entry
 
 class GlossaryEntryCreateView(CreateView):
