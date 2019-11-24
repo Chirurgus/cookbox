@@ -14,8 +14,13 @@ class GlossaryEntry(models.Model):
     # Additional related fields
     # synonyms
 
-class GlosarrySynonym(models.Model):
+class GlossarySynonym(models.Model):
     entry = models.ForeignKey(GlossaryEntry, on_delete=models.CASCADE, related_name="synonyms")
-    synonym = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM)
+    synonym = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, unique=True, primary_key=False)
+
+    def save(self, *args, **kwargs):
+        self.synonym = self.synonym.lower()
+        super().save(*args, **kwargs)
+
 
 

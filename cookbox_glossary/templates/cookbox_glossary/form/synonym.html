@@ -1,0 +1,17 @@
+<div class="synonym-form">
+    <span class="synonym-form-synonym">
+        {{ synonym.synonym.errors }}
+        {{ synonym.synonym }}
+    </span>
+    <span class="synonym-form-del hide">
+        {{ synonym.DELETE.errors }}
+        {{ synonym.DELETE }}
+    </span>
+    <button
+        type="button"
+        class="synonym-form-del-btn"
+        tabindex="-1"
+        onclick="delete_inline_form('#{{ synonym.DELETE.auto_id }}', '.synonym-form')">
+        ×
+    </button>
+</div>

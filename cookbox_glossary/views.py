@@ -20,9 +20,10 @@ from django.utils.safestring import mark_safe
 from markdownx.utils import markdownify
 
 from .models import (
-    GlosarrySynonym,
+    GlossarySynonym,
     GlossaryEntry,
 )
+from .forms import GlossaryEntryForm
 
 def insert_links(html):
     '''
@@ -72,10 +73,15 @@ class GlossaryEntryCreateView(CreateView):
 class GlossaryEntryEditView(UpdateView):
     template_name = 'cookbox_glossary/edit.html'
     model = GlossaryEntry
-    fields = ['title', 'text']
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
+    form_class = GlossaryEntryForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = False
+        return context
+    
 class GlossaryEntryDeleteView(DeleteView):
     template_name = 'delete.html' # Use delete template from webui
     model = GlossaryEntry

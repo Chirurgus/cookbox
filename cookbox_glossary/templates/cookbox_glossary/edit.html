@@ -2,12 +2,19 @@
 
 {% load static %}
 
+{% block scripts %}
+{{ block.super }}
+{{ form.media }}
+{% endblock %}
+
 {% block  content %}
 <div class="fill-width">
+    {% if new %}
+    <h1>New entry</h1>
+    {% else %}
     <h1>{{ entry.name }}</h1>
-    {% if not new %}
     <a href="{% url 'glossary-entry-delete' entry.pk %}">
-        delete
+        Delete
     </a>
     {% endif %}
 </div>
@@ -15,9 +22,56 @@
 <form method="POST" action="">
     {% csrf_token %}
 
-    {{ form }}
+    <span class="entry-form-detail">
+
+        {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+ 
+        {% for hidden_field in form.hidden_fields %}
+            {% if hidden_field.errors %}
+                <ul>
+                {% for error in hidden_field.errors %}
+                    <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        <span class="entry-form-title">
+            {{ form.title.errors }}
+            {{ form.title }}
+        </span>
+        <span class="entry-form-body">
+            {{ form.text.errors }}
+            {{ form.text }}
+        </span>
+        <button
+            type="button"
+            class="entry-form-add-synonym-btn"
+            onclick="add_inline_form('{{ form.formsets.synonyms.prefix }}')">
+            Add synonym
+        </button>
+    </span>
+    {{ form.formsets.synonyms.management_form }}
+    <ul
+        id="{{ form.formsets.synonyms.prefix }}"
+        class="entry-synonym-form-list">
+        {% for synonym in form.formsets.synonyms %}
+        <li>
+            {% include 'cookbox_glossary/form/synonym.html' with synonym=synonym %}
+        </li>
+        {% endfor %}
+    </ul>
+    <div id="{{ form.formsets.synonyms.prefix }}_empty_form" class="synonyms-empty hide">
+        {% include 'cookbox_glossary/form/synonym.html' with synonym=form.formsets.synonyms.empty_form only %}
+    </div>
+
     <input type="submit" value="Update">
 </form>
-
-{{ form.media }}
 {% endblock %}
