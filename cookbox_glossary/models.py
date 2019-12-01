@@ -7,20 +7,16 @@ from markdownx.models import MarkdownxField
 
 from cookbox_core.models import CHAR_FIELD_MAX_LEN_MEDIUM
 
-class GlossaryEntry(models.Model):
-    title = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, null=False, blank=False)
-    text = MarkdownxField()
+class GlossaryArticle(models.Model):
+    body = MarkdownxField()
     last_modified = models.DateTimeField(auto_now=True)
     # Additional related fields
-    # synonyms
+    # entries
 
-class GlossarySynonym(models.Model):
-    entry = models.ForeignKey(GlossaryEntry, on_delete=models.CASCADE, related_name="synonyms")
-    synonym = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, unique=True, primary_key=False)
+class GlossaryEntry(models.Model):
+    term = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, null=False, blank=False)
+    article = models.ForeignKey(GlossaryArticle, on_delete=models.CASCADE, related_name="entries").
 
     def save(self, *args, **kwargs):
-        self.synonym = self.synonym.lower()
+        self.term = self.term.lower()
         super().save(*args, **kwargs)
-
-
-
