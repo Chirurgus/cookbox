@@ -3,71 +3,56 @@
 
 from django.db import transaction
 from django.forms import (
-    Form,
     ModelForm,
-    BaseInlineFormSet,
-    inlineformset_factory,
-    modelformset_factory,
     ModelMultipleChoiceField,
-    Textarea,
-    CharField,
-    FloatField,
-    ValidationError,
 )
-from django.forms.models import BaseInlineFormSet
 from django.forms.widgets import CheckboxSelectMultiple
 
-from django_superform.forms import SuperModelFormMixin
-from django_superform import InlineFormSetField
+from dal.autocomplete import ModelSelect2Multiple
 
-from .models import GlossaryEntry, GlossarySynonym
+from .models import GlossaryEntry, GlossaryArticle
 
 
-class GlossarySynonymForm(ModelForm):
-    class Meta:
-        model = GlossarySynonym
-        fields = ['synonym']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['synonym'].widget.attrs.update({'placeholder': 'Synonym'})
-
-class GlossarySynonymBaseFormset(BaseInlineFormSet):
-    def save(self, commit=True):
-        instances = super().save(commit=False)
-        if not commit:
-            return instances
-        old_synonyms = set([ s.synonym for s in self.instance.synonyms.all() ])
-        new_synonyms = set([ s.synonym for s in instances ])
-        # Synonyms to be deleted
-        for synonym in old_synonyms.difference(new_synonyms):
-            GlossarySynonym.objects.get(synonym=synonym).delete()
-        # Synonyms to be created
-        for synonym in new_synonyms.difference(old_synonyms):
-            GlossarySynonym.objects.create(entry=self.instance, synonym=synonym)
-        return instances
-    
-GlossarySynonymFormset = inlineformset_factory(
-    parent_model=GlossaryEntry,
-    model=GlossarySynonymForm.Meta.model,
-    form=GlossarySynonymForm,
-    formset=GlossarySynonymBaseFormset,
-    extra=0
-)
-
-class GlossaryEntryForm(SuperModelFormMixin, ModelForm):
-    synonyms = InlineFormSetField(formset_class=GlossarySynonymFormset)
-
+class GlossaryEntryForm(ModelForm):
     class Meta:
         model = GlossaryEntry
-        fields = ['title', 'text']
-    
-    class Media:
-        js = ( "cookbox_webui/js/dynamic_forms.js", )
+        fields = ['term']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['title'].widget.attrs.update(
-            {'placeholder': 'Entry title'}
-        )
+        self.fields['term'].widget.attrs.update({'placeholder': 'Glossary term'})
+    
+class GlossaryArticleForm(ModelForm):
+    terms = ModelMultipleChoiceField(queryset= GlossaryEntry.objects.all(),
+                                     widget= ModelSelect2Multiple(url= 'glossary-entry-autocomplete'),
+                                     required= False)
 
+    class Meta:
+        model = GlossaryArticle
+        fields = ['body']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        article = kwargs.get('instance')
+        if article is not None:
+            self.fields['terms'].initial = article.entries.all()
+        else:
+            self.fields['terms'].inital = []
+    
+    def save(self, commit=True):
+        '''
+        '''
+        with transaction.atomic():
+            ret = super().save(commit)
+            if commit:
+                self.save_terms()
+            return ret
+    
+    def save_terms(self):
+        '''
+        Saves terms many2many field.
+        Gets called automatically from save(commit=True) method.
+        '''
+        self.instance.entries.set(self.cleaned_data['terms'])
+    
+ 

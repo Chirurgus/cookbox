@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block  content %}
+<div class="fill-width">
+    <h1>{{ entry.term }}</h1>
+    <a href="{% url 'glossary-entry-edit' entry.pk %}">
+        Edit entry
+    </a>
+    {% if entry.article %}
+    <a href="{% url 'glossary-article-edit' entry.article.pk %}">
+        Edit article
+    </a>
+    {% endif %}
+</div>
+<div>
+    {% if entry.article %}
+        {{ entry.formatted_markdown }}
+    {% else %}
+        <p>No associated article, yet.</p>
+        <a href="{% url 'glossary-article-create' %}">Create one</a>
+    {% endif %}
+</div>
+{% endblock %}

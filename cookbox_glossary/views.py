@@ -1,4 +1,4 @@
-# Created by Oleksandr Sorochynskyi
+#entry is not Nonege.py Created by Oleksandr Sorochynskyi
 # On 25/07/2019
 
 from django.urls import reverse,reverse_lazy
@@ -17,13 +17,15 @@ from django.views.generic import (
 from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe
 
+from dal.autocomplete import Select2QuerySetView
+
 from markdownx.utils import markdownify
 
 from .models import (
-    GlossarySynonym,
+    GlossaryArticle,
     GlossaryEntry,
 )
-from .forms import GlossaryEntryForm
+from .forms import GlossaryEntryForm, GlossaryArticleForm
 
 def insert_links(html):
     '''
@@ -34,56 +36,100 @@ def insert_links(html):
     :return: String with all glossary terms replaced.
     '''
     ancor_link = '<a href="{link}">{term}</a>'
-    for entry in GlossaryEntry.objects.all():
-        link = reverse('glossary-entry', kwargs={ 'pk': entry.id })
-        terms = [ synonym.synonym for synonym in entry.synonyms.all() ]
-        terms.append(entry.title)
-        for term in terms:
+    for article in GlossaryArticle.objects.all():
+        for entry in article.entries.all():
+            link = reverse('glossary-entry-detail', kwargs={ 'pk': entry.id })
+            term = entry.term
             html = html.replace(term, ancor_link.format(link=link, term=term))
     return html
 
-class GlossaryView(ListView):
+class GlossaryListView(ListView):
     template_name = 'cookbox_glossary/list.html'
     model = GlossaryEntry
     context_object_name = "glossary"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orphaned_articles'] = GlossaryArticle.objects.filter(entries__isnull=True)
+        return context
     
-class GlossaryEntryView(DetailView):
-    template_name = 'cookbox_glossary/detail.html'
+class GlossaryEntryDetailView(DetailView):
+    template_name = 'cookbox_glossary/entry/detail.html'
     model = GlossaryEntry
     context_object_name = "entry"
 
     def get_object(self):
         entry = super().get_object()
-        # Format markdown
-        entry.formatted_markdown =  mark_safe(insert_links(markdownify(entry.text)))
+        if entry.article is not None:
+            # Format markdown
+            entry.formatted_markdown =  mark_safe(
+                insert_links(
+                    markdownify(entry.article.body)
+                )
+            )
         return entry
 
 class GlossaryEntryCreateView(CreateView):
-    template_name = 'cookbox_glossary/edit.html'
+    template_name = 'cookbox_glossary/entry/edit.html'
     model = GlossaryEntry
-    fields = ['title']
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
-   
+    fields = ['term']
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['new'] = True
         return context
 
 class GlossaryEntryEditView(UpdateView):
-    template_name = 'cookbox_glossary/edit.html'
+    template_name = 'cookbox_glossary/entry/edit.html'
     model = GlossaryEntry
     context_object_name = 'entry'
     success_url = reverse_lazy('glossary')
-    form_class = GlossaryEntryForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['new'] = False
-        return context
+    fields = ['term']
     
 class GlossaryEntryDeleteView(DeleteView):
     template_name = 'delete.html' # Use delete template from webui
     model = GlossaryEntry
     success_url = reverse_lazy('glossary')
     context_object_name = 'entry'
+
+class GlossaryArticleCreateView(CreateView):
+    template_name = 'cookbox_glossary/article/edit.html'
+    model = GlossaryArticle
+    context_object_name = 'article'
+    success_url = reverse_lazy('glossary')
+    form_class = GlossaryArticleForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new'] = True
+        return context
+
+class GlossaryArticleEditView(UpdateView):
+    template_name = 'cookbox_glossary/article/edit.html'
+    model = GlossaryArticle
+    context_object_name = 'article'
+    success_url = reverse_lazy('glossary')
+    form_class = GlossaryArticleForm
+    
+class GlossaryArticleDeleteView(DeleteView):
+    template_name = 'delete.html' # Use delete template from webui
+    model = GlossaryArticle
+    success_url = reverse_lazy('glossary')
+    context_object_name = 'article'
+
+class GlossaryTermsAutocomplete(Select2QuerySetView):
+    create_field = 'term'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return GlossaryEntry.objects.none()
+
+        qs = GlossaryEntry.objects.all()
+
+        if self.q:
+            qs = qs.filter(term__icontains=self.q)
+
+        return qs
+

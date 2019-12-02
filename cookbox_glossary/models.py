@@ -15,8 +15,11 @@ class GlossaryArticle(models.Model):
 
 class GlossaryEntry(models.Model):
     term = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, null=False, blank=False)
-    article = models.ForeignKey(GlossaryArticle, on_delete=models.CASCADE, related_name="entries")
+    article = models.ForeignKey(GlossaryArticle, on_delete=models.CASCADE, related_name="entries", null=True)
 
     def save(self, *args, **kwargs):
         self.term = self.term.lower()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.term

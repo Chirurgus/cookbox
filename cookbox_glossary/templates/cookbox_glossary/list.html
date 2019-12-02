@@ -12,15 +12,31 @@
     <a href="{% url 'glossary-entry-create' %}">
         Add new entry
     </a>
+    <a href="{% url 'glossary-article-create' %}">
+        Add new article
+    </a>
 </div>
 
 {% for entry in glossary %}
-<a href="{% url 'glossary-entry' entry.pk %}">
-    <div>
-        <p>{{ entry.title }}</p>
-    </div>
-</a>
+    <a href="{% url 'glossary-entry-detail' entry.id %}">
+        <div>
+            <p>{{ entry.term }}</p>
+        </div>
+    </a>
 {% endfor %}
+
+<section>
+    <h2>Orphaned articles</h2>
+    <ul>
+    {% for article in orphaned_articles %}
+    <li>
+        <a href="{% url 'glossary-article-edit' article.id %}">
+            article{{article.id}}
+        </a>
+    </li>
+    {% endfor %}
+    </ul>
+</section>
 {% endblock %}
 
 

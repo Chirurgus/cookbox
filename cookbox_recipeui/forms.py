@@ -252,7 +252,7 @@ class RecipeForm(
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         recipe = kwargs.get('instance')
-        if not recipe is None:
+        if recipe is not None:
             self.fields['tags'].initial = recipe.tags.all()
         else:
             self.fields['tags'].inital = []
