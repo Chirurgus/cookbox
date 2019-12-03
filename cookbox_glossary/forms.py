@@ -37,7 +37,7 @@ class GlossaryArticleForm(ModelForm):
         if article is not None:
             self.fields['terms'].initial = article.entries.all()
         else:
-            self.fields['terms'].inital = []
+            self.fields['terms'].initial = self.Meta.model.objects.none()
     
     def save(self, commit=True):
         '''

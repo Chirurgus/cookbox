@@ -6,8 +6,10 @@
     <meta charset="utf-8" />
     <title>{% block title %}Cookbox{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static "cookbox_webui/css/reset.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "cookbox_webui/css/style.css" %}" />
+    {% endblock %}
     {% block scripts %}
     <script src={% static 'cookbox_webui/js/jquery-3.3.1.min.js' %}></script>
     {% endblock %}

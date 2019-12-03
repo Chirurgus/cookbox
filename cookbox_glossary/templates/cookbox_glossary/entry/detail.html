@@ -1,25 +1,27 @@
-{% extends "base.html" %}
+{% extends "cookbox_glossary/base.html" %}
 
 {% load static %}
 
 {% block  content %}
 <div class="fill-width">
-    <h1>{{ entry.term }}</h1>
-    <a href="{% url 'glossary-entry-edit' entry.pk %}">
-        Edit entry
-    </a>
+    <h1>{{ entry.term | title }}</h1>
     {% if entry.article %}
-    <a href="{% url 'glossary-article-edit' entry.article.pk %}">
-        Edit article
+    <a class="button-link" href="{% url 'glossary-article-edit' entry.article.pk %}">
+        Edit body
     </a>
     {% endif %}
+    <a class="button-link" href="{% url 'glossary-entry-edit' entry.pk %}">
+        Edit title
+    </a>
 </div>
 <div>
     {% if entry.article %}
         {{ entry.formatted_markdown }}
     {% else %}
         <p>No associated article, yet.</p>
-        <a href="{% url 'glossary-article-create' %}">Create one</a>
+        <a href="{% url 'glossary-article-create' %}?entry={{ entry.id }}">
+            Create one
+        </a>
     {% endif %}
 </div>
 {% endblock %}

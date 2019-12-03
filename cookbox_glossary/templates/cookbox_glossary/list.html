@@ -1,40 +1,42 @@
-{% extends "base.html" %}
+{% extends "cookbox_glossary/base.html" %}
 
 {% load static %}
-{% load imagekit %}
 
 
 {% block  content %}
 <div class="fill-width">
     <h1>Glossary</h1>
 
-    {# Add/Import recipe buttons #}
-    <a href="{% url 'glossary-entry-create' %}">
-        Add new entry
-    </a>
-    <a href="{% url 'glossary-article-create' %}">
+    <a class="button-link" href="{% url 'glossary-article-create' %}">
         Add new article
+    </a>
+    <a class="button-link" href="{% url 'glossary-entry-create' %}">
+        Add new entry
     </a>
 </div>
 
-{% for entry in glossary %}
-    <a href="{% url 'glossary-entry-detail' entry.id %}">
-        <div>
-            <p>{{ entry.term }}</p>
-        </div>
-    </a>
-{% endfor %}
+<section>
+    <ol class="glossary-entry-list">
+        {% for entry in entries %}
+        <li>
+            <a href="{% url 'glossary-entry-detail' entry.id %}">
+                {{ entry.term | title}}
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</section>
 
 <section>
-    <h2>Orphaned articles</h2>
-    <ul>
-    {% for article in orphaned_articles %}
-    <li>
-        <a href="{% url 'glossary-article-edit' article.id %}">
-            article{{article.id}}
-        </a>
-    </li>
-    {% endfor %}
+    <h3>Orphaned articles</h2>
+    <ul class="glossary-article-list">
+        {% for article in orphaned_articles %}
+        <li>
+            <a href="{% url 'glossary-article-edit' article.id %}">
+                article{{ article.id }}
+            </a>
+        </li>
+        {% endfor %}
     </ul>
 </section>
 {% endblock %}

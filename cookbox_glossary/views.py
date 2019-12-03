@@ -1,5 +1,7 @@
-#entry is not Nonege.py Created by Oleksandr Sorochynskyi
+# Created by Oleksandr Sorochynskyi
 # On 25/07/2019
+
+import re
 
 from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
@@ -27,26 +29,31 @@ from .models import (
 )
 from .forms import GlossaryEntryForm, GlossaryArticleForm
 
-def insert_links(html):
+def insert_links(html, ignore=set()):
     '''
     Replace all occurrences of words found in the Cookbox Glossary
     by a link to the page of that term Wikipedia style.
 
     :param str html: String in which to find and replace the glossary terms.
+    :param set of str: set of terms not to replace
     :return: String with all glossary terms replaced.
     '''
     ancor_link = '<a href="{link}">{term}</a>'
     for article in GlossaryArticle.objects.all():
         for entry in article.entries.all():
-            link = reverse('glossary-entry-detail', kwargs={ 'pk': entry.id })
             term = entry.term
-            html = html.replace(term, ancor_link.format(link=link, term=term))
+            if term in ignore:
+                continue
+            link = reverse('glossary-entry-detail', kwargs={ 'pk': entry.id })
+            expr = re.compile(re.escape(term), re.IGNORECASE)
+            html = expr.sub(ancor_link.format(link=link, term=term), html)
     return html
 
 class GlossaryListView(ListView):
     template_name = 'cookbox_glossary/list.html'
     model = GlossaryEntry
-    context_object_name = "glossary"
+    context_object_name = "entries"
+    queryset = GlossaryEntry.objects.all().order_by("term")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,7 +71,8 @@ class GlossaryEntryDetailView(DetailView):
             # Format markdown
             entry.formatted_markdown =  mark_safe(
                 insert_links(
-                    markdownify(entry.article.body)
+                    markdownify(entry.article.body),
+                    entry.term
                 )
             )
         return entry
@@ -101,6 +109,14 @@ class GlossaryArticleCreateView(CreateView):
     success_url = reverse_lazy('glossary')
     form_class = GlossaryArticleForm
 
+    def get_form(self, **kwargs):
+        form = super().get_form(**kwargs)
+        if 'entry' in self.request.GET:
+            id = self.request.GET['entry']
+            entry = GlossaryEntry.objects.get(pk=id)
+            form.fields['terms'].initial |=  entry
+        return form
+ 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['new'] = True

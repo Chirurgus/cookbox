@@ -1,0 +1,22 @@
+.glossary-entry-list, .glossary-article-list {
+    list-style: none;
+    padding: 0;
+    margin-left: 1em;
+}
+
+.glossary-entry-list a, .glossary-article-list a {
+    text-decoration: none;
+}
+
+.glossary-entry-list li:nth-child(odd) {
+    background-color: lightgrey;
+}
+
+.article-form-body, .article-form-term {
+    margin: 0.5em 0.5em 0.5em 0em;
+}
+
+.article-form-body textarea {
+    resize: vertical;
+    width: 45em;
+}
