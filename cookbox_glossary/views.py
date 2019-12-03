@@ -160,4 +160,3 @@ class GlossaryTermsAutocomplete(Select2QuerySetView):
             qs = qs.filter(term__icontains=self.q)
 
         return qs
-
