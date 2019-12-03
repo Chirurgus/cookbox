@@ -25,6 +25,7 @@ class GlossaryInsertLinksTest(GlossaryBaseTest):
         self.assertEqual(before, after)
 
     def test_replaces(self):
+        entry
         before = "A long test string, with many words"
         after = insert_links(before)
         self.assertEqual(before, after)

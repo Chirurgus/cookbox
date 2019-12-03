@@ -44,6 +44,8 @@ def insert_links(html, ignore=set()):
             term = entry.term
             if term in ignore:
                 continue
+            if term.article is None:
+                continue
             link = reverse('glossary-entry-detail', kwargs={ 'pk': entry.id })
             expr = re.compile(re.escape(term), re.IGNORECASE)
             html = expr.sub(ancor_link.format(link=link, term=term), html)
