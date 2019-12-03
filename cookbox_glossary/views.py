@@ -154,7 +154,7 @@ class GlossaryTermsAutocomplete(Select2QuerySetView):
         if not self.request.user.is_authenticated:
             return GlossaryEntry.objects.none()
 
-        qs = GlossaryEntry.objects.all()
+        qs = GlossaryEntry.objects.all().order_by("term")
 
         if self.q:
             qs = qs.filter(term__icontains=self.q)
