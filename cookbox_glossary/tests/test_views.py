@@ -13,8 +13,6 @@ from cookbox_glossary.views import insert_links
 
 from .base import GlossaryBaseTest
 
-
-
 class GlossaryInsertLinksTest(GlossaryBaseTest):
     '''
     Test 'cookbox_glossary.views.insert_links' function.
@@ -23,13 +21,6 @@ class GlossaryInsertLinksTest(GlossaryBaseTest):
         before = "A long test string, with many words"
         after = insert_links(before)
         self.assertEqual(before, after)
-
-    def test_replaces(self):
-        entry
-        before = "A long test string, with many words"
-        after = insert_links(before)
-        self.assertEqual(before, after)
-
 
 class GlossaryViewTest(GlossaryBaseTest):
     def test_requires_auth(self):
@@ -62,12 +53,102 @@ class EntryDetailViewTest(GlossaryBaseTest):
         response = self.client.get(path)
         self.assertEqual(response.status_code, 200)
 
+class EntryCreateViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        path = reverse('glossary-entry-create')
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_entry_detail_200(self):
+        self.authenticate()
+        path = reverse('glossary-entry-create')
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
 
-# Entry detail
-# Entry create
-# Entr edit
-# entry delete
-# article create
-# Article edit
-# Article delete
-# Entry term autocomplete
+class EntryEditViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        entry = GlossaryEntry(**self.entry_data)
+        entry.save()
+        path = reverse('glossary-entry-edit', kwargs={'pk' : entry.pk})
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_entry_detail_200(self):
+        self.authenticate()
+        entry = GlossaryEntry(**self.entry_data)
+        entry.save()
+        path = reverse('glossary-entry-edit', kwargs={'pk' : entry.pk})
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
+
+class EntryDeleteViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        entry = GlossaryEntry(**self.entry_data)
+        entry.save()
+        path = reverse('glossary-entry-delete', kwargs={'pk' : entry.pk})
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_entry_detail_200(self):
+        self.authenticate()
+        entry = GlossaryEntry(**self.entry_data)
+        entry.save()
+        path = reverse('glossary-entry-delete', kwargs={'pk' : entry.pk})
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
+
+class ArticleCreateViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        path = reverse('glossary-article-create')
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_article_detail_200(self):
+        self.authenticate()
+        path = reverse('glossary-article-create')
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
+
+class ArticleEditViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        article = GlossaryArticle(**self.article_data)
+        article.save()
+        path = reverse('glossary-article-edit', kwargs={'pk' : article.pk})
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_article_detail_200(self):
+        self.authenticate()
+        article = GlossaryArticle(**self.article_data)
+        article.save()
+        path = reverse('glossary-article-edit', kwargs={'pk' : article.pk})
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
+
+class ArticleDeleteViewTest(GlossaryBaseTest):
+    def test_requires_auth(self):
+        article = GlossaryArticle(**self.article_data)
+        article.save()
+        path = reverse('glossary-article-delete', kwargs={'pk' : article.pk})
+        response = self.client.get(path)
+        self.assertRedirects(response,
+            reverse('login') + "?next=" + path
+        )
+    
+    def test_article_detail_200(self):
+        self.authenticate()
+        article = GlossaryArticle(**self.article_data)
+        article.save()
+        path = reverse('glossary-article-delete', kwargs={'pk' : article.pk})
+        response = self.client.get(path)
+        self.assertEqual(response.status_code, 200)
