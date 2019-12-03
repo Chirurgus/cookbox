@@ -106,7 +106,6 @@ class GlossaryArticleCreateView(CreateView):
     template_name = 'cookbox_glossary/article/edit.html'
     model = GlossaryArticle
     context_object_name = 'article'
-    success_url = reverse_lazy('glossary')
     form_class = GlossaryArticleForm
 
     def get_form(self, **kwargs):
@@ -122,13 +121,26 @@ class GlossaryArticleCreateView(CreateView):
         context['new'] = True
         return context
 
+    def get_success_url(self):
+        if 'entry' in self.request.GET:
+            id = self.request.GET['entry']
+            return reverse('glossary-entry-detail', kwargs= { 'pk': id })
+        else:
+            return reverse('glossary')
+
 class GlossaryArticleEditView(UpdateView):
     template_name = 'cookbox_glossary/article/edit.html'
     model = GlossaryArticle
     context_object_name = 'article'
-    success_url = reverse_lazy('glossary')
     form_class = GlossaryArticleForm
-    
+
+    def get_success_url(self):
+        if self.object.entries.all():
+            id = self.object.entries.first().id
+            return reverse('glossary-entry-detail', kwargs= { 'pk': id })
+        else:
+            return reverse('glossary')
+
 class GlossaryArticleDeleteView(DeleteView):
     template_name = 'delete.html' # Use delete template from webui
     model = GlossaryArticle
