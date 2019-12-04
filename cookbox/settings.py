@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'cookbox_webui.apps.CookboxWebuiConfig',
     'cookbox_recipeui.apps.CookboxRecipeuiConfig',
     'cookbox_glossary.apps.CookboxGlossaryConfig',
+    'cookbox_seasons.apps.CookboxSeasonsConfig',
     'cookbox_admin.apps.CookboxAdminConfig',
     'django_superform',
     'django_filters',
