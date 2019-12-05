@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block styles %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "cookbox_seasons/css/seasons.css" %}" />
+{% endblock %}
+

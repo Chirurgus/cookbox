@@ -1,0 +1,59 @@
+{% extends "cookbox_seasons/base.html" %}
+
+{% load static %}
+
+
+{% block  content %}
+<div class="fill-width">
+    <h1>Seasons</h1>
+
+    <a class="button-link" href="{% url 'seasons-item-create' %}">
+        Add items
+    </a>
+</div>
+
+<section>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>January</th> 
+            <th>February</th> 
+            <th>March</th> 
+            <th>April</th> 
+            <th>May</th> 
+            <th>June</th> 
+            <th>July</th> 
+            <th>August</th> 
+            <th>September</th> 
+            <th>October</th> 
+            <th>November</th> 
+            <th>December</th> 
+            <th>Edit</th> 
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.jan }}</td>
+            <td>{{ item.feb }}</td>
+            <td>{{ item.mar }}</td>
+            <td>{{ item.apr }}</td>
+            <td>{{ item.may }}</td>
+            <td>{{ item.jun }}</td>
+            <td>{{ item.jul }}</td>
+            <td>{{ item.aug }}</td>
+            <td>{{ item.sep }}</td>
+            <td>{{ item.oct }}</td>
+            <td>{{ item.nov }}</td>
+            <td>{{ item.dec }}</td>
+            <td>{{ item.description }}</td>
+            <td><a href="{% url 'seasons-item-edit' item.pk %}">edit</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</section>
+
+{% endblock %}
