@@ -1,3 +1,6 @@
+# Created by Oleksandr Sorochynskyi
+# On 05/12/2019
+
 from django.contrib import admin
 from django.urls import include, path, reverse_lazy
 
