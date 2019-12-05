@@ -9,10 +9,10 @@ from cookbox_core.models import (
     CHAR_FIELD_MAX_LEN_LONG,
 )
 
-class CookboxSeasonEntry(models.Model):
+class SeasonItem(models.Model):
     PEAK_SEASON = 'peak'
-    IN_SEASON = 'ok'
-    OUT_OF_SEASON = 'ko'
+    IN_SEASON = 'in'
+    OUT_OF_SEASON = 'out'
 
     SEASON_STATE = (
         (PEAK_SEASON, 'Peak season'),
