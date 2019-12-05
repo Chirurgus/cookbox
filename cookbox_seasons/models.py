@@ -21,7 +21,7 @@ class SeasonsItem(models.Model):
     )
 
     name = models.CharField(max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default= "")
-    description = models.CharField(max_length=CHAR_FIELD_MAX_LEN_LONG, default= "")
+    note = models.CharField(max_length=CHAR_FIELD_MAX_LEN_LONG, default= "")
     jan = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, choices=SEASON_STATE, default=OUT_OF_SEASON)
     feb = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, choices=SEASON_STATE, default=OUT_OF_SEASON)
     mar = models.CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, choices=SEASON_STATE, default=OUT_OF_SEASON)
