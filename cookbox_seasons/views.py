@@ -9,17 +9,17 @@ from django.views.generic import (
     DeleteView,
 )
 
-from .models import SeasonItem
+from .models import SeasonsItem
 
 class SeasonsListView(ListView):
     template_name = 'cookbox_seasons/list.html'
-    model = SeasonItem
+    model = SeasonsItem
     context_object_name = 'items'
-    queryset = SeasonItem.objects.all().order_by("name")
+    queryset = SeasonsItem.objects.all().order_by("name")
 
 class SeasonsItemEditBaseViewMixin(object):
     template_name = 'cookbox_seasons/edit.html'
-    model = SeasonItem
+    model = SeasonsItem
     context_object_name = 'items'
     success_url = reverse_lazy('seasons')
     fields = [
@@ -43,6 +43,6 @@ class SeasonsItemEditView(SeasonsItemEditBaseViewMixin, UpdateView):
 
 class SeasonsItemDeleteView(DeleteView):
     template_name = 'delete.html' # Use delete template from webui
-    model = SeasonItem
+    model = SeasonsItem
     success_url = reverse_lazy('seasons')
     context_object_name = 'item'
