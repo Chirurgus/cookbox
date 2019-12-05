@@ -17,6 +17,13 @@ class SeasonsListView(ListView):
     context_object_name = 'items'
     queryset = SeasonsItem.objects.all().order_by("name")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['PEAK_SEASON'] = SeasonsItem.PEAK_SEASON
+        context['IN_SEASON'] = SeasonsItem.IN_SEASON
+        context['OUT_OF_SEASON'] = SeasonsItem.OUT_OF_SEASON
+        return context
+
 class SeasonsItemEditBaseViewMixin(object):
     template_name = 'cookbox_seasons/edit.html'
     model = SeasonsItem

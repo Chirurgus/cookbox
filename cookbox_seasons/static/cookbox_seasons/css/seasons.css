@@ -1,0 +1,30 @@
+.seasons-table-container {
+    margin-top: 1em;
+    max-width: 100%;
+    overflow: auto;
+}
+
+table, th, td {
+    border: .5px solid black;
+    text-align: center;
+}
+
+thead {
+    background-color: var(--main-color);
+}
+
+.seasons-name-cell {
+    font-weight: bold;
+}
+
+.peak_season_cell {
+    background-color: lightgreen;
+}
+
+.in_season_cell {
+    background-color: lightyellow;
+}
+
+.out_of_season_cell {
+    background-color: white;
+}

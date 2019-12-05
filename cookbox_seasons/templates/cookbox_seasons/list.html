@@ -12,42 +12,79 @@
     </a>
 </div>
 
-<section>
-<table>
-    <thead>
-        <tr>
+<section class="seasons-table-container">
+<table class="seasons-table">
+    <thead class="seasons-table-head">
+        <tr class="seasons-table-row">
             <th>Name</th>
-            <th>January</th> 
-            <th>February</th> 
-            <th>March</th> 
-            <th>April</th> 
+            <th>Jan</th> 
+            <th>Feb</th> 
+            <th>Mar</th> 
+            <th>Apr</th> 
             <th>May</th> 
-            <th>June</th> 
-            <th>July</th> 
-            <th>August</th> 
-            <th>September</th> 
-            <th>October</th> 
-            <th>November</th> 
-            <th>December</th> 
+            <th>Jun</th> 
+            <th>Jul</th> 
+            <th>Aug</th> 
+            <th>Sep</th> 
+            <th>Oct</th> 
+            <th>Nov</th> 
+            <th>Dec</th> 
+            <th>Description</th>
             <th>Edit</th> 
         </tr>
     </thead>
-    <tbody>
+    <tbody class="seasons-table-body">
         {% for item in items %}
-        <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.jan }}</td>
-            <td>{{ item.feb }}</td>
-            <td>{{ item.mar }}</td>
-            <td>{{ item.apr }}</td>
-            <td>{{ item.may }}</td>
-            <td>{{ item.jun }}</td>
-            <td>{{ item.jul }}</td>
-            <td>{{ item.aug }}</td>
-            <td>{{ item.sep }}</td>
-            <td>{{ item.oct }}</td>
-            <td>{{ item.nov }}</td>
-            <td>{{ item.dec }}</td>
+        <tr class="seasons-table-row">
+            <td class="seasons-name-cell">{{ item.name }}</td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.jan %}">
+                {{ item.get_jan_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.feb %}">
+                {{ item.get_feb_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.mar %}">
+                {{ item.get_mar_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.apr %}">
+                {{ item.get_apr_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.may %}">
+                {{ item.get_may_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.jun %}">
+                {{ item.get_jun_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.jul %}">
+                {{ item.get_jul_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.aug %}">
+                {{ item.get_aug_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.sep %}">
+                {{ item.get_sep_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.oct %}">
+                {{ item.get_oct_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.nov %}">
+                {{ item.get_nov_display }}
+            </td>
+            <td
+                class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.dec %}">
+                {{ item.get_dec_display }}
+            </td>
             <td>{{ item.description }}</td>
             <td><a href="{% url 'seasons-item-edit' item.pk %}">edit</a></td>
         </tr>
