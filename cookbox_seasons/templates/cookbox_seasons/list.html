@@ -29,7 +29,7 @@
             <th>Oct</th> 
             <th>Nov</th> 
             <th>Dec</th> 
-            <th>Description</th>
+            <th>Notes</th>
             <th>Edit</th> 
         </tr>
     </thead>
@@ -85,7 +85,7 @@
                 class="{% include 'cookbox_seasons/detail/cell_class.html' with state=item.dec %}">
                 {{ item.get_dec_display }}
             </td>
-            <td>{{ item.description }}</td>
+            <td>{{ item.note }}</td>
             <td><a href="{% url 'seasons-item-edit' item.pk %}">edit</a></td>
         </tr>
         {% endfor %}
