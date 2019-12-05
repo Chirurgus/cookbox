@@ -31,7 +31,7 @@ class SeasonsItemEditBaseViewMixin(object):
     success_url = reverse_lazy('seasons')
     fields = [
         'name',
-        'description',
+        'note',
         'jan', 'feb', 'mar', 'apr', 'may', 'jun',
         'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
     ]
