@@ -10,17 +10,7 @@ from cookbox_glossary.models import (
 )
 from cookbox_glossary.views import insert_links
 
-
 from .base import GlossaryBaseTest
-
-class GlossaryInsertLinksTest(GlossaryBaseTest):
-    '''
-    Test 'cookbox_glossary.views.insert_links' function.
-    '''
-    def test_does_noting_if_empty(self):
-        before = "A long test string, with many words"
-        after = insert_links(before)
-        self.assertEqual(before, after)
 
 class GlossaryViewTest(GlossaryBaseTest):
     def test_requires_auth(self):
