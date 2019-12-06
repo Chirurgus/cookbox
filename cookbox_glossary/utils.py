@@ -15,6 +15,10 @@ def _multireplace(string, replacements, ignore_case=False):
     :param bool ignore_case: whether the match should be case insensitive
     :rtype: str
     """
+    # Don't do anything if 'replacemnts' is empty
+    if not replacements:
+        return string
+
     # If case insensitive, we need to normalize the old string so that later a replacement
     # can be found. For instance with {"HEY": "lol"} we should match and find a replacement for "hey",
     # "HEY", "hEy", etc.
