@@ -90,7 +90,6 @@ INSTALLED_APPS = [
     'cookbox_seasons.apps.CookboxSeasonsConfig',
     'cookbox_admin.apps.CookboxAdminConfig',
     'django_superform',
-    'django_filters',
     'nested_admin',
     'imagekit',
     'dal',
