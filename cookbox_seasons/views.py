@@ -27,7 +27,7 @@ class SeasonsListView(ListView):
 class SeasonsItemEditBaseViewMixin(object):
     template_name = 'cookbox_seasons/edit.html'
     model = SeasonsItem
-    context_object_name = 'items'
+    context_object_name = 'item'
     success_url = reverse_lazy('seasons')
     fields = [
         'name',
@@ -35,6 +35,7 @@ class SeasonsItemEditBaseViewMixin(object):
         'jan', 'feb', 'mar', 'apr', 'may', 'jun',
         'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
     ]
+
 
 class SeasonsItemCreateView(SeasonsItemEditBaseViewMixin, CreateView):
     def get_context_data(self, **kwargs):

@@ -11,7 +11,7 @@
 <div class="fill-width">
     <h1>Edit Seasons item</h1>
     {% if not new %}
-        <a class="button-link" href="{% url 'seasons-item-delete' entry.pk %}">
+        <a class="button-link" href="{% url 'seasons-item-delete' item.pk %}">
             Delete
         </a>
     {% endif %}
