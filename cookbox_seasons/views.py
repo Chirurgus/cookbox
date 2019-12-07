@@ -36,12 +36,17 @@ class SeasonsItemEditBaseViewMixin(object):
         'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
     ]
 
+    def get_form(self, **kwargs):
+        form = super().get_form(**kwargs)
+        form.fields['note'].required = False
+        return form
 
 class SeasonsItemCreateView(SeasonsItemEditBaseViewMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['new'] = True
         return context
+
 
 class SeasonsItemEditView(SeasonsItemEditBaseViewMixin, UpdateView):
     def get_context_data(self, **kwargs):
