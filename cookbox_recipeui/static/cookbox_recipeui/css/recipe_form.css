@@ -47,13 +47,19 @@ input[type='number'] {
     font-size: 2em;
 }
 
-.ing-grp-form-list, .ins-form-list, .recipe-note-list,
+.ing-grp-form-list, .ins-form-list, .note-form-list,
 .ing-grp-ing-form-list, .ing-note-form-list,
 .ins-note-form-list {
     list-style: none;
 
     margin: 0.5em 1em 1.5em 1.5em;
     padding: 0;
+}
+
+.note-form-list {
+    list-style-type: disc;
+
+    padding-left: 1em;
 }
 
 .ing-form-detail-container, .ins-form-detail-container,

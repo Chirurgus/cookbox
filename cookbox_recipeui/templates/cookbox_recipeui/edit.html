@@ -114,7 +114,7 @@
     <fieldset class="recipe-note-forms">
         <legend>Notes</legend>
         {{ form.formsets.notes.management_form }}
-        <ul id="{{ form.formsets.notes.prefix }}" class="recipe-note-form-list">
+        <ul id="{{ form.formsets.notes.prefix }}" class="note-form-list">
         {% for note in form.notes %}
             <li>
                 <div class="recipe-note-form">
