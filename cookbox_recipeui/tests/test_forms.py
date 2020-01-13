@@ -11,7 +11,11 @@ from cookbox_core.models import (
 )
 from cookbox_core.tests import CookboxBaseTest
 
-from cookbox_recipeui.forms import RecipeForm, ImportRecipeForm
+from cookbox_recipeui.forms import (
+    RecipeForm,
+    ImportRecipeForm,
+    SearchForm,
+)
 
 class ImportFormTest(CookboxBaseTest):
     url_string = "https://thewoksoflife.com/beef-with-broccoli-all-purpose-stir-fry-sauce/"
@@ -233,4 +237,15 @@ class RecipeFormTest(CookboxBaseTest):
                 form_data[key]
             )
 
+class TestSearchForm(CookboxBaseTest):
+    def test_convert_unit_stays_same(self):
+        for unit in ("sec.", "min.", "hrs.", "days",
+                     "weeks", "months", "years"):
+            self.assertEqual(SearchForm._convert_time(1, unit, unit), 1)
 
+    def test_convert_unit(self):
+        self.assertAlmostEqual(SearchForm._convert_time(60, "sec.", "min."), 1)
+        self.assertAlmostEqual(SearchForm._convert_time(1, "min.", "sec."), 60)
+
+        self.assertAlmostEqual(SearchForm._convert_time(60, "min.", "hrs."), 1)
+        self.assertAlmostEqual(SearchForm._convert_time(1, "hrs.", "min."), 60)
