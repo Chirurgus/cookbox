@@ -5,6 +5,7 @@
 Forms for interacting with Recipe objects.
 """
 from django.db import transaction
+from django.db.models import F
 from django.forms import (
     Form,
     ModelForm,
@@ -15,6 +16,7 @@ from django.forms import (
     Textarea,
     CharField,
     FloatField,
+    ChoiceField,
     ValidationError,
 )
 from django.forms.widgets import CheckboxSelectMultiple
@@ -316,32 +318,64 @@ class RecipeForm(
 class SearchForm(Form):
     name = CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, required=False)
     source = CharField(max_length=CHAR_FIELD_MAX_LEN_SHORT, required=False)
+    duration_unit = ChoiceField(choices=Recipe.TIME_UNITS)
     max_duration = FloatField(required=False)
     min_duration = FloatField(required=False)
+
+    @staticmethod
+    def _convert_time(x, unit_in, unit_out):
+        # Convert the unit to days, then convert to desired unit
+        days_coef = {
+            Recipe.SEC   : 1/86400,
+            Recipe.MIN   : 1/1440,
+            Recipe.HRS   : 1/24,
+            Recipe.DAYS  : 1,
+            Recipe.WEEKS : 7,
+            Recipe.MONTH : 365.5/12,
+            Recipe.YEAR  : 365.5
+        }
+
+        if unit_in not in days_coef.keys() or unit_out not in days_coef.keys():
+            raise ValueError(
+                "Time units have to be one of the time units supported by Recipe"
+            )
+        
+        return x * (days_coef[unit_in] / days_coef[unit_out])
 
     def filtered_qs(self):
         """
         Filter the Recipes that respond to the search.
         """
         qs = Recipe.objects.all()
-        if not self.cleaned_data['name'] is None:
+        if self.cleaned_data['name'] is not None:
             qs = qs.filter(
                 name__icontains = self.cleaned_data['name']
             )
-        if not self.cleaned_data['source'] is None:
+        if self.cleaned_data['source'] is not None:
             qs = qs.filter(
                 source__icontains = self.cleaned_data['source']
             )
-        if not self.cleaned_data['max_duration'] is None:
-            qs = qs.filter(
-                total_time__lt = self.cleaned_data['max_duration']
-            )
-        if not self.cleaned_data['min_duration'] is None: 
-            qs = qs.filter(
-                total_time__gt = self.cleaned_data['min_duration']
-            )
+        if self.cleaned_data['max_duration'] is not None:
+            ids = [
+                r.id for r in qs
+                if r.total_time <= SearchForm._convert_time(
+                    self.cleaned_data['max_duration'],
+                    self.cleaned_data['duration_unit'],
+                    r.unit_time
+                )
+            ]
+            qs = qs.filter(id__in=ids)
+        if self.cleaned_data['min_duration'] is not None: 
+            ids = [
+                r.id for r in qs
+                if r.total_time >= SearchForm._convert_time(
+                    self.cleaned_data['min_duration'],
+                    self.cleaned_data['duration_unit'],
+                    r.unit_time
+                )
+            ] 
+            qs = qs.filter(id__in = ids)
         return qs
-
 
 class ImportRecipeForm(Form):
     url = CharField(required=True)
