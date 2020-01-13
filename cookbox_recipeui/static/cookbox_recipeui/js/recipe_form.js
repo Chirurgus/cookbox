@@ -137,6 +137,8 @@ function on_add_click(prefix, prefix_str) {
     Object.keys(ordered_forms).forEach((key, idx) => {
         make_sortable(key, ordered_forms[key]);
     });
+    // Track new forms for changes (to ask for confirmation) 
+    $('#recipe-edit-form').trigger('rescan.areYouSure');
 }
 
 
