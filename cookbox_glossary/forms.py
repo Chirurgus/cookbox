@@ -27,10 +27,6 @@ class GlossaryArticleForm(ModelForm):
                                      widget= ModelSelect2Multiple(url= 'glossary-entry-autocomplete'),
                                      required= False)
 
-    class Meta:
-        model = GlossaryArticle
-        fields = ['body']
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         article = kwargs.get('instance')
@@ -55,4 +51,10 @@ class GlossaryArticleForm(ModelForm):
         '''
         self.instance.entries.set(self.cleaned_data['terms'])
     
+    class Meta:
+        model = GlossaryArticle
+        fields = ['body']
+
+    class Media:
+        js = ( "cookbox_webui/js/jquery.are-you-sure-1.9.0.js", )
  

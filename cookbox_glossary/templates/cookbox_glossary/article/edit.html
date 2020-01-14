@@ -3,11 +3,15 @@
 {% load static %}
 
 {% block scripts %}
-{{ block.super }}
 {{ form.media }}
+<script>
+$(document).ready(function() {
+    $('form').areYouSure();
+})
+</script>
 {% endblock %}
 
-{% block  content %}
+{% block content %}
 <div class="fill-width">
     {% if new %}
     <h1>New article</h1>
