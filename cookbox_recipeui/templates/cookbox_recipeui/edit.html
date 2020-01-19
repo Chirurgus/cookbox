@@ -6,7 +6,13 @@
 {{ form.media }}
 {% endblock %}
 
-{% block title %}{{ recipe.name }} - Edit | Cookbox{% endblock %}
+{% block title %}
+{% if new %}
+New recipe | Cookbox
+{% else %}
+{{ recipe.name }} - Edit | Cookbox
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="fill-width">
