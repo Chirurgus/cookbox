@@ -1,10 +1,10 @@
 import re
 
-from ._abstract import AbstractScraper
+from ._abstract import DOMScraper
 from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
 
-class BBCFood(AbstractScraper):
+class BBCFood(DOMScraper):
 
     @classmethod
     def host(self):

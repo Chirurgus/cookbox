@@ -1,11 +1,11 @@
 
-from ._abstract import AbstractScraper
+from ._abstract import DOMScraper
 from ._easyrecipe import EasyRecipeScraperMixin
 from ._recipemaker import RecipeMakerScraperMixin
 from ._utils import get_minutes, normalize_string, parse_ingredients, normalize_instructions
 
 
-class WoksOfLife(RecipeMakerScraperMixin, EasyRecipeScraperMixin, AbstractScraper):
+class WoksOfLife(RecipeMakerScraperMixin, EasyRecipeScraperMixin, DOMScraper):
     '''
     woksoflife.com recipe scraper. 
     This website used to use EasyRecipes (a Wordpress plugin)
@@ -46,7 +46,7 @@ class WoksOfLife(RecipeMakerScraperMixin, EasyRecipeScraperMixin, AbstractScrape
 
     def time(self):
         if self.old_recipe:
-            return Ewprm-recipe-group-nammasyRecipeScraperMixin.time(self)
+            return EasyRecipeScraperMixin.time(self)
         else:
             return RecipeMakerScraperMixin.time(self)
 

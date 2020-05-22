@@ -12,7 +12,7 @@ class EasyRecipeScraperMixin(object):
     '''
     EasyRecipe is a plugin for Wordpress that takes care of formatting
     recipes. This class should be used to scrap recipes from blogs
-    using this plugin. Just inherit form this, THEN from AbstractScraper.
+    using this plugin. Just inherit form this, THEN from DOMScraper.
     ''' 
     def title(self):
         return self.soup.find('div', {'class': 'ERSName'}).get_text()

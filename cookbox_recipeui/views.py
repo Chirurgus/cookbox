@@ -61,10 +61,14 @@ class RecipeImport(FormView):
 
     def form_valid(self, form):
         import_url = form.cleaned_data['url']
-        recipe = scraper.scrape(import_url)
-        return HttpResponseRedirect(
-            reverse('recipe-edit', kwargs= { 'pk': recipe.id })
-        )
+        try:
+            recipe = scraper.scrape(import_url)
+        except scraper.WebsiteNotImplementedError:
+            return HttpResponseRedirect(reverse('recipe-import'))
+        else:
+            return HttpResponseRedirect(
+                reverse('recipe-edit', kwargs= { 'pk': recipe.id })
+            )
 
 class RecipeEdit(UpdateView):
     template_name = 'cookbox_recipeui/edit.html'

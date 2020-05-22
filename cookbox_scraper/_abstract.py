@@ -1,6 +1,7 @@
 import requests
 
 from bs4 import BeautifulSoup
+from extruct import extract
 
 from cookbox_scraper._utils import on_exception_return
 
@@ -16,29 +17,13 @@ COOKIES = {
     'euConsentID': 'e48da782-e1d1-0931-8796-d75863cdfa15',
 }
 
+class WebsiteNotImplementedError(NotImplementedError):
+    '''Error for when the website is not supported by this library.'''
+    pass
 
-class AbstractScraper():
-    def __init__(self, url, test=False):
-        if test:  # when testing, we load a file
-            with url:
-                self.soup = BeautifulSoup(
-                    url.read(),
-                    "html.parser"
-                )
-        else:
-            self.soup = BeautifulSoup(
-                requests.get(
-                    url,
-                    headers=HEADERS,
-                    cookies=COOKIES
-                ).content,
-                "html.parser"
-            )
-        self.testing_mode = test
-        self.url = url
-
+class BaseScraper():
     def url(self):
-        return self.url
+        NotImplementedError("This should be implemented.")
 
     def host(self):
         """
@@ -83,7 +68,28 @@ class AbstractScraper():
         List of notes
         '''
         raise NotImplementedError("This should be implemented.")
-    
+ 
+
+class DOMScraper(BaseScraper):
+    def __init__(self, url, test=False):
+        if test:  # when testing, we load a file
+            with url:
+                self.soup = BeautifulSoup(
+                    url.read(),
+                    "html.parser"
+                )
+        else:
+            self.soup = BeautifulSoup(
+                requests.get(
+                    url,
+                    headers=HEADERS,
+                    cookies=COOKIES
+                ).content,
+                "html.parser"
+            )
+        self.testing_mode = test
+        self.url_text = url
+
     def links(self):
         invalid_href = ('#', '')
         links_html = self.soup.findAll('a', href=True)
@@ -93,3 +99,34 @@ class AbstractScraper():
             for link in links_html
             if link['href'] not in invalid_href
         ]
+    
+class SchemaScraper(BaseScraper):
+    def __init__(self, url):
+        self.url_text = url
+        html = requests.get(url, headers=HEADERS, cookies=COOKIES)
+        data_list = extract(html.text, uniform=True)
+
+        def _find_recipe(c):
+            if isinstance(c, dict):
+                if "@type" in c.keys() and c["@type"] == "Recipe":
+                    return c
+                for i in c.values():
+                    res = _find_recipe(i)
+                    if res:
+                        return res
+            if isinstance(c, list):
+                for i in c:
+                    res = _find_recipe(i)
+                    if res:
+                        return res
+            return []
+
+        recipe_data = _find_recipe(data_list)
+        if not recipe_data:
+            raise WebsiteNotImplementedError(
+                "Website does not provide a schema.org Recipe schema in a json-ld format"
+            )
+        self.data = recipe_data
+
+    def url(self):
+        return self.url_text

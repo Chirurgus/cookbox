@@ -4,11 +4,13 @@ from django.db import transaction
 
 from cookbox_core.models import Recipe
 
+from ._abstract import WebsiteNotImplementedError
 from .allrecipes import AllRecipes
 from .bbcfood import BBCFood
 from .bbcgoodfood import BBCGoodFood
 from .woksoflife import WoksOfLife
 from .marmiton import Marmiton
+from ._screma_org import SchemaOrgRecipeScraper
 
 
 SCRAPERS = {
@@ -36,23 +38,15 @@ def url_path_to_dict(path):
 
     return url_dict
 
-
-class WebsiteNotImplementedError(NotImplementedError):
-    '''Error for when the website is not supported by this library.'''
-    pass
-
-
 def scrape_me(url_path):
     host_name = url_path_to_dict(url_path.replace('://www.', '://'))['host']
 
-    try:
+    if host_name in SCRAPERS.keys():
         scraper = SCRAPERS[host_name]
-    except KeyError:
-        raise WebsiteNotImplementedError(
-            "Website ({}) is not supported".format(host_name))
+    else:
+        scraper = SchemaOrgRecipeScraper
 
     return scraper(url_path)
-
 
 def scrape(url):
     """
@@ -100,4 +94,4 @@ def host_supported(url):
     host_name = url_path_to_dict(url.replace('://www.', '://'))['host']
     return host_name in SCRAPERS.keys()
 
-__all__ = ['scrape', 'supported_hosts', 'host_supported']
+__all__ = ['scrape', 'supported_hosts', 'host_supported', 'WebsiteNotImplementedError']

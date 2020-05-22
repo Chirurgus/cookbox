@@ -382,6 +382,4 @@ class ImportRecipeForm(Form):
 
     def clean_url(self):
         url = self.cleaned_data['url']
-        if not scraper.host_supported(url):
-            raise ValidationError("This host is not supported")
         return url
