@@ -379,7 +379,3 @@ class SearchForm(Form):
 
 class ImportRecipeForm(Form):
     url = CharField(required=True)
-
-    def clean_url(self):
-        url = self.cleaned_data['url']
-        return url

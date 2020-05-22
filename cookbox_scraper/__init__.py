@@ -5,55 +5,14 @@ from django.db import transaction
 from cookbox_core.models import Recipe
 
 from ._abstract import WebsiteNotImplementedError
-from .allrecipes import AllRecipes
-from .bbcfood import BBCFood
-from .bbcgoodfood import BBCGoodFood
-from .woksoflife import WoksOfLife
-from .marmiton import Marmiton
 from ._screma_org import SchemaOrgRecipeScraper
-
-
-SCRAPERS = {
-    # AllRecipes.host(): AllRecipes,
-    # BBCFood.host(): BBCFood,
-    # BBCGoodFood.host(): BBCGoodFood,
-    # WoksOfLife.host(): WoksOfLife,
-    # Marmiton.host(): Marmiton,
-}
-
-
-def url_path_to_dict(path):
-    pattern = (r'^'
-               r'((?P<schema>.+?)://)?'
-               r'((?P<user>.+?)(:(?P<password>.*?))?@)?'
-               r'(?P<host>.*?)'
-               r'(:(?P<port>\d+?))?'
-               r'(?P<path>/.*?)?'
-               r'(?P<query>[?].*?)?'
-               r'$'
-               )
-    regex = re.compile(pattern)
-    matches = regex.match(path)
-    url_dict = matches.groupdict() if matches is not None else None
-
-    return url_dict
-
-def scrape_me(url_path):
-    host_name = url_path_to_dict(url_path.replace('://www.', '://'))['host']
-
-    if host_name in SCRAPERS.keys():
-        scraper = SCRAPERS[host_name]
-    else:
-        scraper = SchemaOrgRecipeScraper
-
-    return scraper(url_path)
 
 def scrape(url):
     """
     Get a cookbox recipe from a URL.
     Does not save the recipe, but returns its instance.
     """
-    scraper = scrape_me(url)
+    scraper = SchemaOrgRecipeScraper(url)
 
     with transaction.atomic():
         recipe = Recipe.objects.create(name = scraper.title(),
@@ -80,18 +39,4 @@ def scrape(url):
         
         return recipe
 
-def supported_hosts():
-    '''
-    Returns a list of website hosts (urls)
-    that can be scraped using this utility.
-    '''
-    return [ host for host in SCRAPERS.keys() ]
-
-def host_supported(url):
-    """
-    Check if the provided URL is in the supported hosts.
-    """
-    host_name = url_path_to_dict(url.replace('://www.', '://'))['host']
-    return host_name in SCRAPERS.keys()
-
-__all__ = ['scrape', 'supported_hosts', 'host_supported', 'WebsiteNotImplementedError']
+__all__ = ['scrape', 'WebsiteNotImplementedError']

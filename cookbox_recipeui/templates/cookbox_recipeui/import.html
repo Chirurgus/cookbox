@@ -5,12 +5,9 @@
     Import recipe from a website
 </h1>
 <div class="fill-width">
-    Only the following sites are supported:
-    <ul>
-        {% for host in supported_hosts %}
-        <li>{{ host }}</li>
-        {% endfor %}
-    </ul>
+    Just insert a URL of a website containing a recipe. This
+    should work with any recipe that Google presents as a 
+    card in search results.
 </div>
 <form method="POST">
     {% csrf_token %}

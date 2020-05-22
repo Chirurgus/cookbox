@@ -54,11 +54,6 @@ class RecipeImport(FormView):
     template_name = 'cookbox_recipeui/import.html'
     form_class = ImportRecipeForm
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['supported_hosts'] = scraper.supported_hosts()
-        return context
-
     def form_valid(self, form):
         import_url = form.cleaned_data['url']
         try:
