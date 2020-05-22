@@ -8,3 +8,4 @@ beautifulsoup4==4.8.1
 requests==2.22.0
 mysqlclient==1.4.4
 django-markdownx==3.0.1
+extruct==0.9.0
