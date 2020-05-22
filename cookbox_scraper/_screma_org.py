@@ -80,7 +80,7 @@ class SchemaOrgRecipeScraper(SchemaScraper):
             return []
 
         if not isinstance(self.data['recipeInstructions'], list):
-            self.data = [ self.data['recipeInstructions'] ]
+            self.data['recipeInstructions'] = [ self.data['recipeInstructions'] ]
 
         if all(
             isinstance(elem, str)
@@ -94,11 +94,24 @@ class SchemaOrgRecipeScraper(SchemaScraper):
             isinstance(elem, dict)
             for elem in self.data['recipeInstructions']
         ):
-            return normalize_instructions([
-                item["text"]
-                for item in self.data['recipeInstructions']
-                if item["@type"] == "HowToStep"
-            ])
+            def list_from_howtostep_list(lst):
+                ret = []
+                for item in lst:
+                    if "@type" not in item.keys():
+                        continue
+                    if item["@type"] == "HowToStep":
+                        ret.append(item["text"])
+                return ret
+
+            ins = [] 
+            for item in self.data['recipeInstructions']:
+                if "@type" not in item.keys():
+                    continue
+                if item["@type"] == "HowToSection":
+                    ins += list_from_howtostep_list(item["itemListElement"])
+                if item["@type"] == "HowToStep":
+                    ins.append(item["text"])
+            return normalize_instructions(ins)
 
         return []
 

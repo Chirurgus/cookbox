@@ -57,7 +57,7 @@ def parse_ingredients(ing_list):
 
     # Only match if the regesp in list is after a space, a numeric,
     # or new line (ie. "g" does not match "egg", but does "250g")
-    combined = r"(?:\d|^|\s)(?:(" + ")|(".join(mesurements_re) + "))"
+    combined = r"(?:\d|^|\s)(?:(" + ")|(".join(mesurements_re) + r"))(?:$|\s)"
     pat = re.compile(combined, re.IGNORECASE)
 
     new_ing_list = []

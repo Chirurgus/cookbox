@@ -14,11 +14,11 @@ from ._screma_org import SchemaOrgRecipeScraper
 
 
 SCRAPERS = {
-    AllRecipes.host(): AllRecipes,
-    BBCFood.host(): BBCFood,
-    BBCGoodFood.host(): BBCGoodFood,
-    WoksOfLife.host(): WoksOfLife,
-    Marmiton.host(): Marmiton,
+    # AllRecipes.host(): AllRecipes,
+    # BBCFood.host(): BBCFood,
+    # BBCGoodFood.host(): BBCGoodFood,
+    # WoksOfLife.host(): WoksOfLife,
+    # Marmiton.host(): Marmiton,
 }
 
 
