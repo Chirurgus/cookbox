@@ -88,7 +88,7 @@
             <ol class="ingredient-list">
                 {% for ingredient in ingredient_group.ingredients.all %}
                     <li class="ingredient">
-                        <span class="ing-qty">{{ ingredient.quantity }}</span><span>{{ ingredient.unit }} {{ ingredient.description }}</span>
+                        <span class="ing-qty">{{ ingredient.quantity }}</span> <span>{{ ingredient.unit }} {{ ingredient.description }}</span>
                         <ul class="ingredient-note-list">
                             {% for note in ingredient.notes.all %}
                             <li class="note">
