@@ -1,4 +1,4 @@
-﻿Django==3.0.3
+﻿Django==3.0.7
 django-nested-admin==3.2.3
 git+https://github.com/labd/django-superform
 Pillow==6.2.2
