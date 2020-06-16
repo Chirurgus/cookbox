@@ -140,6 +140,3 @@ function on_add_click(prefix, prefix_str) {
     // Track new forms for changes (to ask for confirmation) 
     $('#recipe-edit-form').trigger('rescan.areYouSure');
 }
-
-
-
