@@ -5,7 +5,7 @@ from django.db import transaction
 from cookbox_core.models import Recipe
 
 from ._abstract import WebsiteNotImplementedError
-from ._screma_org import SchemaOrgRecipeScraper
+from ._schema_org import SchemaOrgRecipeScraper
 
 def scrape(url):
     """
