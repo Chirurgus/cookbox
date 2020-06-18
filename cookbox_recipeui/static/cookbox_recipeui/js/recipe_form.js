@@ -30,7 +30,9 @@ function set_enter_key_handler(
     button_selector,
     via_selector=null)
 {
-    $('#recipe-edit-form').on(
+    $('#recipe-edit-form')
+        .off("keydown", event_source_selector)
+        .on(
         "keydown",
         event_source_selector,
         function(event) {
@@ -62,13 +64,14 @@ function fill_position_fields(list_selector, pos_field_selector) {
         });
 };
 
-function make_sortable(list_selector, pos_field_selector) {
+function make_sortable(list_selector, pos_field_selector, connected_lists=null) {
     var sortables = sortable(list_selector, {
         handle: 'span.sortable-handle',
-        forcePlaceholderSize: true
+        forcePlaceholderSize: true,
+        acceptFrom: connected_lists 
     });
+    return sortables
 };
-
 
 // Set contextual behavior for the Enter key
 // If were in a inline form list Enter should add
@@ -99,7 +102,54 @@ function setup_enter_handlers() {
     })
 }
 
+// Allow ingredients to be drag and dropped between different
+// ingredient groups
+function setup_dnd_between_ing_groups() {
+    // Call sortable on ingredient lists, this time
+    // with a `connected_lists` argument
+    make_sortable(
+        '.ing-grp-ing-form-list',
+        ordered_forms['.ing-grp-ing-form-list'],
+        '.ing-grp-ing-form-list'
+    )
 
+    // Setup an event listener for ingredient lists
+    $('.ing-grp-ing-form-list')
+        .off('sortupdate')
+        .on( 'sortupdate', function(e) {
+            // If the item drag and dropped has not changed
+            // containers there is nothing to do.
+            // Otherwise add new inline form to the destination 
+            // container, copy information into the new form,
+            // and delete the old form.
+            // This is the easiest way since `add_inline_item`
+            // and `delete_inline_form` take care of the
+            //difficult parts, i.e. updating the management form
+
+            if (e.detail.origin.container.id == e.detail.destination.container.id) {
+                return
+            }
+
+            // The form that just got moved
+            var old_form = $(e.detail.item);
+            var new_form = on_add_click(e.detail.destination.container.id, "__ingredient_prefix__", false);
+            // Move new form to right position
+            old_form.after(new_form);
+            // Copy data to new form
+            new_form.find(".ing-form-qty input").val(
+                old_form.find(".ing-form-qty input").val()
+            );
+            new_form.find(".ing-form-unit input").val(
+                old_form.find(".ing-form-unit input").val()
+            );
+            new_form.find(".ing-form-desc input").val(
+                old_form.find(".ing-form-desc input").val()
+            );
+            // Move old form back and mark it for deletion
+            $(e.detail.origin.container).append(old_form);
+            delete_inline_form("#" + old_form.find(".ing-form-del input").attr('id'), ".ing-form");
+    });
+}
 
 // Call function on DOM Ready:
 $(document).ready(function() {
@@ -125,6 +175,9 @@ $(document).ready(function() {
         make_sortable(key, ordered_forms[key]);
     });
 
+    // Allow ingredients to be moved between ingredient groups
+    setup_dnd_between_ing_groups();
+    
     // Handle Enter key
     setup_enter_handlers();
 });
@@ -132,11 +185,21 @@ $(document).ready(function() {
 // Handle "Add ingrediennt/instruction/note" button click.
 function on_add_click(prefix, prefix_str) {
     // Add the inline form
-    add_inline_form(prefix, prefix_str)
+    var new_form = add_inline_form(prefix, prefix_str)
+
     // Make the new element sortable
     Object.keys(ordered_forms).forEach((key, idx) => {
         make_sortable(key, ordered_forms[key]);
     });
+
+    // Make ingredient movable to the new ingredient group
+    setup_dnd_between_ing_groups();
+
+    // (and it doesn't hurt to call this for other inline forms)
+    setup_enter_handlers();
+
     // Track new forms for changes (to ask for confirmation) 
     $('#recipe-edit-form').trigger('rescan.areYouSure');
+    
+    return new_form
 }
