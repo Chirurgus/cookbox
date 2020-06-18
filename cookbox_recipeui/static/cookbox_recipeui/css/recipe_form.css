@@ -56,6 +56,13 @@ input[type='number'] {
     padding: 0;
 }
 
+/* This to make drag and drop into empty list possible */
+.ing-grp-ing-form-list {
+    padding-bottom: .5em;
+    padding-top: .5em;
+    margin-bottom: -.5em;
+}
+
 .note-form-list {
     list-style-type: disc;
 
