@@ -1,16 +1,15 @@
 import re
+import textwrap
 
 from functools import wraps
 
 from fractions import Fraction
 
-from cookbox_core.models import Recipe
-
+from cookbox_core.models import Recipe, Instruction
 
 TIME_REGEX = re.compile(
     r'(\D*(?P<hours>\d+)\s*(hours|hrs|hr|h|Hours|H))?(\D*(?P<minutes>\d+)\s*(minutes|mins|min|m|Minutes|M))?'
 )
-
 
 def get_minutes(element):
     try:
@@ -25,7 +24,6 @@ def get_minutes(element):
         return minutes
     except AttributeError:  # if dom_element not found or no matched
         return 0
-
 
 def normalize_string(string):
     return re.sub(
@@ -95,10 +93,14 @@ def normalize_instructions(instructions):
     '''
     Returns list of strings.
     '''
+    MAX_LEN = Instruction._meta.get_field("instruction").max_length
+
     ret = []
 
     for string in instructions:
-        ret += string.split('.')
+        ins_list = string.split('.')
+        for ins in ins_list:
+            ret += textwrap.wrap(ins, MAX_LEN, break_long_words=False)
 
     return [
         normalize_string(instruction)
