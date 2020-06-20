@@ -64,7 +64,7 @@ def parse_ingredients(ing_list):
         m = re.search(pat, ing)
         if m:
             mesurements.append(m.group(m.lastindex))
-            new_ing_list.append(ing.replace(m.group(m.lastindex), ""))
+            new_ing_list.append(re.sub(pat, ' ', ing))
         else:
             mesurements.append("")
             new_ing_list.append(ing)
