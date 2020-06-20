@@ -152,8 +152,6 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -177,13 +175,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Logging settings
@@ -207,4 +201,6 @@ if not DEBUG:
         },
     }
 
-
+# Maximum number of forms in a POST request
+# Every inline form requires about 15 hidden forms
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
