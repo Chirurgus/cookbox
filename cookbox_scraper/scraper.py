@@ -3,6 +3,7 @@
 
 # Scrape recipes found in schema.org Recipe type
 import re
+from collections import namedtuple
 
 import requests
 from extruct import extract
@@ -131,9 +132,9 @@ def scrape_recipe(data):
         total_time = time_tuple[1] + time_tuple[0],
         preparation_time = time_tuple[0],
         cook_time = time_tuple[1],
-        unit_yield = yield_tuple["unit"],
-        total_yield = yield_tuple["yield_size"],
-        serving_size = yield_tuple["serving_size"],
+        unit_yield = yield_tuple.unit,
+        total_yield = yield_tuple.yield_size,
+        serving_size = yield_tuple.serving_size,
         source = data['url'] if 'url' in data.keys() else ""
     )
 
