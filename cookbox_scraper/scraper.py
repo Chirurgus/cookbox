@@ -136,7 +136,7 @@ def scrape_recipe(data):
 
     # Get image
     save_image_url_in_field(
-        data["image"],
+        data["image"][0],
         recipe.image,
         str(recipe.id) + "_thumb.png"
     )
