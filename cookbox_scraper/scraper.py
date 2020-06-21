@@ -8,6 +8,8 @@ import requests
 from extruct import extract
 
 from django.db import transaction
+from django.core.files.temp import NamedTemporaryFile
+from django.core.files import File
 
 from cookbox_core.models import Recipe
 
@@ -17,6 +19,16 @@ from cookbox_scraper._utils import (
     parse_iso8601,
     normalize_string,
 )
+
+# some sites close their content for 'bots', so user-agent must be supplied
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
+}
+
+COOKIES = {
+    'euConsentFailed': 'true',
+    'euConsentID': 'e48da782-e1d1-0931-8796-d75863cdfa15',
+}
 
 class WebsiteNotImplementedError(NotImplementedError):
     '''Error for when the website is not supported by this library.'''
@@ -66,16 +78,7 @@ def recipe_yields(dd):
     return (1.0, 1.0)
 
 def get_recipe_data(url):
-    # some sites close their content for 'bots', so user-agent must be supplied
-    HEADERS = {
-        'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
-    }
-
-    COOKIES = {
-        'euConsentFailed': 'true',
-        'euConsentID': 'e48da782-e1d1-0931-8796-d75863cdfa15',
-    }
-
+    
     def _find_recipe(c):
         if isinstance(c, dict):
             if "@type" in c.keys() and c["@type"] == "Recipe":
@@ -101,23 +104,19 @@ def get_recipe_data(url):
         )
     return recipe_data
 
+def save_image_url_in_field(url, field, file_name):
+    img = requests.get(url, headers=HEADERS, cookies=COOKIES).content
+
+    with NamedTemporaryFile() as file:
+        file.write(img)
+        file.flush()
+        img_name = file_name 
+        field.save(img_name, File(file), save=True)
+    return field
+
 def scrape_recipe(data):
     time_tuple = recipe_time(data)
     yield_tuple = recipe_yields(data)
-
-    # Get image
-    # import tempfile
-
-    # img = requests.get(
-    #     "https://cdn.sallysbakingaddiction.com/wp-content/uploads/2019/02/red-velvet-cake-slice-2-225x225.jpg",
-    #     headers=HEADERS,
-    #     cookies=COOKIES).content
-
-    # with tempfile.TemporaryFile() as file:
-    #     file.write(img)
-    #     print(file.read())
-
-    # im.file.save(img_filename, File(img_temp))
 
     recipe = Recipe.objects.create(
         name = recipe_title(data),
@@ -130,6 +129,16 @@ def scrape_recipe(data):
         total_yield = yield_tuple[0],
         serving_size = yield_tuple[1],
         source = data['url'] if 'url' in data.keys() else ""
+    )
+
+    if isinstance(data["image"], str):
+        data["image"] = [ data["image"] ]
+
+    # Get image
+    save_image_url_in_field(
+        data["image"],
+        recipe.image,
+        str(recipe.id) + "_thumb.png"
     )
 
     # Ingredients
