@@ -59,23 +59,29 @@ def recipe_time(dd):
     return (prep_time[1] + cook_time[1], prep_time[1], cook_time[1])
 
 def recipe_yield(dd):
-    return "serving"
+    Recipe_yield = namedtuple("Recipe_yield", ["unit", "yield_size", "serving_size"])
 
-def recipe_yields(dd):
     if not'recipeYield' in dd.keys():
-        return (1.0, 1.0)
+        return Recipe_yield("serving", 1.0, None)
     
     if isinstance(dd['recipeYield'], list):
-            dd['recipeYield'] = dd['recipeYield'][0]
-    
+        # If there are two values the first one is the yield unit
+        if len(dd['recipeYield']) == 2:
+            return Recipe_yield(
+                dd['recipeYield'][1],
+                dd['recipeYield'][0],
+                None
+            )
+        dd['recipeYield'] = dd['recipeYield'][0]
+        
     if not isinstance(dd['recipeYield'], str):
         dd['recipeYield'] = str(dd['recipeYield'])
 
     m = re.search(r"(\d+)", dd['recipeYield'])
     if m:
-        return (m.group(), 1.0)
+        return Recipe_yield(m.group(), 1.0, None)
 
-    return (1.0, 1.0)
+    return Recipe_yield("serving", 1.0, None)
 
 def get_recipe_data(url):
     
@@ -125,9 +131,9 @@ def scrape_recipe(data):
         total_time = time_tuple[1] + time_tuple[0],
         preparation_time = time_tuple[0],
         cook_time = time_tuple[1],
-        unit_yield = "serving",
-        total_yield = yield_tuple[0],
-        serving_size = yield_tuple[1],
+        unit_yield = yield_tuple["unit"],
+        total_yield = yield_tuple["yield_size"],
+        serving_size = yield_tuple["serving_size"],
         source = data['url'] if 'url' in data.keys() else ""
     )
 
