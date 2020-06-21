@@ -121,9 +121,81 @@ def save_image_url_in_field(url, field, file_name):
         field.save(img_name, File(file), save=True)
     return field
 
+def scrape_instructions(recipe, ri):
+    '''
+    Scrape instructions form 'recipeInstructions' schema
+
+    @param ri an object form "Recipe" scema.org schema
+    @param recipe an instance of cookbox_core.models.Recipe
+    '''
+    if not isinstance(ri, list):
+        ri = [ ri ]
+
+    if all(
+        isinstance(elem, str)
+        for elem in ri
+    ):
+        for idx, instruction in normalize_instructions(ri):
+            recipe.instructions.create(
+                instruction=instruction,
+                position=idx
+            )
+        return recipe
+
+    def _scrape_how_to_step(step, recipe, pos_counter):
+        if "@type" not in step.keys() or step["@type"] != "HowToStep":
+            return pos_counter
+
+        for norm_ins in normalize_instructions(step["text"]):
+            ins = recipe.instructions.create(
+                instruction=norm_ins,
+                position=pos_counter
+            )
+            pos_counter += 1
+
+        # Add images for instructions
+        if "image" in step.keys():
+            if isinstance(step["image"], list):
+                step["image"] = step["image"][0]
+            note = ins.notes.create()
+            save_image_url_in_field(
+                step["image"],
+                note.image,
+                "{id1}_{id2}_{id3}_thumb.png". format(
+                    id1=str(recipe.id),
+                    id2=str(ins.id),
+                    id3=str(note.id)
+                )
+            )
+        return pos_counter
+
+    if all(
+        isinstance(elem, dict)
+        for elem in ri
+    ):
+        pos_counter = 0
+        for item in ri:
+            if "@type" not in item.keys():
+                continue
+            if item["@type"] == "HowToStep":
+                pos_counter = _scrape_how_to_step(step, recipe, pos_counter)
+            if item["@type"] == "HowToSection":
+                if "name" in item.keys():
+                    recipe.instructions.create(
+                        instruction = item["name"],
+                        position=pos_counter
+                    )
+                    pos_counter += 1
+                if "itemListElement" not in item.keys():
+                    continue
+                for step in item["itemListElement"]:
+                    pos_counter = _scrape_how_to_step(step, recipe, pos_counter)
+    return recipe
+     
+
 def scrape_recipe(data):
     time_tuple = recipe_time(data)
-    yield_tuple = recipe_yields(data)
+    yield_tuple = recipe_yield(data)
 
     recipe = Recipe.objects.create(
         name = recipe_title(data),
@@ -160,52 +232,8 @@ def scrape_recipe(data):
             )
 
     # Instructions
-    if not 'recipeInstructions' in data.keys():
-        data['recipeInstructions'] = []
-
-    if not isinstance(data['recipeInstructions'], list):
-        data['recipeInstructions'] = [ data['recipeInstructions'] ]
-
-    if all(
-        isinstance(elem, str)
-        for elem in data['recipeInstructions']
-    ):
-        for idx, instruction in normalize_instructions(
-            data['recipeInstructions']
-        ):
-            recipe.instructions.create(
-                instruction = instruction,
-                position= idx
-            )
-
-    if all(
-        isinstance(elem, dict)
-        for elem in data['recipeInstructions']
-    ):
-        def list_from_howtostep_list(lst):
-            ret = []
-            for item in lst:
-                if "@type" not in item.keys():
-                    continue
-                if item["@type"] == "HowToStep":
-                    ret.append(item["text"])
-            return ret
-
-        ins = [] 
-        for item in data['recipeInstructions']:
-            if "@type" not in item.keys():
-                continue
-            if item["@type"] == "HowToSection":
-                if "name" in item.keys():
-                    ins.append("# " + item["name"])
-                ins += list_from_howtostep_list(item["itemListElement"])
-            if item["@type"] == "HowToStep":
-                ins.append(item["text"])
-        for idx, instruction in enumerate(normalize_instructions(ins)):
-            recipe.instructions.create(
-                instruction = instruction,
-                position= idx
-            )
+    if 'recipeInstructions' in data.keys():
+        scrape_instructions(recipe, data["recipeInstructions"])
     
     return recipe
 
