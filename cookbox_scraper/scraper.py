@@ -135,7 +135,7 @@ def scrape_instructions(recipe, ri):
         isinstance(elem, str)
         for elem in ri
     ):
-        for idx, instruction in normalize_instructions(ri):
+        for idx, instruction in enumerate(normalize_instructions(ri)):
             recipe.instructions.create(
                 instruction=instruction,
                 position=idx
@@ -178,7 +178,7 @@ def scrape_instructions(recipe, ri):
             if "@type" not in item.keys():
                 continue
             if item["@type"] == "HowToStep":
-                pos_counter = _scrape_how_to_step(step, recipe, pos_counter)
+                pos_counter = _scrape_how_to_step(item, recipe, pos_counter)
             if item["@type"] == "HowToSection":
                 if "name" in item.keys():
                     recipe.instructions.create(
@@ -239,6 +239,8 @@ def scrape_recipe(data):
     # Collect potential tags
     tags = []
     if "keywords" in data.keys():
+        if isinstance(data["keywords"], list):
+            data["keywords"] = ','.join(data["keywords"])
         tags += "".join(data["keywords"].split()).split(',')
     if "recipeCategory" in data.keys():
         if isinstance(data["recipeCategory"], str):
@@ -266,4 +268,5 @@ def scrape(url):
         recipe = scrape_recipe(data)
         if recipe.source == "":
             recipe.source = url
+            recipe.save(commit=True)
         return recipe
