@@ -87,21 +87,16 @@
             {% endif %}
             <ol class="ingredient-list">
                 {% for ingredient in ingredient_group.ingredients.all %}
-                    <li class="ingredient">
-                        <span class="ing-qty">{{ ingredient.quantity }}</span> <span>{{ ingredient.unit }} {{ ingredient.description }}</span>
-                        <ul class="ingredient-note-list">
-                            {% for note in ingredient.notes.all %}
-                            <li class="note">
-                                <span>{{ note.text }}</span>
-                                {% if note.image %}
-                                <br>
-                                {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
-                                <img class="note-image" src="{{ note_th.url }}">
-                                {% endif %}
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
+                <li class="ingredient">
+                    <span class="ing-qty">{{ ingredient.quantity }}</span> <span>{{ ingredient.unit }} {{ ingredient.description }}</span>
+                    <ul class="ingredient-note-list">
+                        {% for note in ingredient.notes.all %}
+                        <li class="note">
+                            {% include 'cookbox_recipeui/detail/note.html' with note=note only %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
                 {% empty %}
                 No instructions in this group, yet.
                 {% endfor %}
@@ -122,12 +117,7 @@
             <ul class="instruction-note-list">
                 {% for note in instruction.notes.all %}
                 <li class="note">
-                    <span>{{ note.text }}</span>
-                    {% if note.image %}
-                    <br>
-                    {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
-                    <img class="note-image" src="{{ note_th.url }}">
-                    {% endif %}
+                    {% include 'cookbox_recipeui/detail/note.html' with note=note only %}
                 </li>
                 {% endfor %}
             </ul>
@@ -142,15 +132,8 @@
     <h2>Notes</h2>
     <ul class="recipe-note-list">
         {% for note in recipe.notes.all %}
-        <li class="recipe-note">
-            {% if note.text %}
-            {{ note.text }}
-            {% endif %}
-            {% if note.image %}
-            <br>
-            {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
-            <img src="{{ note_th.url }}">
-            {% endif %}
+        <li class="note">
+            {% include 'cookbox_recipeui/detail/note.html' with note=note only %}
         </li>
         {% empty %}
         No notes, yet.
@@ -162,11 +145,11 @@
     <h2>Tags</h2>
     <ul class="recipe-tag-list">
         {% for tag in recipe.tags.all %}
-            <li class="recipe-tag">
-                <a href="{% url 'tag-recipe-list' tag.id %}">
-                    {{ tag.name }}
-                </a>
-            </li>
+        <li class="recipe-tag">
+            <a href="{% url 'tag-recipe-list' tag.id %}">
+                {{ tag.name }}
+            </a>
+        </li>
         {% empty %}
         No tags, yet.
         {% endfor %}

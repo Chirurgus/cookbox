@@ -1,0 +1,10 @@
+{# Renders a note (i.e. instance of cookbox_core.models.Note) #}
+
+{% load imagekit %}
+
+<span>{{ note.text }}</span>
+{% if note.image %}
+<br>
+{% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
+<img class="note-image" src="{{ note_th.url }}">
+{% endif %}

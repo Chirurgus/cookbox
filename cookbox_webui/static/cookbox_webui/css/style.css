@@ -222,7 +222,7 @@ button:hover, .button-link:hover {
     margin-bottom: .5em;
 }
 
-.note img, .recipe-note img {
+.note img {
     max-height: 10em;
     max-width: 100%;
 }
