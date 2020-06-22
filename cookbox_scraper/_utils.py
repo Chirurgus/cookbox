@@ -95,6 +95,9 @@ def normalize_instructions(instructions):
     '''
     MAX_LEN = Instruction._meta.get_field("instruction").max_length
 
+    if isinstance(instructions, str):
+        instructions = [ instructions ]
+
     ret = []
 
     for string in instructions:

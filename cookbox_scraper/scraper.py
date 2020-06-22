@@ -146,7 +146,7 @@ def scrape_instructions(recipe, ri):
         if "@type" not in step.keys() or step["@type"] != "HowToStep":
             return pos_counter
 
-        for norm_ins in normalize_instructions(step["text"]):
+        for norm_ins in normalize_instructions([ step["text"] ]):
             ins = recipe.instructions.create(
                 instruction=norm_ins,
                 position=pos_counter
