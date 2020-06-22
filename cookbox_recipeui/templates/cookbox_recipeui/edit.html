@@ -28,7 +28,7 @@ New recipe | Cookbox
 <form id="recipe-edit-form" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {% include 'cookbox_recipeui/form/save_actions.html' %}
+    {% include 'cookbox_recipeui/form/save_actions.html' only %}
 
     {% if form.non_field_errors %}
     <ul>
@@ -74,7 +74,7 @@ New recipe | Cookbox
         {% for ing_grp in form.ingredient_groups %}
             <li>
                 <fieldset class="ing-grp-form">
-                    {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=ing_grp %}
+                    {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=ing_grp only %}
                 </fieldset>
             </li>
         {% endfor %}
@@ -87,7 +87,7 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ing-grp-empty-form hide">
             <fieldset class="ing-grp-form">
-                {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form %}
+                {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form only %}
             </fieldset>
         </div>
     </fieldset>
@@ -99,7 +99,7 @@ New recipe | Cookbox
         {% for instruction in form.instructions %}
             <li>
                 <div class="ins-form">
-                {% include 'cookbox_recipeui/form/instruction.html' with instruction=instruction %}
+                {% include 'cookbox_recipeui/form/instruction.html' with instruction=instruction only %}
                 </div>
             </li>
         {% endfor %}
@@ -112,7 +112,7 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="ins-empty-form hide">
             <div class="ins-form">
-            {% include 'cookbox_recipeui/form/instruction.html' with instruction=form.formsets.instructions.empty_form %}
+            {% include 'cookbox_recipeui/form/instruction.html' with instruction=form.formsets.instructions.empty_form only %}
             </div>
         </div>
     </fieldset>
@@ -124,7 +124,7 @@ New recipe | Cookbox
         {% for note in form.notes %}
             <li>
                 <div class="recipe-note-form">
-                {% include 'cookbox_recipeui/form/note.html' with note=note form_class="recipe-note-form" %}
+                {% include 'cookbox_recipeui/form/note.html' with note=note form_class="recipe-note-form" only %}
                 </div>
             </li>
         {% endfor %}
@@ -137,12 +137,12 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
             <div class="recipe-note-form">
-            {% include 'cookbox_recipeui/form/note.html' with note=form.formsets.notes.empty_form form_class="recipe-note-form" %}
+            {% include 'cookbox_recipeui/form/note.html' with note=form.formsets.notes.empty_form form_class="recipe-note-form" only %}
             </div>
         </div>
     </fieldset>
 
-    {% include 'cookbox_recipeui/form/save_actions.html' %}
+    {% include 'cookbox_recipeui/form/save_actions.html' only %}
 </form>
 {% endblock %}
 

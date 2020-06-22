@@ -27,13 +27,13 @@
     {% for note in instruction.notes %}
     <li>
         <div class="ins-note-form">
-        {% include 'cookbox_recipeui/form/note.html' with note=note form_class="ins-note-form" %}
+        {% include 'cookbox_recipeui/form/note.html' with note=note form_class="ins-note-form" only %}
         </div>
     </li>
     {% endfor %}
 </ul>
 <div id="{{ instruction.formsets.notes.prefix }}_empty_form" class="nested-notes-empty hide">
     <div class="ins-note-form">
-    {% include 'cookbox_recipeui/form/note.html' with note=instruction.formsets.notes.empty_form form_class="ins-note-form" %}
+    {% include 'cookbox_recipeui/form/note.html' with note=instruction.formsets.notes.empty_form form_class="ins-note-form" only %}
     </div>
 </div>

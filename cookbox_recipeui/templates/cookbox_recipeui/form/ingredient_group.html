@@ -17,7 +17,7 @@
     {% for ing in ing_grp.ingredients %}
     <li>
         <div class="ing-form">
-        {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing %}
+        {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing only %}
         </div>
     </li>
     {% endfor %}
@@ -30,6 +30,6 @@
 </button>
 <div id="{{ ing_grp.formsets.ingredients.prefix }}_empty_form" class="ing-grp-ing-empty-form hide">
     <div class="ing-form">
-    {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form %}
+    {% include 'cookbox_recipeui/form/ingredient.html' with ingredient=ing_grp.formsets.ingredients.empty_form only %}
     </div>
 </div>
