@@ -109,6 +109,9 @@ def get_recipe_data(url):
     return recipe_data
 
 def save_image_url_in_field(url, field, file_name):
+    # Handle scheme relative urls
+    if url.startswith("//"):
+        url = "https:" + url
     img = requests.get(url, headers=HEADERS, cookies=COOKIES).content
 
     with NamedTemporaryFile() as file:
