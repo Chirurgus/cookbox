@@ -268,5 +268,5 @@ def scrape(url):
         recipe = scrape_recipe(data)
         if recipe.source == "":
             recipe.source = url
-            recipe.save(commit=True)
+            recipe.save()
         return recipe
