@@ -223,8 +223,8 @@ button:hover, .button-link:hover {
 }
 
 .note img, .recipe-note img {
-    max-height: 6em;
-    max-width: 9em;
+    max-height: 10em;
+    max-width: 100%;
 }
 
 .tag-list-item {

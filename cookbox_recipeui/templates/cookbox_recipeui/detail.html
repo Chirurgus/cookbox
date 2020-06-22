@@ -95,7 +95,7 @@
                                 <span>{{ note.text }}</span>
                                 {% if note.image %}
                                 <br>
-                                {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                                {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
                                 <img class="note-image" src="{{ note_th.url }}">
                                 {% endif %}
                             </li>
@@ -125,7 +125,7 @@
                     <span>{{ note.text }}</span>
                     {% if note.image %}
                     <br>
-                    {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+                    {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
                     <img class="note-image" src="{{ note_th.url }}">
                     {% endif %}
                 </li>
@@ -148,7 +148,7 @@
             {% endif %}
             {% if note.image %}
             <br>
-            {% generateimage 'cookbox_webui:thumbnail_medium' source=note.image as note_th %}
+            {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
             <img src="{{ note_th.url }}">
             {% endif %}
         </li>
