@@ -245,4 +245,7 @@ def scrape(url):
     data = get_recipe_data(url)
     
     with transaction.atomic():
-        return scrape_recipe(data)
+        recipe = scrape_recipe(data)
+        if recipe.source == "":
+            recipe.source = url
+        return recipe
