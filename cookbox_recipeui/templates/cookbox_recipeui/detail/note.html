@@ -2,7 +2,9 @@
 
 {% load imagekit %}
 
+{% if note.text %}
 <span>{{ note.text }}</span>
+{% endif %}
 {% if note.image %}
 <br>
 {% generateimage 'cookbox_webui:thumbnail_no_pre' source=note.image as note_th %}
