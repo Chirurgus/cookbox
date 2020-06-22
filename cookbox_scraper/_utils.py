@@ -50,7 +50,7 @@ def parse_ingredients(ing_list):
     mesurements_re = [r"tbsp\.?", r"tsp\.?", r"table ?spoons?", r"tea ?spoons?",
         r"grams?", r"g\.?", r"kilo\.?", r"kilograms?", r"kg\.?", r"liters?",
         r"litres?" r"l\.?", r"ml\.?", r"milliliter\.?", r"cups?", r"pounds?",
-        r"oz\.?", r"lb\.?"
+        r"ounces?", r"oz\.?", r"lb\.?"
     ]
 
     # Only match if the regesp in list is after a space, a numeric,
