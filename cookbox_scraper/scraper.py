@@ -6,6 +6,7 @@ import re
 from collections import namedtuple
 
 import requests
+from requests.exceptions import MissingSchema
 from extruct import extract
 
 from django.db import transaction
@@ -30,10 +31,6 @@ COOKIES = {
     'euConsentFailed': 'true',
     'euConsentID': 'e48da782-e1d1-0931-8796-d75863cdfa15',
 }
-
-class WebsiteNotImplementedError(NotImplementedError):
-    '''Error for when the website is not supported by this library.'''
-    pass
 
 def recipe_title(dd):
     return normalize_string(dd['name'])
@@ -106,7 +103,7 @@ def get_recipe_data(url):
 
     recipe_data = _find_recipe(data_list)
     if not recipe_data:
-        raise WebsiteNotImplementedError(
+        raise MissingSchema(
             "Website does not provide a schema.org Recipe schema in a json-ld format"
         )
     return recipe_data
