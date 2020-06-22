@@ -12,7 +12,7 @@ from django.db import transaction
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 
-from cookbox_core.models import Recipe
+from cookbox_core.models import Recipe, Tag
 
 from cookbox_scraper._utils import (
     parse_ingredients,
@@ -234,6 +234,24 @@ def scrape_recipe(data):
     # Instructions
     if 'recipeInstructions' in data.keys():
         scrape_instructions(recipe, data["recipeInstructions"])
+
+    # Tags
+    # Collect potential tags
+    tags = []
+    if "keywords" in data.keys():
+        tags += "".join(data["keywords"].split()).split(',')
+    if "recipeCategory" in data.keys():
+        if isinstance(data["recipeCategory"], str):
+            data["recipeCategory"] = [ data["recipeCategory"] ]
+        tags += data["recipeCategory"]
+    if "recipeCuisine" in data.keys():
+        if isinstance(data["recipeCuisine"], str):
+            data["recipeCuisine"] = [ data["recipeCuisine"] ]
+        tags += data["recipeCuisine"]
+    tags = [ tag.lower() for tag in tags ]
+
+    for tag in Tag.objects.filter(name__in=tags):
+        tag.recipes.add(recipe)
     
     return recipe
 
