@@ -34,7 +34,9 @@ def _duplicate_recipe(recipe):
         new_note = _copy_model(note)
         new.notes.add(new_note)
     
-    new.tags.add(recipe.tags.all())
+    for tag in recipe.tags.all():
+        new.tags.add(tag)
+
     return new
 
 def duplicate_recipe(recipe):
@@ -45,8 +47,9 @@ def duplicate_recipe(recipe):
     within a transaction.
 
     :param recipe Recipe: A recipe to be copied.
-    :returns Recipe: A cope of the provided recipe, in a new model instance.
+    :returns Recipe: A copy of the provided recipe, in a new model instance.
     '''
     with transaction.atomic():
-        return _duplicate_recipe(recipe)
+        ret = _duplicate_recipe(recipe)
+    return ret
     

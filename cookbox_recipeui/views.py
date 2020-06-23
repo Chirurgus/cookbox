@@ -23,6 +23,7 @@ from dal.autocomplete import Select2QuerySetView
 import cookbox_scraper as scraper
 
 from cookbox_core.models import Recipe, Tag
+from cookbox_core.utils import duplicate_recipe
 
 from .forms import RecipeForm, SearchForm, ImportRecipeForm
 
@@ -158,3 +159,12 @@ def recipe_random(request):
                 { 'recipes' : [], 'no_pagination' : True }
         )
         
+def recipe_copy(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    copy = duplicate_recipe(recipe)
+    copy.name += " (copy)"
+    copy.save()
+    return HttpResponseRedirect(
+        reverse('recipe-edit', kwargs= {'pk': copy.id})
+    )

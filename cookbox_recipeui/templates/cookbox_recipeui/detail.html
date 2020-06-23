@@ -46,6 +46,7 @@
 <section id="recipe-title" class="fill-width">
     <h1 class="force-wrap">{{ recipe.name }}</h1>
     <a href="{% url 'recipe-edit' recipe.id %}" class="button-link">Edit</a>
+    <a href="{% url 'recipe-copy' recipe.id %}" class="button-link">Create a copy</a>
     <p>{{ recipe.description }}</p>
 </section>
 

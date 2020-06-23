@@ -14,6 +14,7 @@ from .views import (
     RecipeSearch,
     recipe_random,
     recipe_random_search,
+    recipe_copy,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('import/', RecipeImport.as_view(), name= 'recipe-import'),
     path('edit/<int:pk>/', RecipeEdit.as_view(), name= 'recipe-edit'),
     path('create/', RecipeCreate.as_view(), name= 'recipe-create'),
+    path('copy/<int:pk>', recipe_copy, name= 'recipe-copy'),
     path('delete/<int:pk>/', RecipeDelete.as_view(), name= 'recipe-delete'),
     path('recipe-tag-autocomplete/', RecipeTagAutocomplete.as_view(), name="recipe-tag-autocomplete"),
     path('random/', recipe_random, name= 'recipe-random'),
