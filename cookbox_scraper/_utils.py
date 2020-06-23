@@ -1,19 +1,21 @@
 import re
 import textwrap
 
+from html import unescape
 from functools import wraps
-
 from fractions import Fraction
 
 from cookbox_core.models import Recipe, Instruction
 
 def normalize_string(string):
-    return re.sub(
+    return unescape(
+        re.sub(
         r'\s+', ' ',
         string.replace(
             '\xa0', ' ').replace(  # &nbsp;
             '\n', ' ').replace(
             '\t', ' ').strip()
+        )
     )
 
 def parse_quantity(quantity):
@@ -33,7 +35,8 @@ def parse_ingredients(ing_list):
     mesurements_re = [r"tbsp\.?", r"tsp\.?", r"table ?spoons?", r"tea ?spoons?",
         r"grams?", r"g\.?", r"kilo\.?", r"kilograms?", r"kg\.?", r"liters?",
         r"litres?" r"l\.?", r"ml\.?", r"milliliter\.?", r"cups?", r"pounds?",
-        r"ounces?", r"oz\.?", r"lb\.?"
+        r"ounces?", r"oz\.?", r"lb\.?", r"кг\.?", r"г\.?", r"мг\.?",
+        r"л\.?", r"мл\.?", r"ст\.?л\.?", r"ч\.?л\.?",
     ]
 
     # Only match if the regesp in list is after a space, a numeric,
