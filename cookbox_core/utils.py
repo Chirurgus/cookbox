@@ -29,6 +29,7 @@ def _duplicate_recipe(recipe):
         for ins_note in ins.notes.all():
             new_note = _copy_model(ins_note)
             new_ins.notes.add(new_note)
+        new.instructions.add(new_ins)
     
     for note in recipe.notes.all():
         new_note = _copy_model(note)
