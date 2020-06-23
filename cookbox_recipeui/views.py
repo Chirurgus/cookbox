@@ -56,10 +56,18 @@ class RecipeImport(FormView):
     
     def form_valid(self, form):
         import_url = form.cleaned_data['url']
-        recipe = scraper.scrape(import_url)
-        return HttpResponseRedirect(
-            reverse('recipe-edit', kwargs= { 'pk': recipe.id })
-        )
+        try:
+            recipe = scraper.scrape(import_url)
+            return HttpResponseRedirect(
+                reverse('recipe-edit', kwargs= { 'pk': recipe.id })
+            )
+        except:
+            return render(
+                self.request,
+                self.template_name,
+                { 'message' : 'Could not scrape recipe for some reason.'
+                              'Check the URL or try another one.'}
+            )
 
 class RecipeEdit(UpdateView):
     template_name = 'cookbox_recipeui/edit.html'

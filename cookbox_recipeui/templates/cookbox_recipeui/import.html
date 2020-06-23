@@ -2,12 +2,16 @@
 
 {% block content %}
 <h1 class="fill-width">
-    Import recipe from a website
+    Import a recipe 
 </h1>
 <div class="fill-width">
+    {% if not message %}
     Just insert a URL of a website containing a recipe. This
     should work with any recipe that Google presents as a 
     card in search results.
+    {% else %}
+    {{ message }}
+    {% endif %}
 </div>
 <form method="POST">
     {% csrf_token %}

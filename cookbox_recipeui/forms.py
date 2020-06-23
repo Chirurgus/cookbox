@@ -17,6 +17,7 @@ from django.forms import (
     CharField,
     FloatField,
     ChoiceField,
+    URLField,
     ValidationError,
 )
 from django.forms.widgets import CheckboxSelectMultiple
@@ -378,4 +379,4 @@ class SearchForm(Form):
         return qs
 
 class ImportRecipeForm(Form):
-    url = CharField(required=True)
+    url = URLField(label="Recipe URL", required=True)
