@@ -54,7 +54,7 @@ def parse_ingredients(ing_list):
     ing_list = new_ing_list
     
     quantity_str = [
-        ing.split(' ',1)[0] if ' ' in ing else '0'
+        ing.split(' ',1)[0] if ' ' in ing else '1'
         for ing in ing_list
     ]
     descriptions = [

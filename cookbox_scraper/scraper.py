@@ -37,6 +37,8 @@ def recipe_title(dd):
 
 def recipe_description(dd):
     if 'description' in dd.keys():
+        if isinstance(dd['description'], list):
+            dd['description'] = dd['description'][0]
         return normalize_string(dd['description'])
     else:
         return "Description missing"
@@ -45,12 +47,12 @@ def recipe_time_unit(dd):
     return Recipe.HRS
 
 def recipe_time(dd):
-    if 'prepTime' in dd.keys():
+    if 'prepTime' in dd.keys() and dd['prepTime'] is not None:
         prep_time = parse_iso8601(dd['prepTime'])
     else:
         prep_time = (Recipe.HRS, 0.0)
     
-    if 'cookTime' in dd:
+    if 'cookTime' in dd.keys() and dd['cookTime'] is not None:
         cook_time = parse_iso8601(dd['cookTime'])
     else:
         cook_time = (Recipe.HRS, 0.0)
@@ -189,9 +191,51 @@ def scrape_instructions(recipe, ri):
                 if "itemListElement" not in item.keys():
                     continue
                 for step in item["itemListElement"]:
-                    pos_counter = _scrape_how_to_step(step, recipe, pos_counter)
+                    pos_counter = _scrape_how_to_step(
+                        step,
+                        recipe,
+                        pos_counter
+                    )
     return recipe
-     
+
+def scrape_images(recipe, dd):
+    if "image" not in dd.keys():
+        return recipe
+
+    if isinstance(dd["image"], dict):
+        if "url" in dd["image"].keys():
+            dd["image"] = [ dd["image"]["url"] ]
+        else:
+            return recipe
+
+    if isinstance(dd["image"], str):
+        dd["image"] = [ dd["image"] ]
+
+    if all([ isinstance(image, dict) for image in dd["image"] ]):
+        dd["image"] = [
+            image["url"]
+            for image in dd["image"]
+            if "url" in image.keys()
+        ]
+
+    # Get the main image
+    save_image_url_in_field(
+        dd["image"][0],
+        recipe.image,
+        str(recipe.id) + "_thumb.png"
+    )
+
+    # Save all other images
+    for idx, img_url in enumerate(dd["image"][1:]):
+        note = recipe.notes.create()
+        save_image_url_in_field(
+            img_url,
+            note.image,
+            str(recipe.id) + '_' + str(idx) + "_thumb.png"
+        )
+    
+    return recipe
+
 
 def scrape_recipe(data):
     time_tuple = recipe_time(data)
@@ -210,18 +254,16 @@ def scrape_recipe(data):
         source = data['url'] if 'url' in data.keys() else ""
     )
 
-    if isinstance(data["image"], str):
-        data["image"] = [ data["image"] ]
-
-    # Get image
-    save_image_url_in_field(
-        data["image"][0],
-        recipe.image,
-        str(recipe.id) + "_thumb.png"
-    )
+    # Get the thumbnail
+    scrape_images(recipe, data)
 
     # Ingredients
+    # Some websites use 'ingredients'
+    if "ingredients" in data.keys() and 'recipeIngredient' not in data.keys():
+        data["recipeIngredient"] = data["ingredients"]
     if 'recipeIngredient' in data.keys():
+        if isinstance(data['recipeIngredient'], str):
+            data['recipeIngredient'] = data['recipeIngredient'].split('\n')
         group = recipe.ingredient_groups.create(name = "", position = 0)
         for idx, ing in enumerate(parse_ingredients(data['recipeIngredient'])):
             group.ingredients.create(
@@ -247,6 +289,10 @@ def scrape_recipe(data):
             data["recipeCategory"] = [ data["recipeCategory"] ]
         tags += data["recipeCategory"]
     if "recipeCuisine" in data.keys():
+        if isinstance(data["recipeCuisine"], str):
+            data["recipeCuisine"] = [ data["recipeCuisine"] ]
+        tags += data["recipeCuisine"]
+    if "about" in data.keys():
         if isinstance(data["recipeCuisine"], str):
             data["recipeCuisine"] = [ data["recipeCuisine"] ]
         tags += data["recipeCuisine"]
