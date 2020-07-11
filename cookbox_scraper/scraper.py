@@ -293,9 +293,9 @@ def scrape_recipe(data):
             data["recipeCuisine"] = [ data["recipeCuisine"] ]
         tags += data["recipeCuisine"]
     if "about" in data.keys():
-        if isinstance(data["recipeCuisine"], str):
-            data["recipeCuisine"] = [ data["recipeCuisine"] ]
-        tags += data["recipeCuisine"]
+        if isinstance(data["about"], str):
+            data["about"] = [ data["about"] ]
+        tags += data["about"]
     tags = [ tag.lower() for tag in tags ]
 
     for tag in Tag.objects.filter(name__in=tags):
