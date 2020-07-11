@@ -44,13 +44,19 @@ def parse_ingredients(ing_list):
     combined = r"(?:\d|^|\s)(?:(" + ")|(".join(mesurements_re) + r"))(?:$|\s)"
     pat = re.compile(combined, re.IGNORECASE)
 
+    # Try to extract unit form ingredients
     new_ing_list = []
     mesurements = []
     for ing in ing_list:
         m = re.search(pat, ing)
         if m:
-            mesurements.append(m.group(m.lastindex))
-            new_ing_list.append(re.sub(pat, ' ', ing))
+            new_unit = m.group(m.lastindex)
+            new_ing = ing.replace(
+                m.group(),
+                m.group().replace(new_unit, "")
+            )
+            mesurements.append(new_unit)
+            new_ing_list.append(new_ing)
         else:
             mesurements.append("")
             new_ing_list.append(ing)
