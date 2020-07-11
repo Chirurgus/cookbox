@@ -1,11 +1,42 @@
 import re
 import textwrap
+import unicodedata
 
 from html import unescape
 from functools import wraps
 from fractions import Fraction
 
 from cookbox_core.models import Recipe, Instruction
+
+VULGAR_FRACTIONS = "¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞"
+MESUREMENT_UNITS = {
+    r"tbsp?\.?"       : ("ml", 15),
+    r"tsp\.?"         : ("ml", 5),
+    r"table ?spoons?" : ("ml", 15),
+    r"tea ?spoons?"   : ("ml", 5),
+    r"grams?"         : ("g", 1),
+    r"g\.?"           : ("g", 1),
+    r"kilo\.?"        : ("kg", 1),
+    r"kilograms?"     : ("kg", 1),
+    r"kg\.?"          : ("kg", 1),
+    r"liters?"        : ("l", 1),
+    r"litres?"        : ("l", 1),
+    r"l\.?"           : ("l", 1),
+    r"ml\.?"          : ("ml", 1),
+    r"milliliter\.?"  : ("ml", 1),
+    r"cups?"          : ("ml", 236.588),
+    r"pounds?"        : ("g", 453.6),
+    r"ounces?"        : ("g", 28.36),
+    r"oz\.?"          : ("g", 28.36),
+    r"lb\.?"          : ("g", 453.6),
+    r"кг\.?"          : ("kg", 1),
+    r"г\.?"           : ("g", 1),
+    r"мг\.?"          : ("mg", 1),
+    r"л\.?"           : ("l", 1),
+    r"мл\.?"          : ("ml", 1),
+    r"ст\.?л\.?"      : ("ml", 15),
+    r"ч\.?л\.?"       : ("g", 5),
+}
 
 def normalize_string(string):
     return unescape(
@@ -18,68 +49,90 @@ def normalize_string(string):
         )
     )
 
-def parse_quantity(quantity):
+def parse_quantity(quantity, default=None):
+    '''
+    Parse a quantity string to a float
+
+    Always returns a valid float. If the parsing fails returns None.
+    This function also handles Vulgar fractions (e.g. ¼),
+    and composite fractions, i.e., '1 1/2'.
+    '''
+   # Handle the common case like "123" or "123.2", or "123,2"
     try:
-        return float(quantity)
+        return float(quantity.replace(",", "."))
     except ValueError:
-        quantity_list = quantity.split(' ')
-        quantity_float = []
-        for qty in quantity_list:
-            quantity_float.append(float(Fraction(qty)))
-        return sum(quantity_float)
+        pass  
+
+    # In case of Unicode fractions
+    try:
+        return unicodedata.numeric(quantity)
+    except (TypeError, ValueError):
+        pass
+
+    # In case of fractions like "1/2"
+    try:
+        return float(Fraction(quantity))
+    except ValueError:
+        pass
+
+    # Handle cases like "1 1/2", assumes additivity, i.e., that "2 1/2" is 2.5
+    if ' ' in quantity:
+        return sum([
+            parse_quantity(qty, 0)
+            for qty in quantity.strip().split(' ')
+        ])
+
+    # Handle cases like "1¼", case assumes additivity
+    vfrac_rexp = "[" + VULGAR_FRACTIONS + "]"
+    vfracs = re.findall(vfrac_rexp, quantity)
+    if vfracs:
+        quantity = quantity.replace(vfrac_rexp , ' ').strip()
+        ret = sum([ parse_quantity(f, 0) for f in vfracs ])
+        ret += parse_quantity(quantity, 0)
+        return ret
+    
+    # If all else fails
+    return default
 
 def parse_ingredients(ing_list):
     '''
     Returns a list of tuples (quantity, unit, description)
     '''
-    mesurements_re = [r"tbsp\.?", r"tsp\.?", r"table ?spoons?", r"tea ?spoons?",
-        r"grams?", r"g\.?", r"kilo\.?", r"kilograms?", r"kg\.?", r"liters?",
-        r"litres?" r"l\.?", r"ml\.?", r"milliliter\.?", r"cups?", r"pounds?",
-        r"ounces?", r"oz\.?", r"lb\.?", r"кг\.?", r"г\.?", r"мг\.?",
-        r"л\.?", r"мл\.?", r"ст\.?л\.?", r"ч\.?л\.?",
-    ]
+    mesurements_re = MESUREMENT_UNITS.keys()
+    qty_re = r"(?:\d+[,./]?\d*)|(?:[" + VULGAR_FRACTIONS + "]+)"
 
-    # Only match if the regesp in list is after a space, a numeric,
+    # Only match if the regexp in list is after a space, a numeric,
     # or new line (ie. "g" does not match "egg", but does "250g")
-    combined = r"(?:\d|^|\s)(?:(" + ")|(".join(mesurements_re) + r"))(?:$|\s)"
+    combined = r"(?:(?P<qty>" + qty_re + r")\s?|^|\s)(?P<unit>(?:" + r")|(?:".join(mesurements_re) + r"))(?:$|\s)"
     pat = re.compile(combined, re.IGNORECASE)
 
-    # Try to extract unit form ingredients
-    new_ing_list = []
-    mesurements = []
+    ret = []
     for ing in ing_list:
+        # Try to extract unit form ingredients
         m = re.search(pat, ing)
         if m:
-            new_unit = m.group(m.lastindex)
-            new_ing = ing.replace(
-                m.group(),
-                m.group().replace(new_unit, "")
-            )
-            mesurements.append(new_unit)
-            new_ing_list.append(new_ing)
+            qty = m.group("qty") if m.group("qty") else ""
+            unit = m.group("unit") if m.group("unit") else ""
+            # Remove the qty/unit form the description
+            repl = m.group()
+            for f in [ "qty", "unit" ]:
+                if m.group(f):
+                    repl = repl.replace(m.group(f), "")
+            desc = ing.replace(m.group(), repl.strip())
         else:
-            mesurements.append("")
-            new_ing_list.append(ing)
-    ing_list = new_ing_list
-    
-    quantity_str = [
-        ing.split(' ',1)[0] if ' ' in ing else '1'
-        for ing in ing_list
-    ]
-    descriptions = [
-        ing.split(' ',1)[1] if ' ' in ing else ing
-        for ing in ing_list
-    ]
+            qty = ""
+            unit = ""
+            desc = ing
+        
+        # Extract qty
+        if qty == "":
+            m = re.search("(" + qty_re + ")", desc)
+            if m:
+                qty = m.group()
+                desc = desc.replace(m.group(), "")
+        ret.append( (parse_quantity(qty, 1), unit, desc) )
 
-    ingredients = []
-
-    for qty, mes, desc in zip(quantity_str, mesurements, descriptions):
-        try:
-            q = parse_quantity(qty)
-            ingredients.append((q, mes, desc))
-        except ValueError:
-            ingredients.append((1, mes, ' '.join([qty, desc])))
-    return ingredients
+    return ret
 
 def normalize_instructions(instructions):
     '''
