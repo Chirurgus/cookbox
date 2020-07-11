@@ -130,7 +130,17 @@ def parse_ingredients(ing_list):
             if m:
                 qty = m.group()
                 desc = desc.replace(m.group(), "")
-        ret.append( (parse_quantity(qty, 1), unit, desc) )
+
+        # Parse qty
+        qty = parse_quantity(qty, 1)
+
+        # Convert preferred units
+        for unit_re, (new_unit, conv_coef) in MESUREMENT_UNITS.items():
+            if re.search(unit_re, unit):
+                unit = new_unit
+                qty *= conv_coef
+
+        ret.append( (qty, unit, desc) )
 
     return ret
 
