@@ -283,19 +283,23 @@ def scrape_recipe(data):
     if "keywords" in data.keys():
         if isinstance(data["keywords"], list):
             data["keywords"] = ','.join(data["keywords"])
-        tags += "".join(data["keywords"].split()).split(',')
+        if data["keywords"]:
+            tags += "".join(data["keywords"].split()).split(',')
     if "recipeCategory" in data.keys():
         if isinstance(data["recipeCategory"], str):
             data["recipeCategory"] = [ data["recipeCategory"] ]
-        tags += data["recipeCategory"]
+        if data["recipeCategory"]:
+            tags += data["recipeCategory"]
     if "recipeCuisine" in data.keys():
         if isinstance(data["recipeCuisine"], str):
             data["recipeCuisine"] = [ data["recipeCuisine"] ]
-        tags += data["recipeCuisine"]
+        if data["recipeCuisine"]:
+            tags += data["recipeCuisine"]
     if "about" in data.keys():
         if isinstance(data["about"], str):
             data["about"] = [ data["about"] ]
-        tags += data["about"]
+        if data["about"]:
+            tags += data["about"]
     tags = [ tag.lower() for tag in tags ]
 
     for tag in Tag.objects.filter(name__in=tags):
