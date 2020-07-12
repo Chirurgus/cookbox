@@ -14,28 +14,30 @@ MESUREMENT_UNITS = {
     r"tsp\.?"         : ("ml", 5),
     r"table ?spoons?" : ("ml", 15),
     r"tea ?spoons?"   : ("ml", 5),
-    r"grams?"         : ("g", 1),
-    r"g\.?"           : ("g", 1),
+    r"pounds?"        : ("g", 453.6),
+    r"lb\.?"          : ("g", 453.6),
     r"kilo\.?"        : ("kg", 1),
     r"kilograms?"     : ("kg", 1),
     r"kg\.?"          : ("kg", 1),
+    r"grams?"         : ("g", 1),
+    r"g\.?"           : ("g", 1),
+    r"ml\.?"          : ("ml", 1),
+    r"cl\.?"          : ("ml", 10),
+    r"dl\.?"          : ("ml", 100),
+    r"milliliter\.?"  : ("ml", 1),
     r"liters?"        : ("l", 1),
     r"litres?"        : ("l", 1),
     r"l\.?"           : ("l", 1),
-    r"ml\.?"          : ("ml", 1),
-    r"milliliter\.?"  : ("ml", 1),
     r"cups?"          : ("ml", 236.588),
-    r"pounds?"        : ("g", 453.6),
     r"ounces?"        : ("g", 28.36),
     r"oz\.?"          : ("g", 28.36),
-    r"lb\.?"          : ("g", 453.6),
     r"кг\.?"          : ("kg", 1),
     r"г\.?"           : ("g", 1),
     r"мг\.?"          : ("mg", 1),
     r"л\.?"           : ("l", 1),
     r"мл\.?"          : ("ml", 1),
     r"ст\.?л\.?"      : ("ml", 15),
-    r"ч\.?л\.?"       : ("g", 5),
+    r"ч\.?л\.?"       : ("ml", 5),
 }
 
 def normalize_string(string):
@@ -86,7 +88,7 @@ def parse_quantity(quantity, default=None):
     vfrac_rexp = "[" + VULGAR_FRACTIONS + "]"
     vfracs = re.findall(vfrac_rexp, quantity)
     if vfracs:
-        quantity = quantity.replace(vfrac_rexp , ' ').strip()
+        quantity = re.sub(vfrac_rexp, ' ', quantity).strip()
         ret = sum([ parse_quantity(f, 0) for f in vfracs ])
         ret += parse_quantity(quantity, 0)
         return ret
@@ -99,11 +101,11 @@ def parse_ingredients(ing_list):
     Returns a list of tuples (quantity, unit, description)
     '''
     mesurements_re = MESUREMENT_UNITS.keys()
-    qty_re = r"(?:\d+[,./]?\d*)|(?:[" + VULGAR_FRACTIONS + "]+)"
+    qty_re = r"(?:\d|[" + VULGAR_FRACTIONS + r"])+(?:[,.]\d*|\s*(?:[" + VULGAR_FRACTIONS + r"]+|\d*/\d+))?"
 
     # Only match if the regexp in list is after a space, a numeric,
     # or new line (ie. "g" does not match "egg", but does "250g")
-    combined = r"(?:(?P<qty>" + qty_re + r")\s?|^|\s)(?P<unit>(?:" + r")|(?:".join(mesurements_re) + r"))(?:$|\s)"
+    combined = r"(?:(?P<qty>" + qty_re + r")\s*|^|\s)(?P<unit>(?:" + r")|(?:".join(mesurements_re) + r"))\W"
     pat = re.compile(combined, re.IGNORECASE)
 
     ret = []
@@ -139,6 +141,7 @@ def parse_ingredients(ing_list):
             if re.search(unit_re, unit):
                 unit = new_unit
                 qty *= conv_coef
+                break
 
         ret.append( (qty, unit, desc) )
 
