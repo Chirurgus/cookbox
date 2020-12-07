@@ -1,6 +1,6 @@
-﻿Django==3.0.7
+﻿Django==3.1.4
 django-nested-admin==3.2.3
-git+https://github.com/labd/django-superform
+git+https://github.com/Chirurgus/django-superform
 Pillow==6.2.2
 django-autocomplete-light==3.5.0
 django-imagekit==4.0.2
