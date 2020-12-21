@@ -6,6 +6,6 @@ django-autocomplete-light==3.5.0
 django-imagekit==4.0.2
 beautifulsoup4==4.8.1
 requests==2.22.0
-mysqlclient==1.4.4
+mysqlclient==1.4.4 # Might require default-libmysqlclient-dev mariadb-client build-essential
 django-markdownx==3.0.1
 extruct==0.9.0 # Might require installing 'libxslt-dev'
