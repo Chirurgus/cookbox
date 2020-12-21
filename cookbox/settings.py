@@ -10,54 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-from django.urls import reverse_lazy
-
 import os
+
+from django.urls import reverse_lazy
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRETS_FOLDER = os.path.join(BASE_DIR, 'secrets')
-
-# Create the secrets folder it it does not exist
-if not os.path.isdir(SECRETS_FOLDER):
-    os.mkdir(SECRETS_FOLDER)
-
-def load_or_generate_secret_key():
-    secret_file = os.path.join(SECRETS_FOLDER, 'SECRET_KEY')
-    if not os.path.isfile(secret_file):
-        import random
-        secret_key = ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50))
-        with open(os.path.join(SECRETS_FOLDER, 'SECRET_KEY'), 'xt') as f:
-            f.write(secret_key)
-        return secret_key
-    else:
-        return read_secret('SECRET_KEY')
-
-def read_secret(secret):
-    secret_file = os.path.join(SECRETS_FOLDER, secret)
-    if (os.path.isfile(secret_file)):
-        with open(secret_file) as f:
-            return f.read().strip('\n')
-    else:
-        from django.core.exceptions import ImproperlyConfigured
-        raise ImproperlyConfigured("Secrets folder does not contain: " + secret)
-
+DEBUG = os.environ.get('DEBUG')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = load_or_generate_secret_key()
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not os.path.isfile(os.path.join(SECRETS_FOLDER, 'PRODUCTION'))
+# You can generate one with:
+# ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50))
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: remove localhost for production
-ALLOWED_HOSTS = ['localhost', '10.0.2.2'] if DEBUG else [ read_secret('HOST') ]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
 
-#SECURE_SSL_REDIRECT = not DEBUG 
+# Need a signed certificate for these
+#SECURE_SSL_REDIRECT = True
 
-#SESSION_COOKIE_SECURE = not DEBUG
+#SESSION_COOKIE_SECURE = True
 
-#CSRF_COOKIE_SECURE = not DEBUG
+#CSRF_COOKIE_SECURE = True
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
@@ -138,19 +114,28 @@ WSGI_APPLICATION = 'cookbox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-} if DEBUG else {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': os.path.join(SECRETS_FOLDER, 'my.cnf'),
+DB_ENGINE = os.environ.get("DB_ENGINE")
+
+if DB_ENGINE == "sqlite":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-}
+elif DB_ENGINE == "mysql":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQL_DATABASE'),
+            'USER': os.environ.get('MYSQL_USER'),
+            'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+            'HOST': os.environ.get('MYSQL_HOST'),
+            'PORT': "3306",
+        }
+    }
+else:
+    raise ImproperlyConfigured("Specified 'DB_ENGINE' is not supported.")
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
