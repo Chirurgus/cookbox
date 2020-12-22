@@ -1,9 +1,11 @@
 # Django secrets
-secrets
+.env
+prod.env
 
 # Django static files
 static_files
 images
+db
 
 # VS Code
 .vscode
