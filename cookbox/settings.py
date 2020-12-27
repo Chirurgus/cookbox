@@ -15,6 +15,10 @@ import os
 from django.urls import reverse_lazy
 from django.core.exceptions import ImproperlyConfigured
 
+if 'DEBUG' not in os.environ.keys():
+    from dotenv import load_dotenv
+    load_dotenv("dev.env")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -120,7 +124,7 @@ if DB_ENGINE == "sqlite":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': os.path.join(BASE_DIR, 'db_test/db.sqlite3'),
         }
     }
 elif DB_ENGINE == "mysql":
