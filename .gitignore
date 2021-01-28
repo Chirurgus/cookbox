@@ -1,14 +1,15 @@
 # Django secrets
-.env
-prod.env
+*.env
+# But keep the example onefor development
+!dev.env
 
 # Django static files
-static_files
-images
-db
+static_files/
+images/
+db/
 
 # VS Code
-.vscode
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 */__pycache__/
@@ -94,7 +95,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-*.env
 *.venv
 env/
 venv/
