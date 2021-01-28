@@ -3,7 +3,7 @@ version: "3.3"
 services:
     web:
         build: .
-        #restart: always
+        restart: always
         ports:
             - "8000:80"
         environment:
@@ -19,7 +19,7 @@ services:
             - ./images:/opt/cookbox/images
     db:
         image: mariadb:10.3
-        #restart: always
+        restart: always
         ports:
             - "3305:3306" # Local mysql occupies 3306 
         environment:
