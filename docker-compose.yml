@@ -17,6 +17,8 @@ services:
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         volumes:
             - ./images:/opt/cookbox/images
+        depends_on:
+            - "db"
     db:
         image: mariadb:10.3
         restart: always
