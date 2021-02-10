@@ -2,7 +2,16 @@ FROM debian:10.7
 
 RUN mkdir /opt/cookbox/
 WORKDIR /opt/cookbox
-COPY . /opt/cookbox/
+
+COPY cookbox /opt/cookbox/cookbox
+COPY cookbox_admin /opt/cookbox/cookbox_admin
+COPY cookbox_core /opt/cookbox/cookbox_core
+COPY cookbox_glossary /opt/cookbox/cookbox_glossary
+COPY cookbox_recipeui /opt/cookbox/cookbox_recipeui
+COPY cookbox_scraper /opt/cookbox/cookbox_scraper
+COPY cookbox_seasons /opt/cookbox/cookbox_seasons
+COPY cookbox_webui /opt/cookbox/cookbox_webui
+COPY manage.py requirements.txt apache2.conf /opt/cookbox/
 
 RUN apt-get update && \
 	apt-get -y --no-install-recommends install \
