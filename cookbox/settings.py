@@ -22,7 +22,7 @@ if 'DEBUG' not in os.environ.keys():
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = os.environ.get('DEBUG')
+DEBUG = os.environ.get('DEBUG') == "0"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # You can generate one with:
