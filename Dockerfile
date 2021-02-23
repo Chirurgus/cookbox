@@ -1,4 +1,4 @@
-FROM debian:10.7
+FROM arm32v7/debian:10.7-slim
 
 RUN mkdir /opt/cookbox/
 WORKDIR /opt/cookbox
