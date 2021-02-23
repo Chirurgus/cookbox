@@ -31,4 +31,7 @@ RUN mkdir /opt/cookbox/logs
 CMD python3 manage.py check && \
 	python3 manage.py collectstatic --noinput && \
 	python3 manage.py migrate && \
+	sed -i "s/__SERVER_NAME__/$SERVER_NAME/g" /etc/apache2/apache2.conf && \
+	sed -i "s/__SERVER_ALIAS__/$SERVER_ALIAS/g" /etc/apache2/apache2.conf && \
+	sed -i "s/__SERVER_ADMIN_EMAIL__/$SERVER_ADMIN_EMAIL/g" /etc/apache2/apache2.conf && \
 	apachectl -D FOREGROUND

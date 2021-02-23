@@ -9,8 +9,11 @@ services:
         environment:
             - DEBUG=${DEBUG}
             - SECRET_KEY=${SECRET_KEY}
-            - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+            - ALLOWED_HOSTS=${SERVER_NAME} ${SERVER_ALIAS}
             - DB_ENGINE=${DB_ENGINE}
+            - SERVER_NAME=${SERVER_NAME}
+            - SERVER_ALIAS=${SERVER_ALIAS}
+            - SERVER_ADMIN_EMAIL=${SERVER_ADMIN_EMAIL}
             - MYSQL_HOST=${MYSQL_HOST}
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_USER=${MYSQL_USER}
