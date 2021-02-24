@@ -17,7 +17,7 @@ RUN apt-get update && \
 	apt-get -y --no-install-recommends install \
 		python3 python3-pip python3-dev git sqlite apache2 apache2-utils \
 		libapache2-mod-wsgi-py3 mariadb-client build-essential \
-		default-libmysqlclient-dev
+		default-libmysqlclient-dev python3-lxml libjpeg-dev zlib1g-dev
 
 RUN pip3 install --upgrade pip setuptools wheel
 RUN pip3 install -r requirements.txt
