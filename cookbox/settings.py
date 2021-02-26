@@ -170,7 +170,8 @@ USE_L10N = True
 USE_TZ = True
 
 # Logging settings
-if not DEBUG:
+# Disable logging for now
+if False:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
