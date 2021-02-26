@@ -6,6 +6,7 @@
 # Django static files
 static_files/
 images/
+images
 db/
 
 # VS Code
