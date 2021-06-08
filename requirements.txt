@@ -1,7 +1,7 @@
 ﻿Django==3.1.7
 django-nested-admin==3.2.3
 git+https://github.com/Chirurgus/django-superform
-Pillow==8.1.0
+Pillow==8.2.0
 django-autocomplete-light==3.5.0
 django-imagekit==4.0.2
 beautifulsoup4==4.8.1
