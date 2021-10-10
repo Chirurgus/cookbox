@@ -30,7 +30,10 @@ DEBUG = os.environ.get('DEBUG') == "1"
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: remove localhost for production
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = [
+    os.environ.get('SERVER_NAME'),
+    os.environ.get('SERVER_ALIAS'),
+]
 
 # Need a signed certificate for these
 #SECURE_SSL_REDIRECT = True
@@ -124,7 +127,7 @@ if DB_ENGINE == "sqlite":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db_test/db.sqlite3'),
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 elif DB_ENGINE == "mysql":
