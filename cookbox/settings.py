@@ -121,6 +121,8 @@ WSGI_APPLICATION = 'cookbox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 DB_ENGINE = os.environ.get("DB_ENGINE")
 
 if DB_ENGINE == "sqlite":
