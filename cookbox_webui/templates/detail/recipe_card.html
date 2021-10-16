@@ -1,0 +1,14 @@
+{# Renders a recipe card #}
+{# Expects variables: recipe #}
+
+{% load imagekit %}
+
+<div class="card border-line recipe-list-item">
+    <a href="{% url 'recipe-detail' recipe.pk %}">
+        {% if recipe.image %}
+        {% generateimage 'cookbox_webui:thumbnail_small' source=recipe.image as th %}
+        <img class="fill-width" src="{{ th.url }}">
+        {% endif %}
+        {{ recipe.name }}
+    </a>
+</div>
