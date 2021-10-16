@@ -27,8 +27,19 @@ from .forms import (
 )
 
 class HomePageView(View):
+    template_name = 'home.html'
+
     def get(self, request):
-        return HttpResponseRedirect(reverse("recipe-list"))
+        from cookbox_core.models import Recipe
+        tag_names = ["tet", "hello", "fae", "japanese"]
+        tags = [ Tag.objects.get(name = tn) for tn in tag_names ]
+        return render(
+            request,
+            self.template_name,
+            {
+                'tag_list' : tags,
+            }
+        )
 
 class TagList(ListView):
     template_name = 'tag/list.html'

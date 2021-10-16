@@ -1,0 +1,18 @@
+{% extends "detail/recipe_list.html" %}
+
+{% block title %}Cookbox{% endblock %}
+
+{% block content %}
+{% for tag in tag_list %}
+<div style="border: 1px; border-color: black;border-style: double;margin-bottom:1em;">
+    <h2>{{ tag.name }}</h2>
+    <ul class="card-list">
+    {% for recipe in tag.recipes.all|slice:":3" %}
+        <li>{% include 'detail/recipe_card.html' with recipe=recipe %}</li>
+        {% empty %}
+        <h2>No recipes matching the query.</h2>
+    {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}
