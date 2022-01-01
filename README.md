@@ -5,7 +5,7 @@ Cookbox is a personal recipe database, made accessible via a website.
 ## Updating production server
 
 1) Pull the desired release, from the production branch for example: `git pull origin production`
-1) Enter the python virtual envirement: `source cookbox.venv/bin/activate`
+1) Enter the python virtual environment: `source cookbox.venv/bin/activate`
 1) Update/install required python libraries: `pip3 install -r requirements.txt`
 1) Migrate the database: `python3 manage.py migrate`
 1) Collect static files: `python3 manage.py collectstatic;`
@@ -22,6 +22,20 @@ Cookbox is a personal recipe database, made accessible via a website.
 8) `py manage.py createsuperuser`
 9) Enter necessary information
 10) `py manage.py runserver`
+
+## Using docker
+
+Setup using docker is easy, just run: build with `docker-compse build`,
+and run with `docker-compose up -d`.
+
+You will, however, need to set multiple environment variables. `dev.env` has
+some defaults suitable for a development environment (not suitable at all of 
+any sort of production environment). The easiest way to use these variables
+is to rename it to `.env`.
+
+Note that by default the images is based on `arm32v7/debian` which is likely
+not what you want.
+
 
 # Loading mysql dumps
 
