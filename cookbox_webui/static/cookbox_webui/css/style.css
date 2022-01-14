@@ -237,6 +237,22 @@ button:hover, .button-link:hover {
 
 /* Specific styles (id-based) */
 
+/* Put ingredients beside instructions */
+@media (min-width: 800px) {
+    #ingredients-onleft {
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    #recipe-ingredients {
+        max-width: 50%;
+    }
+
+    #recipe-instructions {
+        max-width: 50%;
+    }
+}
+
 #recipe-ingredients > h2, #recipe-instructions > h2,
 #recipe-notes > h2, #recipe-tags > h2 {
     margin-bottom: 0.5em
