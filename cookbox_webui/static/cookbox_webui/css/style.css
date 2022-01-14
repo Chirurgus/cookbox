@@ -242,9 +242,11 @@ button:hover, .button-link:hover {
 
 .ingredient-note-list, .instruction-note-list {
     margin-bottom: 0;
-
+    margin-left: 1em;
     font-size: 0.75em;
+    list-style-position: inside;
 }
+
 
 .ingredient, .instruction, .note {
     margin-bottom: .5em;

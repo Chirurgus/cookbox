@@ -52,22 +52,22 @@
 </section>
 
 <section id="recipe-detail" class="fill-width">
-    <p> Total time: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
+    <p><b>Total time</b>: {{ recipe.total_time }} {{ recipe.unit_time }}</p>
     {% if recipe.preparation_time %}
-    <p>Preparation time: {{ recipe.preparation_time }} {{ recipe.unit_time }}</p>
+    <p><b>Preparation time</b>: {{ recipe.preparation_time }} {{ recipe.unit_time }}</p>
     {% endif %}
     {% if recipe.cook_time %}
-    <p> Cook time: {{ recipe.cook_time }} {{ recipe.unit_time }}</p>
+    <p><b>Cook time</b>: {{ recipe.cook_time }} {{ recipe.unit_time }}</p>
     {% endif %}
-    <p> Yield: {{ recipe.total_yield }} {{ recipe.unit_yield }}</p>
+    <p><b>Yield</b>: {{ recipe.total_yield }} {{ recipe.unit_yield }}</p>
     {% if recipe.serving_size %}
-    <p> Serving size: {{ recipe.serving_size }} {{ recipe.unit_yield }}</p>
+    <p><b>Serving size</b>: {{ recipe.serving_size }} {{ recipe.unit_yield }}</p>
     {% endif %}
     {% if recipe.source %}
-    <p> Source: {{ recipe.source }}</p>
+    <p><b>Source</b>: {{ recipe.source }}</p>
     {% endif %}
     <p>
-        <label for="id_target_qty">Target quantity:</label>
+        <label for="id_target_qty"><b>Target quantity</b>:</label>
         <input type="number" name="target_qty" step="1" id="id_target_qty" value={{recipe.total_yield}}>
     </p>
 </section>
