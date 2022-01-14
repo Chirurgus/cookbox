@@ -242,10 +242,13 @@ button:hover, .button-link:hover {
     #ingredients-onleft {
         display: flex;
         flex-flow: row wrap;
+        align-items: flex-start
     }
 
     #recipe-ingredients {
         max-width: 50%;
+        position: sticky;
+        top: 0;
     }
 
     #recipe-instructions {
