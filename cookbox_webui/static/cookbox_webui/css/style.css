@@ -194,6 +194,25 @@ button:hover, .button-link:hover {
     width: 100%;
 }
 
+/* Put ingredients beside instructions */
+@media (min-width: 800px) {
+    .ingredients-onleft {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start
+    }
+
+    #recipe-ingredients {
+        max-width: 50%;
+        position: sticky;
+        top: 0;
+    }
+
+    #recipe-instructions {
+        max-width: 50%;
+    }
+}
+
 .recipe-ingredient-group-list, .ingredient-list,
 .recipe-tag-list {
     list-style: none;
@@ -203,8 +222,17 @@ button:hover, .button-link:hover {
 .ingredient-note-list, .instruction-note-list,
 .recipe-instruction-list, .recipe-note-list,
 .recipe-tag-list {
-    margin: 0.5em 1em 1.5em 1.5em;
     padding: 0;
+}
+
+.recipe-ingredient-group-list {
+    margin: 0.1em 1em 0.05em 0;
+}
+
+.ingredient-list, .ingredient-note-list,
+.instruction-note-list, .recipe-instruction-list,
+.recipe-note-list, .recipe-tag-list {
+    margin: 0.25em 0.5em 0.75em 0.75em;
 }
 
 .ingredient-note-list, .instruction-note-list
@@ -237,24 +265,6 @@ button:hover, .button-link:hover {
 
 /* Specific styles (id-based) */
 
-/* Put ingredients beside instructions */
-@media (min-width: 800px) {
-    #ingredients-onleft {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: flex-start
-    }
-
-    #recipe-ingredients {
-        max-width: 50%;
-        position: sticky;
-        top: 0;
-    }
-
-    #recipe-instructions {
-        max-width: 50%;
-    }
-}
 
 #recipe-ingredients > h2, #recipe-instructions > h2,
 #recipe-notes > h2, #recipe-tags > h2 {
