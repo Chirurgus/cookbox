@@ -23,8 +23,13 @@ Cookbox is a personal recipe database, made accessible via a website.
 9) Enter necessary information
 10) `py manage.py runserver`
 
-# Loading mysql dumps
+# Saving/loading mysql dumps
 
-First start the mysql container with `sudo docker-compose up -d db`,
-then load the dump with `mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} -P3305 -h0.0.0.0 ${MYSQL_DATABSE} < dump.sql`
+First start the mysql container with `sudo docker-compose up -d db`.
+Then you can save and load the database dump with the following commands :
+
+```
+sudo docker-compose exec db bash -c 'mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' > database.sql 2 >> error.log
+sudo docker exec -i cookbox_db_1 bash -c 'mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' < database.sql
+```
 
