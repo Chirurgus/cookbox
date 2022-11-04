@@ -55,7 +55,7 @@ Then you can save and load the database dump with the following commands :
 export     $(grep MYSQL_USER .env)
 export $(grep MYSQL_PASSWORD .env)
 export $(grep MYSQL_DATABASE .env)
-sudo docker-compose exec db bash -c 'mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' > database.sql 2 >> error.log
+sudo docker exec -i cookbox_db_1 bash -c 'mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' > database.sql 2>> error.log
 sudo docker exec -i cookbox_db_1 bash -c 'mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' < database.sql
 ```
 
