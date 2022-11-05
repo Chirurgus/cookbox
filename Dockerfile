@@ -25,7 +25,7 @@ RUN pip3 install -r requirements.txt
 # Setup Apache
 RUN cat apache2.conf >> /etc/apache2/apache2.conf
 RUN a2enmod wsgi
-
+RUN a2dissite 000-default default-ssl
 RUN mkdir /opt/cookbox/logs
 
 CMD python3 manage.py check && \
