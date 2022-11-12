@@ -1,12 +1,12 @@
-﻿Django==3.2.13
+﻿Django==4.0
 django-nested-admin==3.4.0
 git+https://github.com/Chirurgus/django-superform
 Pillow==9.1.0
-django-autocomplete-light==3.5.0
+django-autocomplete-light==3.9.4
 django-imagekit==4.1.0
 beautifulsoup4==4.11.1
 requests==2.22.0
-# mysqlclient==1.4.4 # Might require default-libmysqlclient-dev mariadb-client build-essential
+mysqlclient==1.4.4 # Might require default-libmysqlclient-dev mariadb-client build-essential
 django-markdownx==4.0.0b1
 extruct==0.13.0 # Might require installing 'libxslt-dev'
 python-dotenv==0.15.0
