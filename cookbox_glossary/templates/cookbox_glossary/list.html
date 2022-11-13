@@ -3,7 +3,7 @@
 {% load static %}
 
 
-{% block  content %}
+{% block content %}
 <div class="fill-width">
     <h1>Glossary</h1>
 
@@ -30,19 +30,15 @@
 {% if orphaned_articles %}
 <section>
     <h3>Orphaned articles</h2>
-    <ul class="glossary-article-list">
-        {% for article in orphaned_articles %}
-        <li>
-            <a href="{% url 'glossary-article-edit' article.id %}">
-                article{{ article.id }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+        <ul class="glossary-article-list">
+            {% for article in orphaned_articles %}
+            <li>
+                <a href="{% url 'glossary-article-edit' article.id %}">
+                    article{{ article.id }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
 </section>
 {% endif %}
-{% endblock %}
-
-
-{% block scripts %}
 {% endblock %}

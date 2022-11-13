@@ -3,11 +3,12 @@
 {% load static %}
 
 {% block scripts %}
+{{ block.super }}
 {{ form.media }}
 <script>
-$(document).ready(function() {
-    $('form').areYouSure();
-})
+    $(document).ready(function () {
+        $('form').areYouSure();
+    })
 </script>
 {% endblock %}
 
@@ -34,14 +35,14 @@ $(document).ready(function() {
     {% endif %}
 
     {% for hidden_field in form.hidden_fields %}
-        {% if hidden_field.errors %}
-            <ul>
-            {% for error in hidden_field.errors %}
-                <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {{ hidden_field }}
+    {% if hidden_field.errors %}
+    <ul>
+        {% for error in hidden_field.errors %}
+        <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {{ hidden_field }}
     {% endfor %}
 
     {{ form.terms.label_tag}}
