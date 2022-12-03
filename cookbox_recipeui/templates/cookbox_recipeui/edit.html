@@ -86,8 +86,7 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.ingredient_groups.prefix }}_empty_form" class="ing-grp-empty-form hide">
             <fieldset class="ing-grp-form">
-                {% include 'cookbox_recipeui/form/ingredient_group.html' with
-                ing_grp=form.formsets.ingredient_groups.empty_form only %}
+                {% include 'cookbox_recipeui/form/ingredient_group.html' with ing_grp=form.formsets.ingredient_groups.empty_form only %}
             </fieldset>
         </div>
     </fieldset>
@@ -110,8 +109,7 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.instructions.prefix }}_empty_form" class="ins-empty-form hide">
             <div class="ins-form">
-                {% include 'cookbox_recipeui/form/instruction.html' with
-                instruction=form.formsets.instructions.empty_form only %}
+                {% include 'cookbox_recipeui/form/instruction.html' with instruction=form.formsets.instructions.empty_form only %}
             </div>
         </div>
     </fieldset>
@@ -134,8 +132,7 @@ New recipe | Cookbox
         </button>
         <div id="{{ form.formsets.notes.prefix }}_empty_form" class="recipe-note-empty-form hide">
             <div class="recipe-note-form">
-                {% include 'cookbox_recipeui/form/note.html' with note=form.formsets.notes.empty_form
-                form_class="recipe-note-form" only %}
+                {% include 'cookbox_recipeui/form/note.html' with note=form.formsets.notes.empty_form form_class="recipe-note-form" only %}
             </div>
         </div>
     </fieldset>
