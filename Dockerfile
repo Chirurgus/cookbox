@@ -17,7 +17,7 @@ COPY --chown=root:www-data manage.py requirements.txt apache2.conf /opt/cookbox/
 
 RUN apt-get update && \
 	apt-get -y --no-install-recommends install \
-		python3 python3-pip python3-dev git sqlite apache2 apache2-utils \
+		python3 python3-pip python3-dev git sqlite3 apache2 apache2-utils \
 		libapache2-mod-wsgi-py3 mariadb-client build-essential \
 		default-libmysqlclient-dev python3-lxml libjpeg-dev zlib1g-dev
 
