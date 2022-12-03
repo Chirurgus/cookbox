@@ -16,45 +16,46 @@ from .models import GlossaryEntry, GlossaryArticle
 class GlossaryEntryForm(ModelForm):
     class Meta:
         model = GlossaryEntry
-        fields = ['term']
+        fields = ["term"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['term'].widget.attrs.update({'placeholder': 'Glossary term'})
-    
+        self.fields["term"].widget.attrs.update({"placeholder": "Glossary term"})
+
+
 class GlossaryArticleForm(ModelForm):
-    terms = ModelMultipleChoiceField(queryset= GlossaryEntry.objects.all(),
-                                     widget= ModelSelect2Multiple(url= 'glossary-entry-autocomplete'),
-                                     required= False)
+    terms = ModelMultipleChoiceField(
+        queryset=GlossaryEntry.objects.all(),
+        widget=ModelSelect2Multiple(url="glossary-entry-autocomplete"),
+        required=False,
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        article = kwargs.get('instance')
+        article = kwargs.get("instance")
         if article is not None:
-            self.fields['terms'].initial = article.entries.all()
+            self.fields["terms"].initial = article.entries.all()
         else:
-            self.fields['terms'].initial = self.Meta.model.objects.none()
-    
+            self.fields["terms"].initial = self.Meta.model.objects.none()
+
     def save(self, commit=True):
-        '''
-        '''
+        """ """
         with transaction.atomic():
             ret = super().save(commit)
             if commit:
                 self.save_terms()
             return ret
-    
+
     def save_terms(self):
-        '''
+        """
         Saves terms many2many field.
         Gets called automatically from save(commit=True) method.
-        '''
-        self.instance.entries.set(self.cleaned_data['terms'])
-    
+        """
+        self.instance.entries.set(self.cleaned_data["terms"])
+
     class Meta:
         model = GlossaryArticle
-        fields = ['body']
+        fields = ["body"]
 
     class Media:
-        js = ( "cookbox_webui/js/jquery.are-you-sure-1.9.0.js", )
- 
+        js = ("cookbox_webui/js/jquery.are-you-sure-1.9.0.js",)

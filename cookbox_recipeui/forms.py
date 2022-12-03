@@ -270,7 +270,10 @@ InstructionFormset = inlineformset_factory(
 
 class RecipeForm(
     six.with_metaclass(
-        SuperModelFormMetaclass, SuperModelFormMixin, ModelFormWithInlineFormsetMixin, ModelForm
+        SuperModelFormMetaclass,
+        SuperModelFormMixin,
+        ModelFormWithInlineFormsetMixin,
+        ModelForm,
     )
 ):
     ingredient_groups = InlineFormSetField(formset_class=IngredientGroupFormset)

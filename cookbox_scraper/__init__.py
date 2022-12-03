@@ -3,4 +3,7 @@
 
 from .scraper import scrape, MissingSchema
 
-__all__ = ['scrape', "MissingSchema", ]
+__all__ = [
+    "scrape",
+    "MissingSchema",
+]

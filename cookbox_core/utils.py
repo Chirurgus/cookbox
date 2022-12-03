@@ -5,11 +5,13 @@ from copy import deepcopy
 
 from django.db import transaction
 
+
 def _copy_model(instance):
     copy = deepcopy(instance)
     copy.id = None
     copy.save()
     return copy
+
 
 def _duplicate_recipe(recipe):
     new = _copy_model(recipe)
@@ -23,25 +25,26 @@ def _duplicate_recipe(recipe):
                 new_note = _copy_model(ing_note)
                 new_ing.notes.add(new_note)
         new.ingredient_groups.add(new_ing_grp)
-    
+
     for ins in recipe.instructions.all():
         new_ins = _copy_model(ins)
         for ins_note in ins.notes.all():
             new_note = _copy_model(ins_note)
             new_ins.notes.add(new_note)
         new.instructions.add(new_ins)
-    
+
     for note in recipe.notes.all():
         new_note = _copy_model(note)
         new.notes.add(new_note)
-    
+
     for tag in recipe.tags.all():
         new.tags.add(tag)
 
     return new
 
+
 def duplicate_recipe(recipe):
-    '''
+    """
     Duplicate a `cookbox_core.models.Recipe`
 
     Duplicates a recipe. All database operations are done
@@ -49,8 +52,7 @@ def duplicate_recipe(recipe):
 
     :param recipe Recipe: A recipe to be copied.
     :returns Recipe: A copy of the provided recipe, in a new model instance.
-    '''
+    """
     with transaction.atomic():
         ret = _duplicate_recipe(recipe)
     return ret
-    

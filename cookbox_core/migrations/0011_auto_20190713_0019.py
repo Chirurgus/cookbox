@@ -6,13 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0010_auto_20190424_1630'),
+        ("cookbox_core", "0010_auto_20190424_1630"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='recipe',
-            name='unit_time',
-            field=models.CharField(choices=[('sec.', 'seconds'), ('min.', 'minutes'), ('hrs.', 'hours'), ('days', 'days'), ('weeks', 'weeks'), ('months', 'month'), ('years', 'years')], default='min.', max_length=126),
+            model_name="recipe",
+            name="unit_time",
+            field=models.CharField(
+                choices=[
+                    ("sec.", "seconds"),
+                    ("min.", "minutes"),
+                    ("hrs.", "hours"),
+                    ("days", "days"),
+                    ("weeks", "weeks"),
+                    ("months", "month"),
+                    ("years", "years"),
+                ],
+                default="min.",
+                max_length=126,
+            ),
         ),
     ]

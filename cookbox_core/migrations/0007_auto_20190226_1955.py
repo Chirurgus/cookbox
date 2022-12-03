@@ -4,6 +4,7 @@ from django.db import migrations
 
 from django.core.exceptions import ObjectDoesNotExist
 
+
 def make_tags_unique(apps, schema_editor):
     """
     For every unique tag name creates a new tag,
@@ -11,7 +12,7 @@ def make_tags_unique(apps, schema_editor):
     """
     Tag = apps.get_model("cookbox_core", "Tag")
 
-    unique_tag_names = { tag.name for tag in Tag.objects.all() }
+    unique_tag_names = {tag.name for tag in Tag.objects.all()}
 
     for tag_name in unique_tag_names:
         # Create one (unique) tag with this name
@@ -24,7 +25,7 @@ def make_tags_unique(apps, schema_editor):
             # Do not do anything to the new tag
             if tag.id == new_tag.id:
                 continue
-            
+
             # Some tags reference recipes that no longer exist
             try:
                 # Tags can have null recipe since migration 0006
@@ -33,7 +34,9 @@ def make_tags_unique(apps, schema_editor):
                     new_tag.recipes.add(tag.recipe)
             except ObjectDoesNotExist:
                 # In case of ObjectDoesNotExist warn and do nothing
-                print("Warning: The following tag did not have a recipe associated with it:")
+                print(
+                    "Warning: The following tag did not have a recipe associated with it:"
+                )
                 print(tag.name)
                 print("This tag is now integrated into a new one.")
 
@@ -44,9 +47,7 @@ def make_tags_unique(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0006_auto_20190226_1954'),
+        ("cookbox_core", "0006_auto_20190226_1954"),
     ]
 
-    operations = [
-        migrations.RunPython(make_tags_unique)
-    ]
+    operations = [migrations.RunPython(make_tags_unique)]

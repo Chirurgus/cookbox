@@ -2,7 +2,7 @@
 # On 19/10/2019
 
 from django.core.exceptions import ImproperlyConfigured
-from django.urls import reverse,reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 
 """
@@ -15,7 +15,8 @@ The name of the attribute to be set by `auth_exempt`.
 May change in the future due to naming conflicts with
 Django/other libraries.
 """
-_AUTH_EXEMPT_ATTR = 'auth_exempt'
+_AUTH_EXEMPT_ATTR = "auth_exempt"
+
 
 def auth_exempt(value=True):
     """
@@ -24,10 +25,13 @@ def auth_exempt(value=True):
     Should work for both class-based views, and function views
     since `AuthRequiredMiddleware` checks `view.view_class`.
     """
+
     def _set_auth_exempt(view):
         setattr(view, _AUTH_EXEMPT_ATTR, value)
         return view
+
     return _set_auth_exempt
+
 
 class AuthRequiredMiddleware(object):
     """
@@ -47,31 +51,37 @@ class AuthRequiredMiddleware(object):
     behavior override the `redirect_to` class attribute.
     """
 
-    redirect_to = reverse_lazy('login') + "?next={next}"
+    redirect_to = reverse_lazy("login") + "?next={next}"
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        assert hasattr(request, 'user'), """
+        assert hasattr(
+            request, "user"
+        ), """
             The Login Required middleware needs to be after AuthenticationMiddleware.
             Also make sure to include the template context_processor:
             'django.contrib.auth.context_processors.auth'."""
         auth_exempt = (
-            (hasattr(view_func, _AUTH_EXEMPT_ATTR) and
-                view_func.auth_exempt) or
+            (hasattr(view_func, _AUTH_EXEMPT_ATTR) and view_func.auth_exempt)
+            or
             # If it was generated form a class view
-            (hasattr(view_func, "view_class") and
-                hasattr(view_func.view_class, _AUTH_EXEMPT_ATTR) and
-                view_func.view_args.auth_exempt)
+            (
+                hasattr(view_func, "view_class")
+                and hasattr(view_func.view_class, _AUTH_EXEMPT_ATTR)
+                and view_func.view_args.auth_exempt
+            )
         )
         if not (auth_exempt or request.user.is_authenticated):
             # Check if we're redirecting FROM self.redirect_to
             if request.path == self.redirect_to:
-                raise ImproperlyConfigured("""
+                raise ImproperlyConfigured(
+                    """
                     {target} is not auth_exempt.
                     Will cause infinite redirects.
                     Perhaps add auth_exempt decorator to view handling {target}.
                     """.format(
                         target=request.path
-                    ))
+                    )
+                )
             # Set the `next` parameter if it is in the url
             if self.redirect_to.find("{next}") != -1:
                 redirect_to = self.redirect_to.format(next=request.path)
@@ -94,5 +104,4 @@ class AuthRequiredMiddleware(object):
         # Code to be executed for each request/response after
         # the view is called.
 
-        return response    
-
+        return response

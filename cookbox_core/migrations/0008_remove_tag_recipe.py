@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0007_auto_20190226_1955'),
+        ("cookbox_core", "0007_auto_20190226_1955"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='tag',
-            name='recipe',
+            model_name="tag",
+            name="recipe",
         ),
     ]

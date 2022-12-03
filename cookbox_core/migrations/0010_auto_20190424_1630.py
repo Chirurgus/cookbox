@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0009_auto_20190424_1543'),
+        ("cookbox_core", "0009_auto_20190424_1543"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='tag',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='tags', to='cookbox_core.TagCategory'),
+            model_name="tag",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="tags",
+                to="cookbox_core.TagCategory",
+            ),
         ),
     ]

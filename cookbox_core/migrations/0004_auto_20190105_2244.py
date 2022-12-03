@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0003_remove_ingredient_usda_code'),
+        ("cookbox_core", "0003_remove_ingredient_usda_code"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='recipe',
-            name='description',
-            field=models.CharField(default='', max_length=1024),
+            model_name="recipe",
+            name="description",
+            field=models.CharField(default="", max_length=1024),
         ),
     ]

@@ -9,20 +9,24 @@ from cookbox_core.models import (
     RecipeNote,
     IngredientNote,
     InstructionNote,
-    Tag
+    Tag,
 )
+
 
 class RecipeNoteInline(nested_admin.NestedTabularInline):
     model = RecipeNote
     extra = 0
 
+
 class IngredientNoteInline(nested_admin.NestedTabularInline):
     model = IngredientNote
     extra = 0
 
+
 class InstructionNoteInline(nested_admin.NestedTabularInline):
     model = InstructionNote
     extra = 0
+
 
 class IngredientInline(nested_admin.NestedTabularInline):
     model = Ingredient
@@ -30,17 +34,20 @@ class IngredientInline(nested_admin.NestedTabularInline):
     sortable_field_name = "position"
     inlines = [IngredientNoteInline]
 
+
 class IngredientGroupInline(nested_admin.NestedStackedInline):
     model = IngredientGroup
     extra = 0
     sortable_field_name = "position"
     inlines = [IngredientInline]
 
+
 class InstructionInline(nested_admin.NestedTabularInline):
     model = Instruction
     extra = 0
     sortable_field_name = "position"
     inlines = [InstructionNoteInline]
+
 
 class RecipeAdmin(nested_admin.NestedModelAdmin):
     model = Recipe
@@ -49,6 +56,7 @@ class RecipeAdmin(nested_admin.NestedModelAdmin):
         InstructionInline,
         RecipeNoteInline,
     ]
+
 
 class TagAdmin(nested_admin.NestedModelAdmin):
     model = Tag

@@ -7,30 +7,48 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cookbox_core', '0005_recipe_image'),
+        ("cookbox_core", "0005_recipe_image"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TagCategory',
+            name="TagCategory",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=126, unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=126, unique=True)),
             ],
         ),
         migrations.AddField(
-            model_name='tag',
-            name='recipes',
-            field=models.ManyToManyField(related_name='tags', to='cookbox_core.Recipe'),
+            model_name="tag",
+            name="recipes",
+            field=models.ManyToManyField(related_name="tags", to="cookbox_core.Recipe"),
         ),
         migrations.AddField(
-            model_name='tag',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tags', to='cookbox_core.TagCategory'),
+            model_name="tag",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="tags",
+                to="cookbox_core.TagCategory",
+            ),
         ),
         migrations.AlterField(
-            model_name='tag',
-            name='recipe',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tags', to='cookbox_core.Recipe'),
+            model_name="tag",
+            name="recipe",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="tags",
+                to="cookbox_core.Recipe",
+            ),
         ),
     ]

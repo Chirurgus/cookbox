@@ -3,12 +3,13 @@
 
 from cookbox_core.tests import CookboxBaseTest
 
+
 class GlossaryBaseTest(CookboxBaseTest):
     article_data = {
-        'body' : 'Test lalala',
+        "body": "Test lalala",
     }
 
     entry_data = {
-        'term'    : 'cookbox glossary',
-        'article' : None,
+        "term": "cookbox glossary",
+        "article": None,
     }

@@ -9,24 +9,47 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='GlossaryArticle',
+            name="GlossaryArticle",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('body', markdownx.models.MarkdownxField()),
-                ('last_modified', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("body", markdownx.models.MarkdownxField()),
+                ("last_modified", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='GlossaryEntry',
+            name="GlossaryEntry",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('term', models.CharField(max_length=256)),
-                ('article', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='entries', to='cookbox_glossary.GlossaryArticle')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("term", models.CharField(max_length=256)),
+                (
+                    "article",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="entries",
+                        to="cookbox_glossary.GlossaryArticle",
+                    ),
+                ),
             ],
         ),
     ]

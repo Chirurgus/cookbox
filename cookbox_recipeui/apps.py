@@ -5,5 +5,4 @@ from django.apps import AppConfig
 
 
 class CookboxRecipeuiConfig(AppConfig):
-    name = 'cookbox_recipeui'
-
+    name = "cookbox_recipeui"
