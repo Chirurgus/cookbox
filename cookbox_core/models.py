@@ -1,6 +1,8 @@
 # Created by Oleksandr Sorochynskyi
 # On 13 08 18
 
+import uuid
+
 from django.db import models
 
 # Max length for CharField models
@@ -10,6 +12,10 @@ CHAR_FIELD_MAX_LEN_LONG = 1024
 DECIMAL_FIELD_MAX_DIGITS = 12
 DECIMAL_FIELD_DPLACES = 2
 
+def image_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return filename
 
 class Recipe(models.Model):
     SEC = "sec."
@@ -63,7 +69,7 @@ class Recipe(models.Model):
     source = models.CharField(
         max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default="", blank=True
     )
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to=image_file_path, null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     # Additional fields from related tables
     # ingredient_groups
@@ -144,7 +150,7 @@ class Tag(models.Model):
 
 
 class Note(models.Model):
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to=image_file_path, null=True, blank=True)
     text = models.CharField(
         max_length=CHAR_FIELD_MAX_LEN_MEDIUM, default="", null=True, blank=True
     )
