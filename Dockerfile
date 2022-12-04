@@ -30,7 +30,10 @@ RUN a2enmod wsgi
 RUN a2dissite 000-default default-ssl
 RUN mkdir /opt/cookbox/logs
 
-CMD python3 manage.py check && \
+CMD chown -R www-data:www-data /opt/cookbox/images && \
+	chmod -R u+rw /opt/cookbox/images && \
+	chmod -R a+r /opt/cookbox/images && \
+	python3 manage.py check && \
 	python3 manage.py collectstatic --noinput && \
 	python3 manage.py migrate && \
 	sed -i "s/__SERVER_NAME__/$SERVER_NAME/g" /etc/apache2/apache2.conf && \

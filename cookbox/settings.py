@@ -60,8 +60,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 STATIC_URL = "/static_files/"
 
 # Path for Images in the database
-MEDIA_ROOT = os.path.join(BASE_DIR, "images")
-MEDIA_URL = "/images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "images/")
+MEDIA_URL = "images/"
 
 
 # Application definition
