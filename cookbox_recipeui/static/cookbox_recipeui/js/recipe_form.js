@@ -5,9 +5,9 @@
 // Selectors for the lists with position field, together
 // with the class of position field selectors
 const ordered_forms = {
-    '.ing-grp-form-list' : '.ing-grp-form-pos',
-    '.ins-form-list' : '.ins-form-pos',
-    '.ing-grp-ing-form-list' : '.ing-form-pos'
+    '.ing-grp-form-list': '.ing-grp-form-pos',
+    '.ins-form-list': '.ins-form-pos',
+    '.ing-grp-ing-form-list': '.ing-form-pos'
 };
 
 const enter_handler_args = [
@@ -21,36 +21,35 @@ const enter_handler_args = [
 
 // Helper functions
 
-function reload_page(){
+function reload_page() {
     window.location.reload();
 }
 
 function set_enter_key_handler(
     event_source_selector,
     button_selector,
-    via_selector=null)
-{
+    via_selector = null) {
     $('#recipe-edit-form')
         .off("keydown", event_source_selector)
         .on(
-        "keydown",
-        event_source_selector,
-        function(event) {
-            if (event.key == "Enter") {
-                if (via_selector === null) {
-                    $(button_selector).click();
+            "keydown",
+            event_source_selector,
+            function (event) {
+                if (event.key == "Enter") {
+                    if (via_selector === null) {
+                        $(button_selector).click();
+                    }
+                    else {
+                        $(this)
+                            .parents(via_selector)
+                            .find(button_selector)
+                            .click();
+                    }
+                    event.stopPropagation();
+                    event.preventDefault();
                 }
-                else {
-                    $(this)
-                        .parents(via_selector)
-                        .find(button_selector)
-                        .click();
-                }
-                event.stopPropagation();
-                event.preventDefault();
             }
-        }
-    );
+        );
 }
 
 // Fill the position field (found using pos_field_selector)
@@ -64,11 +63,11 @@ function fill_position_fields(list_selector, pos_field_selector) {
         });
 };
 
-function make_sortable(list_selector, pos_field_selector, connected_lists=null) {
+function make_sortable(list_selector, pos_field_selector, connected_lists = null) {
     var sortables = sortable(list_selector, {
         handle: 'span.sortable-handle',
         forcePlaceholderSize: true,
-        acceptFrom: connected_lists 
+        acceptFrom: connected_lists
     });
     return sortables
 };
@@ -78,7 +77,7 @@ function make_sortable(list_selector, pos_field_selector, connected_lists=null) 
 // another form to the list
 function setup_enter_handlers() {
     // By default ignore Enter key
-    $(document).on("keydown", function(event) {
+    $(document).on("keydown", function (event) {
         if (event.key == "Enter") {
             event.stopPropagation();
             event.preventDefault();
@@ -86,7 +85,7 @@ function setup_enter_handlers() {
     })
 
     // But allow it for buttons
-    $(document).on("keydown", "button", function(event) {
+    $(document).on("keydown", "button", function (event) {
         if (event.key == "Enter") {
             event.stopPropagation();
         }
@@ -96,7 +95,7 @@ function setup_enter_handlers() {
     // If inside nested list the deepest item is added, for 
     // this to work these have to be called in order from
     // outside inside.
-    enter_handler_args.forEach(function(args) {
+    enter_handler_args.forEach(function (args) {
         // ... spread operator (like * in Python)
         set_enter_key_handler(...args);
     })
@@ -116,7 +115,7 @@ function setup_dnd_between_ing_groups() {
     // Setup an event listener for ingredient lists
     $('.ing-grp-ing-form-list')
         .off('sortupdate')
-        .on( 'sortupdate', function(e) {
+        .on('sortupdate', function (e) {
             // If the item drag and dropped has not changed
             // containers there is nothing to do.
             // Otherwise add new inline form to the destination 
@@ -148,11 +147,11 @@ function setup_dnd_between_ing_groups() {
             // Move old form back and mark it for deletion
             $(e.detail.origin.container).append(old_form);
             delete_inline_form("#" + old_form.find(".ing-form-del input").attr('id'), ".ing-form");
-    });
+        });
 }
 
 // Call function on DOM Ready:
-$(document).ready(function() {
+$(document).ready(function () {
     // Prompt the user if he tries to leave the page
     // without saving the form
     $('#recipe-edit-form').areYouSure();
@@ -177,7 +176,7 @@ $(document).ready(function() {
 
     // Allow ingredients to be moved between ingredient groups
     setup_dnd_between_ing_groups();
-    
+
     // Handle Enter key
     setup_enter_handlers();
 });
@@ -200,6 +199,6 @@ function on_add_click(prefix, prefix_str) {
 
     // Track new forms for changes (to ask for confirmation) 
     $('#recipe-edit-form').trigger('rescan.areYouSure');
-    
+
     return new_form
 }

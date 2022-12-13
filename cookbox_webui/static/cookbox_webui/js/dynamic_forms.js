@@ -3,7 +3,7 @@
 "use strict";
 
 // Add an inline form to a formset
-function add_inline_form(prefix, prefix_str='__prefix__', focus_new=true) {
+function add_inline_form(prefix, prefix_str = '__prefix__', focus_new = true) {
     // Get the index of the new form
     var form_idx = $('#id_' + prefix + '-TOTAL_FORMS').val();
 
@@ -33,7 +33,7 @@ function delete_inline_form(delete_checkbox_selector, inline_form_selector) {
 
     // Mark the inline form for deletion
     del_checkbox.prop('checked', true);
-    
+
     // Hide the inline from view (it will still be submitted).
     del_checkbox.closest(inline_form_selector).hide();
 }
