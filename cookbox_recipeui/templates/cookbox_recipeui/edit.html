@@ -25,6 +25,7 @@ New recipe | Cookbox
     {% endif %}
 </div>
 
+<!-- prettier-ignore-start -->
 {# PUT method is not allowed for HTML forms, so POST is used for existing instances #}
 <form id="recipe-edit-form" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -139,6 +140,7 @@ New recipe | Cookbox
 
     {% include 'cookbox_recipeui/form/save_actions.html' only %}
 </form>
+<!-- prettier-ignore-end -->
 {% endblock %}
 
 
