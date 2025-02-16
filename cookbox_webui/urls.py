@@ -47,5 +47,4 @@ urlpatterns = [
     ),
     path("recipes/", include(RecipeUI_urls)),
     path("seasons/", include(Seasons_urls)),
-    path("markdownx/", include("markdownx.urls")),
 ]
