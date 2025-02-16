@@ -202,13 +202,6 @@ def scrape_images(recipe, dd):
     # Get the main image
     save_image_url_in_field(dd["image"][0], recipe.image, str(recipe.id) + "_thumb.png")
 
-    # Save all other images
-    for idx, img_url in enumerate(dd["image"][1:]):
-        note = recipe.notes.create()
-        save_image_url_in_field(
-            img_url, note.image, str(recipe.id) + "_" + str(idx) + "_thumb.png"
-        )
-
     return recipe
 
 
