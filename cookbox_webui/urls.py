@@ -5,7 +5,6 @@ from django.urls import path, reverse_lazy, include
 from django.contrib.auth.views import LoginView, LogoutView
 
 from cookbox_recipeui import urls as RecipeUI_urls
-from cookbox_glossary import urls as Glossary_urls
 from cookbox_seasons import urls as Seasons_urls
 
 from .views import (
@@ -47,7 +46,6 @@ urlpatterns = [
         name="tag-category-delete",
     ),
     path("recipes/", include(RecipeUI_urls)),
-    path("glossary/", include(Glossary_urls)),
     path("seasons/", include(Seasons_urls)),
     path("markdownx/", include("markdownx.urls")),
 ]
