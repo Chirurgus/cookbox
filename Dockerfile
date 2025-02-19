@@ -8,10 +8,8 @@ RUN chown root:www-data /opt/cookbox
 COPY --chown=root:www-data cookbox /opt/cookbox/cookbox
 COPY --chown=root:www-data cookbox_admin /opt/cookbox/cookbox_admin
 COPY --chown=root:www-data cookbox_core /opt/cookbox/cookbox_core
-COPY --chown=root:www-data cookbox_glossary /opt/cookbox/cookbox_glossary
 COPY --chown=root:www-data cookbox_recipeui /opt/cookbox/cookbox_recipeui
 COPY --chown=root:www-data cookbox_scraper /opt/cookbox/cookbox_scraper
-COPY --chown=root:www-data cookbox_seasons /opt/cookbox/cookbox_seasons
 COPY --chown=root:www-data cookbox_webui /opt/cookbox/cookbox_webui
 COPY --chown=root:www-data manage.py requirements.txt apache2.conf /opt/cookbox/
 
