@@ -76,7 +76,6 @@ INSTALLED_APPS = [
     "imagekit",
     "dal",
     "dal_select2",
-    "markdownx",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
