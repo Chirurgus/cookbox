@@ -61,15 +61,37 @@ nav {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
+    align-items: center;
 
-    /* Needs to be flush with the edges of the page */
     padding: 0;
     margin: 0;
 }
+
 nav > a {
     padding: 0.5em;
 }
 
+.nav-right {
+    margin-left: auto;
+}
+
+.recipe-quick-search {
+    margin: 0;
+    height: 100%;
+}
+
+.recipe-quick-search input[type="text"]::placeholder {
+    font-size: 0.9em;
+}
+
+.recipe-quick-search input[type="text"] {
+    background-color: var(--main-color);
+    border: 1px solid black; 
+    border-radius: 5px;
+    padding: 2px 5px;  /* Keep padding small */
+    margin: 0;
+    height: 1.3em;
+}
 
 
 /* Generic classes */

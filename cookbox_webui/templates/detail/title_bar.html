@@ -5,10 +5,9 @@
     <a href="{% url 'recipe-search' %}">Search</a>
     <a href="{% url 'tag-list' %}">Tags</a>
     <a href="{% url 'recipe-random' %}">Random</a>
-    <form action="{% url 'recipe-quick-search' %}" method="GET" style="display: inline;">
+    <form class="recipe-quick-search" action="{% url 'recipe-quick-search' %}" method="GET">
         <input type="text" name="q" placeholder="Search..." required>
-        <button type="submit">🔍</button>
     </form>
-    <a href="{% url 'logout' %}">Logged in as: {{ user }} Logout</a>
+    <a class="nav-right" href="{% url 'logout' %}">Logged in as: {{ user }} Logout</a>
     {% endif %}
 </nav>
