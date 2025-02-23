@@ -147,13 +147,13 @@ def recipe_random_search(request):
 
 def recipe_quick_search(request):
     query = request.GET.get("q", "").strip()
-    qs = Recipe.objects.none()
+    qs = Recipe.objects.all()
 
     if query:
         qs = qs.filter(name__icontains=query)
 
     return render(
-        self.request,
+        request,
         "cookbox_recipeui/list.html",
         {"recipes": qs, "no_pagination": True},
     )
