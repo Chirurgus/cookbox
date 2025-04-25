@@ -1,4 +1,4 @@
-﻿Django==5.1.6
+﻿Django==4.2.20
 django-nested-admin==4.1.1
 git+https://github.com/Chirurgus/django-superform
 Pillow==11.0.0
