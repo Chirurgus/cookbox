@@ -60,8 +60,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 STATIC_URL = "/static_files/"
 
 # Path for Images in the database
-MEDIA_ROOT = os.path.join(BASE_DIR, "images/")
-MEDIA_URL = "images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "data/")
+MEDIA_URL = "data/"
 
 
 # Application definition
@@ -127,7 +127,7 @@ if DB_ENGINE == "sqlite":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "images", "db.sqlite3"),
+            "NAME": os.path.join(BASE_DIR, "data", "db.sqlite3"),
         }
     }
 elif DB_ENGINE == "mysql":

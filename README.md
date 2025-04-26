@@ -37,25 +37,6 @@ is to create a copy and rename it to `.env`.
 
 The images are based on `arm32v7/debian` which is likely
 not what you want, unless you're running them on a Raspberry Pi.
-The same goes for the `mariadb` image used.
 
 The default development setups (`dev.env`) uses SQLite as the database
 backend. Meaning that the database will be lost when the container shuts down.
-If using Docker, prefer using `mariadb` by setting `DB_ENGINE=mysql` in
-`.env`.
-
-
-# Saving/loading mysql dumps
-
-First start the mysql container with `sudo docker-compose up -d db`.
-Then you can save and load the database dump with the following commands :
-
-```
-# Load enviroment variables from `.env` configuration
-export     $(grep MYSQL_USER .env)
-export $(grep MYSQL_PASSWORD .env)
-export $(grep MYSQL_DATABASE .env)
-sudo docker exec -i cookbox_db_1 bash -c 'mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' > database.sql 2>> error.log
-sudo docker exec -i cookbox_db_1 bash -c 'mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}' < database.sql
-```
-
