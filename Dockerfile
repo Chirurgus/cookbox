@@ -1,4 +1,4 @@
-FROM arm32v7/debian:11.5-slim
+FROM debian:12.10-slim
 
 RUN mkdir /opt/cookbox/
 WORKDIR /opt/cookbox
@@ -19,8 +19,8 @@ RUN apt-get update && \
 		libapache2-mod-wsgi-py3 build-essential \
 		python3-lxml libjpeg-dev zlib1g-dev
 
-RUN pip3 install --upgrade pip setuptools wheel
-RUN pip3 install -r requirements.txt
+RUN pip3 install --break-system-packages --upgrade pip setuptools wheel
+RUN pip3 install --break-system-packages -r requirements.txt
 
 # Setup Apache
 RUN cat apache2.conf >> /etc/apache2/apache2.conf
