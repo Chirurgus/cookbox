@@ -16,3 +16,4 @@ services:
             - SERVER_ADMIN_EMAIL=${SERVER_ADMIN_EMAIL}
         volumes:
             - ./data:/opt/cookbox/data
+            - ./logs:/opt/cookbox/logs
