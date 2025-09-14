@@ -1,10 +1,11 @@
 # Created by Oleksandr Sorochynskyi
 # On 12/10/2019
 
+import logging
+
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     View,
     ListView,
@@ -12,6 +13,8 @@ from django.views.generic import (
     UpdateView,
     CreateView,
 )
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from dal.autocomplete import Select2QuerySetView
@@ -26,6 +29,43 @@ from .forms import (
     TagCategoryForm,
 )
 
+# Set up logger
+auth_logger = logging.getLogger('auth_attempts')
+
+class CustomLoginView(LoginView):
+    template_name = "login.html"
+    
+    def form_valid(self, form):
+        """Called when login form is valid (successful login)"""
+        user = form.get_user()
+        auth_logger.info(
+            f"Successful login - User: {user.username}, "
+            f"IP: {self.get_client_ip()}, "
+            f"User Agent: {self.request.META.get('HTTP_USER_AGENT', 'Unknown')}, "
+            f"Timestamp: {timezone.now()}"
+        )
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        """Called when login form is invalid (failed login)"""
+        username = form.cleaned_data.get('username', 'Unknown')
+        auth_logger.warning(
+            f"Failed login attempt - User: {username}, "
+            f"IP: {self.get_client_ip()}, "
+            f"User Agent: {self.request.META.get('HTTP_USER_AGENT', 'Unknown')}, "
+            f"Timestamp: {timezone.now()}, "
+            f"Errors: {form.errors}"
+        )
+        return super().form_invalid(form)
+    
+    def get_client_ip(self):
+        """Get client IP address"""
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
 
 class HomePageView(View):
     def get(self, request):

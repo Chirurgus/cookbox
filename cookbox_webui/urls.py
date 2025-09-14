@@ -2,12 +2,13 @@
 # On 06/12/2019
 
 from django.urls import path, reverse_lazy, include
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 
 from cookbox_recipeui import urls as RecipeUI_urls
 
 from .views import (
     HomePageView,
+    CustomLoginView,
     TagList,
     TagRecipeList,
     TagEdit,
@@ -19,7 +20,7 @@ from .views import (
 )
 
 # Don't require authentication for the login page
-login_view = LoginView.as_view(template_name="login.html")
+login_view = CustomLoginView()
 login_view.auth_exempt = True
 
 urlpatterns = [
