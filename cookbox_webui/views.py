@@ -42,7 +42,6 @@ class CustomLoginView(LoginView):
             f"Successful login - User: {user.username}, "
             f"IP: {self.get_client_ip()}, "
             f"User Agent: {self.request.META.get('HTTP_USER_AGENT', 'Unknown')}, "
-            f"Timestamp: {timezone.now()}"
         )
         return super().form_valid(form)
     
@@ -53,8 +52,6 @@ class CustomLoginView(LoginView):
             f"Failed login attempt - User: {username}, "
             f"IP: {self.get_client_ip()}, "
             f"User Agent: {self.request.META.get('HTTP_USER_AGENT', 'Unknown')}, "
-            f"Timestamp: {timezone.now()}, "
-            f"Errors: {form.errors}"
         )
         return super().form_invalid(form)
     

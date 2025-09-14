@@ -20,7 +20,7 @@ from .views import (
 )
 
 # Don't require authentication for the login page
-login_view = CustomLoginView()
+login_view = CustomLoginView.as_view()
 login_view.auth_exempt = True
 
 urlpatterns = [

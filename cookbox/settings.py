@@ -173,26 +173,51 @@ USE_L10N = True
 USE_TZ = True
 
 # Logging settings
-# Disable logging for now
-if False:
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "file": {
-                "level": "WARNING",
-                "class": "logging.FileHandler",
-                "filename": os.path.join(BASE_DIR, "django.log"),
-            },
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'cb_formatter': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
         },
-        "loggers": {
-            "django": {
-                "handlers": ["file"],
-                "level": "DEBUG",
-                "propagate": True,
-            },
+    },
+    'handlers': {
+        'auth_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/auth_attempts.log',
+            'maxBytes': 1024*1024*15,  # 15MB
+            'backupCount': 5,
+            'formatter': 'cb_formatter',
         },
-    }
+        'django_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/django.log',
+            'maxBytes': 1024*1024*15,  # 15MB
+            'backupCount': 5,
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'cb_formatter',
+        },
+    },
+    'loggers': {
+        'auth_attempts': {
+            'handlers': ['auth_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        "django": {
+            "handlers": ['django_file', 'console'],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
+
 
 # Maximum number of forms in a POST request
 # Every inline form requires about 15 hidden forms
