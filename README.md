@@ -40,3 +40,48 @@ not what you want, unless you're running them on a Raspberry Pi.
 
 The default development setups (`dev.env`) uses SQLite as the database
 backend. Meaning that the database will be lost when the container shuts down.
+
+## fail2ban
+
+The following setup is used with fail2ban.
+
+# /etc/fail2ban/filter.d/cookbox-apache.conf
+[Definition]
+failregex = ^<HOST> - - \[.*\] "(GET|POST|HEAD) /(wp-admin|wp-login|admin|phpmyadmin|phpMyAdmin|mysql|sql|\.php|\.asp|\.jsp|actuator|api/|\.env|\.git|\.svn|backup|config|db|database|test|tmp|temp|upload|uploads|shell|cmd|eval|exec|system|proc|passwd|shadow|etc/passwd|\.well-known/security\.txt|sitemap\.xml|robots\.txt|crossdomain\.xml|clientaccesspolicy\.xml|\.htaccess|\.htpasswd|web\.config|index\.php\?s=|think\w)" HTTP/[0-9]\.[0-9]" (400|404|403|500) .*$
+            ^<HOST> - - \[.*\] "(GET|POST|HEAD) .*(union|select|insert|drop|delete|update|script|javascript|vbscript|onload|onerror|alert|document\.cookie|eval\(|base64_decode|exec\(|system\(|passthru\(|shell_exec\(|file_get_contents\(|curl_exec\(|fopen\(|fwrite\(|include\(|require\().*" HTTP/[0-9]\.[0-9]" .*$
+            ^<HOST> - - \[.*\] ".*" [45]\d\d \d+ ".*" ".*(bot|crawler|spider|scraper|scanner|nikto|nmap|sqlmap|dirb|gobuster|wfuzz|hydra|masscan|nessus|openvas|acunetix|burp|zap).*"$
+
+# /etc/fail2ban/filter.d/cookbox-auth.log
+
+[Definition]
+# Match failed login attempts from your Django log format
+failregex = ^WARNING .* Failed login attempt - User: .*, IP: <HOST>, User Agent: .*$
+
+# Optional: Match successful logins to reset ban counter (uncomment if desired)
+# ignoreregex = ^INFO .* Successful login - User: .*, IP: <HOST>, User Agent: .*$
+
+# Date pattern to match your log timestamp format
+datepattern = ^%%Y-%%m-%%d %%H:%%M:%%S,%%f
+
+# /etc/fail2ban/jail.local
+[cookbox-auth]
+enabled = true
+port = http,https
+filter = cookbox-auth
+logpath = /home/pi/cookbox/logs/auth_attempts.log
+maxretry = 5
+findtime = 600
+bantime = 3600
+action = iptables-multiport[name=cookbox-auth, port="http,https", protocol=tcp]
+
+[cookbox-apache]
+enabled = true
+filter = cookbox-apache
+logpath = /home/pi/cookbox/logs/access.log
+port = http,https
+maxretry = 5
+findtime = 600
+bantime = 3600
+action = iptables-multiport[name=cookbox-apache, port="http,https", protocol=tcp]
+
+
